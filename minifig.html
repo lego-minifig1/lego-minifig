@@ -202,7 +202,6 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
   .tbtn{flex:1;font-size:12.5px;padding:9px 8px}
   .share-row{display:grid;grid-template-columns:1fr 1fr}
   .share-row .tbtn{grid-column:span 1}
-  .share-row .tbtn#printView{grid-column:1 / -1}
   .card-desc{font-size:12.5px;-webkit-line-clamp:2}
   .set-head::after{padding:3px 9px;font-size:11.5px}
 }
@@ -248,24 +247,11 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
 .share-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .share-row .tbtn{background:var(--pink)}
 .share-row .tbtn:hover{background:var(--red-dim)}
-.share-row .tbtn.print-btn{background:var(--blue)}
-.share-row .tbtn.print-btn:hover{background:var(--ink)}
 
-/* ===== 추가: 인쇄용 스타일 ===== */
-@media print{
-  :root,:root[data-theme="dark"]{--bg:#f6f1e4;--bg-2:#fbf7ec;--card:#fffdf6;--card-border:#ddd1ac;--ink:#2a2117;--ink-soft:#6e6048;--ink-mute:#9c8f76;--stud:#e8dcb8}
-  .theme-toggle,.to-top,.controls,.appendix-block,.share-banner,.share-toast,.hero-note,.legend{display:none!important}
-  .hero-stats{display:none!important}
-  body::before{display:none!important}
-  header{padding:12px 0 18px}
-  .sub{display:none}
-  .grid{grid-template-columns:repeat(4,1fr)!important;gap:8px!important}
-  .card{break-inside:avoid;box-shadow:none!important;transform:none!important;border-color:#999!important}
-  .card:hover{transform:none!important;box-shadow:none!important}
-  .theme-header{background:#333!important;color:#fff!important}
-  .set-head::after{display:none}
-  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-}
+/* ===== 추가: 복사/저장 억제 (완전한 차단은 아니며, 캐주얼한 무단 스크랩을 줄이는 용도) ===== */
+body{-webkit-user-select:none;user-select:none}
+input,select,textarea{-webkit-user-select:text;user-select:text}
+img{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
 .visitor-counter{display:inline-block;margin-top:10px;font-weight:700;color:var(--ink-soft);background:var(--bg-2);padding:5px 14px;border-radius:20px}
 .visitor-counter b{color:var(--red-dim);font-family:'Gowun Batang',serif;font-size:14.5px}
 .maker-credit{margin-top:14px;font-size:12.5px;font-weight:700;color:var(--ink-mute);letter-spacing:.02em}
@@ -368,7 +354,6 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
 <div class="share-row">
 <button type="button" class="tbtn" id="copyShareLink">🔗 내 컬렉션 링크 복사</button>
 <button type="button" class="tbtn" id="saveShareImage">🖼️ 진행률 이미지 저장</button>
-<button type="button" class="tbtn print-btn" id="printView">🖨️ 인쇄용 보기</button>
 </div>
 <div class="mine-note">✓ 버튼은 내가 가진 피규어, ♥ 버튼은 갖고 싶은 피규어를 표시해요 · 이 브라우저에만 저장돼요 (다른 기기·시크릿 모드에서는 안 보여요)</div>
 </div>
@@ -11267,22 +11252,6 @@ document.getElementById('themeToggle').addEventListener('click', function(){
   applyTheme(currentTheme);
 });
 
-// ===== 인쇄용 보기 (검색창 등 숨기고 전체 펼쳐서 인쇄) =====
-let __printPrevOpen = null;
-window.addEventListener('beforeprint', function(){
-  __printPrevOpen = Array.from(document.querySelectorAll('details')).map(d=>d.open);
-  document.querySelectorAll('details').forEach(d=>{ d.open = true; });
-});
-window.addEventListener('afterprint', function(){
-  if(__printPrevOpen){
-    document.querySelectorAll('details').forEach((d,i)=>{ d.open = __printPrevOpen[i]; });
-    __printPrevOpen = null;
-  }
-});
-document.getElementById('printView').addEventListener('click', function(){
-  window.print();
-});
-
 // ===== 공유: 링크 복사 / 이미지 저장 =====
 const ALL_CODES = Array.from(document.querySelectorAll('.card')).map(codeOf);
 function showToast(msg){
@@ -11528,6 +11497,15 @@ document.addEventListener('keydown', e => {
   if (k === 'F12') { e.preventDefault(); return; }
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['I','J','C','K'].includes(k)) { e.preventDefault(); return; }
   if ((e.ctrlKey || e.metaKey) && k === 'U') { e.preventDefault(); return; }
+  if ((e.ctrlKey || e.metaKey) && k === 'S') { e.preventDefault(); return; }
+});
+document.addEventListener('dragstart', e => {
+  if (e.target && e.target.tagName === 'IMG') e.preventDefault();
+});
+document.addEventListener('copy', e => {
+  if (!/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement ? document.activeElement.tagName : '')) {
+    e.preventDefault();
+  }
 });
 </script>
 </body>
