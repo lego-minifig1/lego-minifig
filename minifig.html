@@ -196,6 +196,10 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
 .card.is-owned{border-color:var(--green);border-width:2px}
 .my-progress{font-size:12px;font-weight:700;color:var(--ink-soft);background:var(--bg);padding:3px 10px;border-radius:20px}
 .my-progress.complete{background:var(--green);color:#fff}
+.set-bulk-toggle{font-size:12px;font-weight:700;color:#fff;background:var(--ink);border:none;padding:4px 12px;border-radius:20px;cursor:pointer;transition:background .15s,transform .1s}
+.set-bulk-toggle:hover{background:var(--red);transform:translateY(-1px)}
+.set-bulk-toggle.all-done{background:var(--green)}
+.set-bulk-toggle.all-done:hover{background:var(--red-dim)}
 .mine-stat{border-color:var(--green)}
 .mine-stat b{color:var(--green)}
 .mine-note{font-size:11.5px;color:var(--ink-mute);margin-top:6px}
@@ -316,7 +320,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">8683</span>
             <span class="set-name">미니피규어 시즌1</span>
-            <span class="set-year">2010년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2010년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col001" target="_blank" rel="noopener" data-owns="6580" data-wants="3180">
@@ -503,7 +507,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">8684</span>
             <span class="set-name">미니피규어 시즌2</span>
-            <span class="set-year">2010년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2010년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col017" target="_blank" rel="noopener" data-owns="9139" data-wants="2920">
@@ -690,7 +694,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">8803</span>
             <span class="set-name">미니피규어 시즌3</span>
-            <span class="set-year">2011년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2011년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col037" target="_blank" rel="noopener" data-owns="8937" data-wants="2861">
@@ -877,7 +881,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">8804</span>
             <span class="set-name">미니피규어 시즌4</span>
-            <span class="set-year">2011년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2011년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col049" target="_blank" rel="noopener" data-owns="8506" data-wants="2513">
@@ -1064,7 +1068,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">8805</span>
             <span class="set-name">미니피규어 시즌5</span>
-            <span class="set-year">2011년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2011년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col065" target="_blank" rel="noopener" data-owns="8695" data-wants="2619">
@@ -1251,7 +1255,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">8827</span>
             <span class="set-name">미니피규어 시즌6</span>
-            <span class="set-year">2011년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2011년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col081" target="_blank" rel="noopener" data-owns="9455" data-wants="2591">
@@ -1438,7 +1442,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">8831</span>
             <span class="set-name">미니피규어 시즌7</span>
-            <span class="set-year">2012년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2012년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col097" target="_blank" rel="noopener" data-owns="7454" data-wants="1587">
@@ -1625,7 +1629,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">8833</span>
             <span class="set-name">미니피규어 시즌8</span>
-            <span class="set-year">2012년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2012년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col113" target="_blank" rel="noopener" data-usd="7.92" data-owns="8566" data-wants="2158">
@@ -1812,7 +1816,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71000</span>
             <span class="set-name">미니피규어 시즌9</span>
-            <span class="set-year">2012년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2012년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col129" target="_blank" rel="noopener" data-owns="5894" data-wants="2241">
@@ -1999,7 +2003,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71001</span>
             <span class="set-name">미니피규어 시즌10</span>
-            <span class="set-year">2013년</span><span class="set-cnt">17개</span><span class="my-progress" data-total="17">내 컬렉션 0/17</span>
+            <span class="set-year">2013년</span><span class="set-cnt">17개</span><span class="my-progress" data-total="17">내 컬렉션 0/17</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col161" target="_blank" rel="noopener" data-owns="754" data-wants="5791">
@@ -2197,7 +2201,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71002</span>
             <span class="set-name">미니피규어 시즌11</span>
-            <span class="set-year">2013년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2013년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col163" target="_blank" rel="noopener" data-owns="8408" data-wants="2404">
@@ -2384,7 +2388,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71007</span>
             <span class="set-name">미니피규어 시즌12</span>
-            <span class="set-year">2014년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2014년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col179" target="_blank" rel="noopener" data-owns="10157" data-wants="2457">
@@ -2571,7 +2575,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71008</span>
             <span class="set-name">미니피규어 시즌13</span>
-            <span class="set-year">2014년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2014년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col195" target="_blank" rel="noopener" data-owns="10753" data-wants="3012">
@@ -2758,7 +2762,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71010</span>
             <span class="set-name">미니피규어 시즌14 (몬스터)</span>
-            <span class="set-year">2015년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2015년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col211" target="_blank" rel="noopener" data-owns="8526" data-wants="1945">
@@ -2945,7 +2949,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71011</span>
             <span class="set-name">미니피규어 시즌15</span>
-            <span class="set-year">2015년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2015년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col228" target="_blank" rel="noopener" data-owns="8868" data-wants="2107">
@@ -3132,7 +3136,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71013</span>
             <span class="set-name">미니피규어 시즌16</span>
-            <span class="set-year">2016년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2016년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col244" target="_blank" rel="noopener" data-owns="8090" data-wants="1614">
@@ -3319,7 +3323,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71018</span>
             <span class="set-name">미니피규어 시즌17</span>
-            <span class="set-year">2017년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2017년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col286" target="_blank" rel="noopener" data-owns="6521" data-wants="1216">
@@ -3506,7 +3510,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71021</span>
             <span class="set-name">미니피규어 시즌18 (40주년 파티)</span>
-            <span class="set-year">2018년</span><span class="set-cnt">17개</span><span class="my-progress" data-total="17">내 컬렉션 0/17</span>
+            <span class="set-year">2018년</span><span class="set-cnt">17개</span><span class="my-progress" data-total="17">내 컬렉션 0/17</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col312" target="_blank" rel="noopener" data-owns="7061" data-wants="1240">
@@ -3704,7 +3708,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71025</span>
             <span class="set-name">미니피규어 시즌19</span>
-            <span class="set-year">2019년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2019년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col341" target="_blank" rel="noopener" data-owns="7301" data-wants="1173">
@@ -3891,7 +3895,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71027</span>
             <span class="set-name">미니피규어 시즌20</span>
-            <span class="set-year">2020년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2020년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col358" target="_blank" rel="noopener" data-usd="10.68" data-owns="5396" data-wants="1460">
@@ -4078,7 +4082,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71029</span>
             <span class="set-name">미니피규어 시즌21</span>
-            <span class="set-year">2021년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2021년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col374" target="_blank" rel="noopener" data-owns="6560" data-wants="943">
@@ -4221,7 +4225,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71032</span>
             <span class="set-name">미니피규어 시즌22</span>
-            <span class="set-year">2022년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2022년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col386" target="_blank" rel="noopener" data-owns="6082" data-wants="1293">
@@ -4364,7 +4368,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71034</span>
             <span class="set-name">미니피규어 시즌23</span>
-            <span class="set-year">2022년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2022년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col403" target="_blank" rel="noopener" data-owns="5260" data-wants="631">
@@ -4507,7 +4511,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71037</span>
             <span class="set-name">미니피규어 시즌24</span>
-            <span class="set-year">2023년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2023년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col413" target="_blank" rel="noopener" data-owns="7968" data-wants="1694">
@@ -4650,7 +4654,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71045</span>
             <span class="set-name">미니피규어 시즌25</span>
-            <span class="set-year">2024년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2024년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col424" target="_blank" rel="noopener" data-owns="5920" data-wants="864">
@@ -4793,7 +4797,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71046</span>
             <span class="set-name">미니피규어 시즌26 (SF)</span>
-            <span class="set-year">2024년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2024년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col436" target="_blank" rel="noopener" data-owns="5908" data-wants="801">
@@ -4936,7 +4940,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71048</span>
             <span class="set-name">미니피규어 시즌27</span>
-            <span class="set-year">2025년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2025년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col449" target="_blank" rel="noopener" data-owns="4586" data-wants="403">
@@ -5079,7 +5083,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71051</span>
             <span class="set-name">미니피규어 시즌28 (동물 코스튬)</span>
-            <span class="set-year">2026년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2026년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col471" target="_blank" rel="noopener" data-owns="3405" data-wants="357">
@@ -5222,7 +5226,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71052</span>
             <span class="set-name">미니피규어 시즌29</span>
-            <span class="set-year">2026년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2026년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=col481" target="_blank" rel="noopener" data-owns="2614" data-wants="270">
@@ -5369,7 +5373,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71004</span>
             <span class="set-name">레고 무비 시리즈</span>
-            <span class="set-year">2014년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2014년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=tlm001" target="_blank" rel="noopener" data-usd="11.34" data-owns="6540" data-wants="1727">
@@ -5556,7 +5560,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71005</span>
             <span class="set-name">심슨 시리즈 1</span>
-            <span class="set-year">2014년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2014년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=sim007" target="_blank" rel="noopener" data-usd="14.8" data-owns="9571" data-wants="1271">
@@ -5743,7 +5747,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71009</span>
             <span class="set-name">심슨 시리즈 2</span>
-            <span class="set-year">2015년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2015년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=sim028" target="_blank" rel="noopener" data-usd="7.55" data-owns="7400" data-wants="818">
@@ -5930,7 +5934,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71012</span>
             <span class="set-name">디즈니 시리즈 1</span>
-            <span class="set-year">2016년</span><span class="set-cnt">18개</span><span class="my-progress" data-total="18">내 컬렉션 0/18</span>
+            <span class="set-year">2016년</span><span class="set-cnt">18개</span><span class="my-progress" data-total="18">내 컬렉션 0/18</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=dis001" target="_blank" rel="noopener" data-owns="9418" data-wants="1635">
@@ -6139,7 +6143,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71017</span>
             <span class="set-name">배트맨 무비 시리즈 1</span>
-            <span class="set-year">2017년</span><span class="set-cnt">20개</span><span class="my-progress" data-total="20">내 컬렉션 0/20</span>
+            <span class="set-year">2017년</span><span class="set-cnt">20개</span><span class="my-progress" data-total="20">내 컬렉션 0/20</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=coltlbm01" target="_blank" rel="noopener" data-owns="10065" data-wants="1469">
@@ -6370,7 +6374,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71019</span>
             <span class="set-name">닌자고 무비 시리즈</span>
-            <span class="set-year">2017년</span><span class="set-cnt">20개</span><span class="my-progress" data-total="20">내 컬렉션 0/20</span>
+            <span class="set-year">2017년</span><span class="set-cnt">20개</span><span class="my-progress" data-total="20">내 컬렉션 0/20</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=coltlnm01" target="_blank" rel="noopener" data-owns="5083" data-wants="790">
@@ -6601,7 +6605,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71020</span>
             <span class="set-name">배트맨 무비 시리즈 2</span>
-            <span class="set-year">2018년</span><span class="set-cnt">20개</span><span class="my-progress" data-total="20">내 컬렉션 0/20</span>
+            <span class="set-year">2018년</span><span class="set-cnt">20개</span><span class="my-progress" data-total="20">내 컬렉션 0/20</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=coltlbm25" target="_blank" rel="noopener" data-usd="8.43" data-owns="5178" data-wants="1081">
@@ -6832,7 +6836,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71022</span>
             <span class="set-name">해리포터 &amp; 신비한 동물사전 시리즈 1</span>
-            <span class="set-year">2018년</span><span class="set-cnt">22개</span><span class="my-progress" data-total="22">내 컬렉션 0/22</span>
+            <span class="set-year">2018년</span><span class="set-cnt">22개</span><span class="my-progress" data-total="22">내 컬렉션 0/22</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=colhp01" target="_blank" rel="noopener" data-owns="7902" data-wants="1069">
@@ -7085,7 +7089,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71023</span>
             <span class="set-name">레고 무비 2 시리즈</span>
-            <span class="set-year">2019년</span><span class="set-cnt">20개</span><span class="my-progress" data-total="20">내 컬렉션 0/20</span>
+            <span class="set-year">2019년</span><span class="set-cnt">20개</span><span class="my-progress" data-total="20">내 컬렉션 0/20</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=tlm148" target="_blank" rel="noopener" data-usd="3.93" data-owns="6139" data-wants="891">
@@ -7316,7 +7320,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71024</span>
             <span class="set-name">디즈니 시리즈 2</span>
-            <span class="set-year">2019년</span><span class="set-cnt">18개</span><span class="my-progress" data-total="18">내 컬렉션 0/18</span>
+            <span class="set-year">2019년</span><span class="set-cnt">18개</span><span class="my-progress" data-total="18">내 컬렉션 0/18</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=dis024" target="_blank" rel="noopener" data-usd="5.66" data-owns="8218" data-wants="914">
@@ -7525,7 +7529,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71026</span>
             <span class="set-name">DC 슈퍼히어로 시리즈</span>
-            <span class="set-year">2020년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2020년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=colsh01" target="_blank" rel="noopener" data-owns="4478" data-wants="862">
@@ -7712,7 +7716,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71028</span>
             <span class="set-name">해리포터 시리즈 2</span>
-            <span class="set-year">2020년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2020년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=colhp23" target="_blank" rel="noopener" data-usd="3.91" data-owns="5386" data-wants="772">
@@ -7899,7 +7903,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71030</span>
             <span class="set-name">루니 툰 시리즈</span>
-            <span class="set-year">2021년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2021년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=collt01" target="_blank" rel="noopener" data-owns="5255" data-wants="658">
@@ -8042,7 +8046,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71031</span>
             <span class="set-name">마블 스튜디오 시리즈 1</span>
-            <span class="set-year">2021년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2021년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=colmar01" target="_blank" rel="noopener" data-owns="6953" data-wants="1043">
@@ -8185,7 +8189,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71033</span>
             <span class="set-name">머펫 시리즈</span>
-            <span class="set-year">2022년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2022년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=coltm01" target="_blank" rel="noopener" data-usd="4.88" data-owns="5912" data-wants="541">
@@ -8328,7 +8332,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71038</span>
             <span class="set-name">디즈니 100 시리즈</span>
-            <span class="set-year">2023년</span><span class="set-cnt">18개</span><span class="my-progress" data-total="18">내 컬렉션 0/18</span>
+            <span class="set-year">2023년</span><span class="set-cnt">18개</span><span class="my-progress" data-total="18">내 컬렉션 0/18</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=dis092" target="_blank" rel="noopener" data-usd="6.23" data-owns="4823" data-wants="619">
@@ -8537,7 +8541,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71039</span>
             <span class="set-name">마블 스튜디오 시리즈 2</span>
-            <span class="set-year">2023년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2023년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=colmar13" target="_blank" rel="noopener" data-usd="5.59" data-owns="5229" data-wants="658">
@@ -8680,7 +8684,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71047</span>
             <span class="set-name">던전 앤 드래곤</span>
-            <span class="set-year">2024년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2024년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=coldnd05" target="_blank" rel="noopener" data-owns="6011" data-wants="492">
@@ -8823,7 +8827,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71050</span>
             <span class="set-name">스파이더맨: 어크로스 더 스파이더버스</span>
-            <span class="set-year">2025년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span>
+            <span class="set-year">2025년</span><span class="set-cnt">12개</span><span class="my-progress" data-total="12">내 컬렉션 0/12</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=colspi09" target="_blank" rel="noopener" data-usd="4.24" data-owns="3616" data-wants="312">
@@ -8966,7 +8970,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">8909</span>
             <span class="set-name">팀 GB 올림픽 시리즈 (영국 한정)</span>
-            <span class="set-year">2012년</span><span class="set-cnt">9개</span><span class="my-progress" data-total="9">내 컬렉션 0/9</span>
+            <span class="set-year">2012년</span><span class="set-cnt">9개</span><span class="my-progress" data-total="9">내 컬렉션 0/9</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=tgb009" target="_blank" rel="noopener" data-usd="11.86" data-owns="2588" data-wants="1456">
@@ -9076,7 +9080,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71014</span>
             <span class="set-name">DFB 시리즈 (독일축구협회, 유럽 한정)</span>
-            <span class="set-year">2016년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span>
+            <span class="set-year">2016년</span><span class="set-cnt">16개</span><span class="my-progress" data-total="16">내 컬렉션 0/16</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=dfb001" target="_blank" rel="noopener" data-usd="10.87" data-owns="1434" data-wants="579">
@@ -9267,7 +9271,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71361</span>
             <span class="set-name">캐릭터팩 시리즈 1</span>
-            <span class="set-year">2020년</span><span class="set-cnt">10개</span><span class="my-progress" data-total="10">내 컬렉션 0/10</span>
+            <span class="set-year">2020년</span><span class="set-cnt">10개</span><span class="my-progress" data-total="10">내 컬렉션 0/10</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=mar0025" target="_blank" rel="noopener" data-owns="2495" data-wants="549">
@@ -9388,7 +9392,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71386</span>
             <span class="set-name">캐릭터팩 시리즈 2</span>
-            <span class="set-year">2021년</span><span class="set-cnt">10개</span><span class="my-progress" data-total="10">내 컬렉션 0/10</span>
+            <span class="set-year">2021년</span><span class="set-cnt">10개</span><span class="my-progress" data-total="10">내 컬렉션 0/10</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=mar0050" target="_blank" rel="noopener" data-owns="1858" data-wants="439">
@@ -9509,7 +9513,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71394</span>
             <span class="set-name">캐릭터팩 시리즈 3</span>
-            <span class="set-year">2021년</span><span class="set-cnt">10개</span><span class="my-progress" data-total="10">내 컬렉션 0/10</span>
+            <span class="set-year">2021년</span><span class="set-cnt">10개</span><span class="my-progress" data-total="10">내 컬렉션 0/10</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=mar0066" target="_blank" rel="noopener" data-owns="1523" data-wants="451">
@@ -9630,7 +9634,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71402</span>
             <span class="set-name">캐릭터팩 시리즈 4</span>
-            <span class="set-year">2022년</span><span class="set-cnt">10개</span><span class="my-progress" data-total="10">내 컬렉션 0/10</span>
+            <span class="set-year">2022년</span><span class="set-cnt">10개</span><span class="my-progress" data-total="10">내 컬렉션 0/10</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=mar0110" target="_blank" rel="noopener" data-owns="1069" data-wants="469">
@@ -9751,7 +9755,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71410</span>
             <span class="set-name">캐릭터팩 시리즈 5</span>
-            <span class="set-year">2022년</span><span class="set-cnt">8개</span><span class="my-progress" data-total="8">내 컬렉션 0/8</span>
+            <span class="set-year">2022년</span><span class="set-cnt">8개</span><span class="my-progress" data-total="8">내 컬렉션 0/8</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=mar0133" target="_blank" rel="noopener" data-owns="999" data-wants="371">
@@ -9850,7 +9854,7 @@ footer{text-align:center;color:var(--ink-mute);font-size:13px;margin-top:50px;pa
           <div class="set-titles">
             <span class="set-code">71413</span>
             <span class="set-name">캐릭터팩 시리즈 6</span>
-            <span class="set-year">2023년</span><span class="set-cnt">8개</span><span class="my-progress" data-total="8">내 컬렉션 0/8</span>
+            <span class="set-year">2023년</span><span class="set-cnt">8개</span><span class="my-progress" data-total="8">내 컬렉션 0/8</span><button type="button" class="set-bulk-toggle">전체 담기</button>
           </div>
         </summary>
         <div class="grid"><a class="card" href="https://www.bricklink.com/v2/catalog/catalogitem.page?M=mar0155" target="_blank" rel="noopener" data-owns="1130" data-wants="435">
@@ -10223,6 +10227,12 @@ function refreshProgress(){
       prog.textContent = '내 컬렉션 ' + cnt + '/' + total;
       prog.classList.toggle('complete', total > 0 && cnt === total);
     }
+    const bulkBtn = block.querySelector('.set-bulk-toggle');
+    if(bulkBtn){
+      const allDone = total > 0 && cnt === total;
+      bulkBtn.textContent = allDone ? '전체 해제' : '전체 담기';
+      bulkBtn.classList.toggle('all-done', allDone);
+    }
   });
   const allCards = document.querySelectorAll('.card');
   const totalCnt = allCards.length;
@@ -10245,6 +10255,27 @@ document.querySelectorAll('.own-toggle').forEach(btn=>{
     if(ownedSet.has(code)) ownedSet.delete(code); else ownedSet.add(code);
     saveOwned(ownedSet);
     refreshCardOwnState(card);
+    refreshProgress();
+    applyFilters();
+    updateCount();
+  });
+});
+
+document.querySelectorAll('.set-bulk-toggle').forEach(btn=>{
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    const block = btn.closest('.set-block');
+    if(!block) return;
+    const cards = Array.from(block.querySelectorAll('.card'));
+    const allDone = cards.length > 0 && cards.every(c=>c.classList.contains('is-owned'));
+    cards.forEach(card=>{
+      const code = codeOf(card);
+      if(!code) return;
+      if(allDone) ownedSet.delete(code); else ownedSet.add(code);
+      refreshCardOwnState(card);
+    });
+    saveOwned(ownedSet);
     refreshProgress();
     applyFilters();
     updateCount();
