@@ -845,7 +845,7 @@ html:has(dialog[open]){overflow:hidden}
 @media(max-width:900px){.topline .asof{position:absolute;top:12px;right:0;font-size:11.5px;display:block}}
 </style>
 <style>body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}img{-webkit-user-drag:none;user-drag:none}@media print{body *{display:none!important}body::after{content:"이 도감은 인쇄할 수 없어요. 공식 주소에서 봐 주세요.";display:block;padding:40px;font:16px sans-serif;color:#000}}</style>
-</head>
+<style>.hub-back{flex:none;display:inline-flex;align-items:center;gap:6px;margin-right:14px;padding:7px 14px 7px 12px;border-radius:999px;border:1.5px solid rgba(255,201,40,.7);background:rgba(8,18,46,.7);color:#ffd95a;font-size:14px;line-height:1.4;text-decoration:none;white-space:nowrap}.hub-back:hover{background:#ffc928;color:#0b2f78}.topline .crumb{white-space:nowrap}@media(max-width:860px){.topline .crumb{flex-basis:100%}.hub-back{margin:0}}@media(max-width:640px){.hub-back{padding:5px 10px 5px 8px;font-size:12.5px}}</style><meta property="og:url" content="https://lego-minifig1.github.io/lego-minifig/space.html"><meta property="og:image" content="https://lego-minifig1.github.io/lego-minifig/space-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://lego-minifig1.github.io/lego-minifig/space-og.jpg"></head>
 <body>
 <canvas id="sky" aria-hidden="true"></canvas>
 <div class="app">
@@ -865,7 +865,7 @@ html:has(dialog[open]){overflow:hidden}
   </aside>
 
   <div class="viewport">
-    <div class="topline">
+    <div class="topline"><a class="hub-back" href="index.html" aria-label="레고 미니피규어 도감 모음으로 돌아가기"><span aria-hidden="true">←</span> 도감 모음</a>
       <div class="crumb"><span class="en" id="crumbNo">STATION 01</span><b id="crumbName">관제실</b></div>
       <label class="qq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="qq" type="search" placeholder="우주인 이름·코드로 바로 찾기" aria-label="빠른 검색"></label>
       <span class="asof" id="asof" title="시세는 브릭이코노미·브릭링크의 신품/낱개 기준 참고값이에요"></span>
