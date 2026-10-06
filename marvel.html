@@ -3,7 +3,109 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-w9nLG+3ZIJPptBg52O/whU8GB5Wwp9lZO/2q1DVhEHs=' 'sha256-Vnx3u3I2ajvdaudafQ27NSJcbtaEiYiu9Uxz/JV9+hE=' 'sha256-dxHj6RU9NeW46W4rnebUuR2HdW4sG+3qs8hXrajiScw='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src data: https://img.bricklink.com https://images.brickset.com; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'"><script>(function(){var T='marvel-lego-minifig-dogam-kr-2026',D='marvel-lego-minifig-dogam-kr-2026-day-',F=window.fetch;if(!F)return;function seen(k){try{if(localStorage.getItem('uv:'+k))return true;localStorage.setItem('uv:'+k,'1')}catch(e){}return false}window.fetch=function(u,o){try{var s=typeof u=='string'?u:(u&&u.url)||'',m=s.match(/\/api\/v1\/hit\/([^\/?#]+)/);if(m){var k=decodeURIComponent(m[1]);if((k===T||(k.indexOf(D)===0&&/^\d{8}$/.test(k.slice(D.length))))&&seen(k)){u=s.replace('/api/v1/hit/','/api/v1/get/')}}}catch(e){}return arguments.length>1?F.call(window,u,o):F.call(window,u)}})();</script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-7UaeBE4g+MxpLYvLCqJrNIVLVRvWJ7O9BGfPigYpq5I=' 'sha256-Vnx3u3I2ajvdaudafQ27NSJcbtaEiYiu9Uxz/JV9+hE=' 'sha256-dxHj6RU9NeW46W4rnebUuR2HdW4sG+3qs8hXrajiScw='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src data: https://img.bricklink.com https://images.brickset.com; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'"><style data-vc2>#viewCounter:not([data-vc2]){display:none!important}</style><script>/* ─────────────────────────────────────────────────────────────
+   방문자 카운터 (섞는 방식)  ·  만든이 : 꾸삐바보 마가렛트
+   · 오늘 방문자 : 같은 기기는 하루 1번만 (한국 시간 자정 기준, 날짜별 키)
+   · 누적 조회   : 페이지에 들어올 때마다 1씩 (새로고침 포함)
+   · 서비스      : countapi.mileshilliard.com  (키 이름은 예전 그대로)
+   · 둘은 따로 기록 → 한쪽이 실패하면 다음 접속 때 그쪽만 다시 셈
+   · 응답 8초 대기, 실패하면 1번 재시도, 그래도 실패하면 그 칸만 숨김
+   이 파일을 고친 뒤 apply_counter.py 로 각 도감에 다시 넣으세요.
+   ───────────────────────────────────────────────────────────── */
+(function(){
+  var C = {"total": "marvel-lego-minifig-dogam-kr-2026", "dayPrefix": "marvel-lego-minifig-dogam-kr-2026-day-", "box": "#viewCounter", "html": "<span class=\"vc-today\" data-p=\"t\">🟢 오늘 방문자 <b data-v></b>명</span><span class=\"vc-sep\" data-p=\"s\">·</span><span data-p=\"a\">누적 조회 <b data-v></b>회</span>", "mode": "page"};   // {total: 누적 키, dayPrefix: 오늘 키 앞부분, box: 옛 표시 자리, html: 새 표시 모양, mode}
+  var API = "https://countapi.mileshilliard.com/api/v1/";
+  var nativeFetch = window.fetch && window.fetch.bind(window);
+  if (!nativeFetch) return;
+
+  /* 도감에 원래 들어 있던 옛 카운터가 같은 키를 또 세지 않도록 가로챔 (네트워크 안 씀) */
+  function isOurKey(k){
+    return k === C.total || (k.indexOf(C.dayPrefix) === 0 && /^\d{8}$/.test(k.slice(C.dayPrefix.length)));
+  }
+  window.fetch = function(u, o){
+    try{
+      var s = typeof u === "string" ? u : (u && u.url) || "";
+      var m = s.match(/countapi\.mileshilliard\.com\/api\/v1\/(?:hit|get)\/([^\/?#]+)/);
+      if (m && isOurKey(decodeURIComponent(m[1])) && !(o && o.__vc2))
+        return Promise.resolve(new Response('{"value":0}', { status: 200, headers: { "Content-Type": "application/json" } }));
+    }catch(e){}
+    return arguments.length > 1 ? nativeFetch(u, o) : nativeFetch(u);
+  };
+
+  function kstDay(){ return new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10).replace(/-/g, ""); }
+  var ls = {
+    get: function(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+    set: function(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+  };
+
+  /* 한 번 요청: 8초 넘으면 실패 */
+  function once(action, key){
+    var ac = typeof AbortController === "function" ? new AbortController() : null;
+    var t = setTimeout(function(){ if (ac) ac.abort(); }, 8000);
+    return nativeFetch(API + action + "/" + encodeURIComponent(key), { cache: "no-store", signal: ac ? ac.signal : undefined, __vc2: 1 })
+      .then(function(r){ if (!r.ok) throw new Error("http " + r.status); return r.json(); })
+      .then(function(j){ if (typeof j.value !== "number") throw new Error("bad"); return j.value; })
+      .finally(function(){ clearTimeout(t); });
+  }
+  /* 실패하면 1번 재시도 */
+  function ask(action, key){ return once(action, key).catch(function(){ return once(action, key); }); }
+
+  /* 오늘 방문자: 오늘 날짜 키를 이 기기에서 아직 못 셌으면 hit, 이미 셌으면 get */
+  function countToday(){
+    var key = C.dayPrefix + kstDay(), flag = "vc2:day:" + key;
+    if (ls.get(flag)) return ask("get", key);
+    return ask("hit", key).then(function(v){ ls.set(flag, "1"); return v; });
+  }
+  /* 누적 조회: 매번 hit. 지난번에 실패해서 못 센 만큼(최대 3번)도 이어서 채움 */
+  function countTotal(){
+    var pk = "vc2:pend:" + C.total, pend = Math.min(3, parseInt(ls.get(pk) || "0", 10) || 0);
+    return ask("hit", C.total).then(function(v){
+      var p = Promise.resolve(v);
+      for (var i = 0; i < pend; i++) p = p.then(function(last){
+        return once("hit", C.total).then(function(nv){ pend--; return nv; }, function(){ return last; });
+      });
+      return p.then(function(last){ ls.set(pk, String(Math.max(0, pend))); return last; });
+    }, function(e){ ls.set(pk, String(Math.min(3, pend + 1))); throw e; });
+  }
+
+  function fmt(n){ return Number(n).toLocaleString("ko-KR"); }
+
+  function start(){
+    if (!/^https?:$/.test(location.protocol) || location.hostname !== "lego-minifig1.github.io") return;   // 공식 주소에서만 셈
+    var today = countToday(), total = countTotal();
+
+    /* 도감: 옛 표시는 숨기고, 같은 자리·같은 모양으로 새 문구를 넣음 */
+    var old = document.querySelector(C.box);
+    var el = document.createElement(old ? old.tagName : "p");
+    if (old && old.className) el.className = old.className;
+    el.setAttribute("data-vc2", "");
+    el.setAttribute("aria-live", "polite");
+    el.style.display = "none";
+    el.innerHTML = C.html || '<span data-p="t">오늘 방문자 <b data-v></b>명</span><span data-p="s"> · </span><span data-p="a">누적 조회 <b data-v></b>회</span>';
+    if (old && old.parentNode) old.parentNode.insertBefore(el, old);
+    else { var f = document.querySelector("footer") || document.body; f.appendChild(el); }
+    var parts = { t: el.querySelector('[data-p="t"]'), a: el.querySelector('[data-p="a"]'), s: el.querySelector('[data-p="s"]') };
+    function put(part, v){ var b = part.querySelector("[data-v]") || part.querySelector("b"); b.textContent = fmt(v) + (b.getAttribute("data-u") || ""); }
+    var ok = { t: null, a: null };
+    function paint(){
+      parts.t.style.display = ok.t === false ? "none" : "";
+      parts.a.style.display = ok.a === false ? "none" : "";
+      if (parts.s) parts.s.style.display = ok.t && ok.a ? "" : "none";
+      el.style.display = ok.t || ok.a ? "" : "none";
+    }
+    today.then(function(v){ put(parts.t, v); ok.t = true; paint(); },
+               function(){ ok.t = false; paint(); });
+    total.then(function(v){ put(parts.a, v); ok.a = true; paint(); },
+               function(){ ok.a = false; paint(); });
+  }
+  if (C.mode === "hub"){
+    if (location.hostname === "lego-minifig1.github.io") window.__vc2 = { today: countToday, total: countTotal };
+    return;
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
+})();
+</script>
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>마블 레고 미니피규어 도감</title>
