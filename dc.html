@@ -1,5 +1,5 @@
 <!DOCTYPE html><!-- 꾸삐바보 마가렛트 20261006 · b026494b9a92d1c4 · 원본 https://lego-minifig1.github.io/lego-minifig/dc.html · 무단 복제·재배포 금지 · 제목 글꼴 수성혜정체(대구 수성구, 공공누리 제1유형) -->
-<html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-l+S1r9Fy/nJObaho95eRfQP8AngfnNiQ7fkV/mqHzM8=' 'sha256-S+aXx02KywAk1jUC34YkYyZxvzwW11Lgxns79RO7sxU='; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src https://cdn.rebrickable.com https://img.bricklink.com data:; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'"><style data-vc2>#visits:not([data-vc2]){display:none!important}</style><script>/* ─────────────────────────────────────────────────────────────
+<html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-ggj0PvnBy+u2hlUTp9F4PTzCgtziQRxFEj1l14W59Ag=' 'sha256-S+aXx02KywAk1jUC34YkYyZxvzwW11Lgxns79RO7sxU='; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src https://cdn.rebrickable.com https://img.bricklink.com data:; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'"><style data-vc2>#visits:not([data-vc2]){display:none!important}</style><script>/* ─────────────────────────────────────────────────────────────
    방문자 카운터 (섞는 방식)  ·  만든이 : 꾸삐바보 마가렛트
    · 오늘 방문자 : 같은 기기는 하루 1번만 (한국 시간 자정 기준, 날짜별 키)
    · 누적 조회   : 페이지에 들어올 때마다 1씩 (새로고침 포함)
@@ -66,7 +66,36 @@
 
   function fmt(n){ return Number(n).toLocaleString("ko-KR"); }
 
+  /* 보조 잠금: 개발자 도구·소스 보기·저장 단축키를 모든 도감에서 똑같이 막음 */
+  document.addEventListener("keydown", function(e){
+    var k = (e.key || "").toLowerCase(), c = e.ctrlKey || e.metaKey;
+    if (k === "f12" || e.keyCode === 123 ||
+        (c && (e.shiftKey || e.altKey) && (k === "i" || k === "j" || k === "c" || k === "k")) ||
+        (c && !e.shiftKey && !e.altKey && (k === "u" || k === "s" || k === "p"))){
+      e.preventDefault(); e.stopPropagation(); return false;
+    }
+  }, true);
+
+  /* 저장한 파일로 열었을 때 나오는 안내문: 주소에 빠진 "/lego-minifig/" 를 채워 넣음 */
+  if (location.protocol === "file:" && window.MutationObserver){
+    var fixAddr = function(){
+      var w = document.createTreeWalker(document.documentElement, 4), n;
+      while ((n = w.nextNode())){
+        var t = n.nodeValue.replace(/lego-minifig1\.github\.io\/(?!lego-minifig\/)([\w-]+\.html)/g, "lego-minifig1.github.io/lego-minifig/$1");
+        if (t !== n.nodeValue) n.nodeValue = t;
+      }
+    };
+    var mo = new MutationObserver(fixAddr);
+    mo.observe(document, { childList: true, subtree: true, characterData: true });
+    setTimeout(function(){ fixAddr(); mo.disconnect(); }, 5000);
+  }
+
+  /* 다른 사이트 안에 끼워진 상태(iframe)면 세지도, 보여주지도 않음 */
+  var framed = true;
+  try { framed = window.top !== window.self; } catch (e) {}
+
   function start(){
+    if (framed) return;
     if (!/^https?:$/.test(location.protocol) || location.hostname !== "lego-minifig1.github.io") return;   // 공식 주소에서만 셈
     var today = countToday(), total = countTotal();
 
@@ -95,7 +124,7 @@
                function(){ ok.a = false; paint(); });
   }
   if (C.mode === "hub"){
-    if (location.hostname === "lego-minifig1.github.io") window.__vc2 = { today: countToday, total: countTotal };
+    if (!framed && location.hostname === "lego-minifig1.github.io") window.__vc2 = { today: countToday, total: countTotal };
     return;
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
