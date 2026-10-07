@@ -7,7 +7,7 @@
 # 대문에서 닫아 둘 도감 (쉼표로 구분, 하나도 안 닫으려면 "닫기: 없음")
 #   쓸 수 있는 이름: sw  dc  marvel  minifig  ring  Harry  ninjago  adventure  space  jurassic  castle
 #   한글로 써도 돼요: 스타워즈  DC  마블  미니피규어  반지의 제왕  해리포터  닌자고  모험  우주인  쥬라기  캐슬
-닫기: jurassic, castle
+닫기: jurassic
 
 # 상자 왼쪽 위 NEW 띠 (이름=문구, 쉼표로 구분, 하나도 안 달려면 "새로: 없음")
 #   닫힌 도감에는 띠가 보이지 않아요
