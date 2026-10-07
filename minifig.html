@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  레고 미니피규어 도감 · 제작 꾸삐바보 마가렛트
+  레고 미니피규어 도감 · 제작 마가렛트
   원본: https://lego-minifig1.github.io/lego-minifig/minifig.html
   build minifig-20261007-b11b7471ff44 (2026-10-07)
   data-sig 4736bc8e27086d8af35e4549f752f328391e9ffbdd1f96905c712603e85c8c5d
@@ -10,15 +10,65 @@
 <html lang="ko" data-mobile-opt="1">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-DXZssFF3rG9Dt/yJE2Cq7iLwNtzj532hvgXJtxsa2D8=' 'sha256-qyK4Y7+uBScxRIJIDr7CpuXLjplmD1VomVrjxRt20rk=' 'sha256-L0fg5Od1eJBEQerAA/gPfNlgQQsu9bEC/0ttIjP+UWE=' 'sha256-vC6BM9wuZFSvSEFVTebhfHRpQzOMAze8OG2o/j9lmNY='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src https://img.bricklink.com data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-KTlnt3PcsUJSCliD4GTMlBgZFYUXmIk7Ml+GlJRoguE=' 'sha256-VkU9kwY0jKyoGBDbk0jaH67gyaTNNrWFbhVqbu5g6A8=' 'sha256-qyK4Y7+uBScxRIJIDr7CpuXLjplmD1VomVrjxRt20rk=' 'sha256-L0fg5Od1eJBEQerAA/gPfNlgQQsu9bEC/0ttIjP+UWE=' 'sha256-vC6BM9wuZFSvSEFVTebhfHRpQzOMAze8OG2o/j9lmNY='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src https://img.bricklink.com data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'"><script>/* ─────────────────────────────────────────────
+   표기 변경 · 마가렛트 제작
+   · 도감 코드가 화면에 그리는 "꾸삐바보 마가렛트" 표기를 "마가렛트 제작"으로 바꿈
+   · 도감 본 코드는 손대지 않고, 화면에 글자가 나타날 때만 바꿈
+   ───────────────────────────────────────────── */
+(function(){
+  var OLD = "꾸삐바보 마가렛트";
+  function swap(t){
+    return t.replace(/만든이\s*:?\s*꾸삐바보 마가렛트/g, "마가렛트 제작")
+            .replace(/(©\s*(?:\d{4}\s*)?)꾸삐바보 마가렛트/g, "$1마가렛트")
+            .replace(/제작\s*:?\s*꾸삐바보 마가렛트/g, "마가렛트 제작")
+            .replace(/꾸삐바보 마가렛트/g, "마가렛트 제작");
+  }
+  function fixNode(n){
+    if (n.nodeType === 3){
+      if (n.nodeValue.indexOf(OLD) >= 0) n.nodeValue = swap(n.nodeValue);
+      return;
+    }
+    if (n.nodeType !== 1 || n.tagName === "SCRIPT" || n.tagName === "STYLE") return;
+    if (n.title && n.title.indexOf(OLD) >= 0) n.title = swap(n.title);
+    var w = document.createTreeWalker(n, 4), t;
+    while ((t = w.nextNode())){
+      var p = t.parentNode;
+      if (p && (p.tagName === "SCRIPT" || p.tagName === "STYLE")) continue;
+      if (t.nodeValue.indexOf(OLD) >= 0) t.nodeValue = swap(t.nodeValue);
+    }
+  }
+  /* 개발자 콘솔에 찍히는 서명도 같은 표기로 */
+  ["log", "info", "warn"].forEach(function(k){
+    var f = console[k];
+    if (typeof f !== "function") return;
+    console[k] = function(){
+      var a = Array.prototype.slice.call(arguments);
+      for (var i = 0; i < a.length; i++) if (typeof a[i] === "string" && a[i].indexOf(OLD) >= 0) a[i] = swap(a[i]);
+      return f.apply(console, a);
+    };
+  });
+  if (document.title.indexOf(OLD) >= 0) document.title = swap(document.title);
+  if (window.MutationObserver){
+    new MutationObserver(function(list){
+      for (var i = 0; i < list.length; i++){
+        var m = list[i];
+        if (m.type === "characterData") fixNode(m.target);
+        else for (var j = 0; j < m.addedNodes.length; j++) fixNode(m.addedNodes[j]);
+      }
+    }).observe(document, { childList: true, subtree: true, characterData: true });
+  }
+  function all(){ if (document.body) fixNode(document.body); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", all); else all();
+})();
+</script>
 <style>html[data-locked] body{visibility:hidden}.lock-note{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;font-family:Pretendard,sans-serif;background:#f6f1e4;color:#2a2117}.lock-box{max-width:460px;text-align:center;background:#fffdf6;border:1.5px solid #ddd1ac;border-radius:14px;padding:32px 26px;line-height:1.7}.lock-ico{font-size:34px;margin-bottom:8px}.lock-box b{color:#c0392b;word-break:break-all}.lock-box a{display:inline-block;margin-top:14px;background:#c0392b;color:#fff;text-decoration:none;font-weight:700;padding:10px 18px;border-radius:9px}img{-webkit-user-drag:none;-webkit-touch-callout:none}</style>
-<script data-guard="1">(function(){var H="lego-minifig1.github.io",U="https://lego-minifig1.github.io/lego-minifig/minifig.html",d=document.documentElement;function lock(msg){window.__lk=1;d.setAttribute("data-locked","1");document.addEventListener("DOMContentLoaded",function(){document.title="레고 미니피규어 도감";document.body.innerHTML='<div class="lock-note"><div class="lock-box"><div class="lock-ico">🔒</div>'+msg+'<a href="'+U+'">공식 주소로 이동하기 →</a></div></div>';d.removeAttribute("data-locked")})}var M1='<p>이 도감은 <b>lego-minifig1.github.io/lego-minifig/minifig.html</b> 에서만 볼 수 있습니다.</p>';if(location.protocol==="file:"){lock(M1);return}if(location.hostname!==H){lock(M1);if(/^https?:$/.test(location.protocol))location.replace(U);return}if(self!==top){lock(M1);try{top.location.replace(location.href)}catch(e){}return}document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("dragstart",function(e){if(e.target&&e.target.tagName==="IMG")e.preventDefault()});document.addEventListener("keydown",function(e){var k=(e.key||"").toLowerCase(),c=e.ctrlKey||e.metaKey,code=(e.code||"").replace("Key","").toLowerCase(),b=k==="f12"||(c&&["s","u","p"].indexOf(k)>=0)||(e.ctrlKey&&e.shiftKey&&["i","j","c","k"].indexOf(k)>=0)||(e.metaKey&&e.altKey&&["i","j","c","u"].indexOf(code)>=0);if(b){e.preventDefault();e.stopPropagation()}},true);try{console.log("%c레고 미니피규어 도감","font-size:18px;font-weight:bold");console.log("제작: 꾸삐바보 마가렛트 · 무단 복제·재배포 금지 · build minifig-20261007-b11b7471ff44")}catch(e){}})();</script>
+<script data-guard="1">(function(){var H="lego-minifig1.github.io",U="https://lego-minifig1.github.io/lego-minifig/minifig.html",d=document.documentElement;function lock(msg){window.__lk=1;d.setAttribute("data-locked","1");document.addEventListener("DOMContentLoaded",function(){document.title="레고 미니피규어 도감";document.body.innerHTML='<div class="lock-note"><div class="lock-box"><div class="lock-ico">🔒</div>'+msg+'<a href="'+U+'">공식 주소로 이동하기 →</a></div></div>';d.removeAttribute("data-locked")})}var M1='<p>이 도감은 <b>lego-minifig1.github.io/lego-minifig/minifig.html</b> 에서만 볼 수 있습니다.</p>';if(location.protocol==="file:"){lock(M1);return}if(location.hostname!==H){lock(M1);if(/^https?:$/.test(location.protocol))location.replace(U);return}if(self!==top){lock(M1);try{top.location.replace(location.href)}catch(e){}return}document.addEventListener("contextmenu",function(e){e.preventDefault()});document.addEventListener("dragstart",function(e){if(e.target&&e.target.tagName==="IMG")e.preventDefault()});document.addEventListener("keydown",function(e){var k=(e.key||"").toLowerCase(),c=e.ctrlKey||e.metaKey,code=(e.code||"").replace("Key","").toLowerCase(),b=k==="f12"||(c&&["s","u","p"].indexOf(k)>=0)||(e.ctrlKey&&e.shiftKey&&["i","j","c","k"].indexOf(k)>=0)||(e.metaKey&&e.altKey&&["i","j","c","u"].indexOf(code)>=0);if(b){e.preventDefault();e.stopPropagation()}},true);try{console.log("%c레고 미니피규어 도감","font-size:18px;font-weight:bold");console.log("마가렛트 제작 · 무단 복제·재배포 금지 · build minifig-20261007-b11b7471ff44")}catch(e){}})();</script>
 <script data-theme-preset="1">(function(){try{var t=localStorage.getItem('minifig_dogam_theme_v1');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
 
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://img.bricklink.com">
 <link rel="dns-prefetch" href="https://img.bricklink.com">
-<meta name="author" content="꾸삐바보 마가렛트">
+<meta name="author" content="마가렛트">
 <meta name="build" content="minifig-20261007-b11b7471ff44">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>레고 미니피규어 도감</title>

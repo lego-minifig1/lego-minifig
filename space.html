@@ -1,9 +1,59 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<!-- © 2026 꾸삐바보 마가렛트. 무단 복제·재배포 금지. LEGO는 LEGO Group의 상표이며 이 도감은 비공식 팬 사이트입니다. -->
+<!-- © 2026 마가렛트. 무단 복제·재배포 금지. LEGO는 LEGO Group의 상표이며 이 도감은 비공식 팬 사이트입니다. -->
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-zM/erp0NHb3fiKhi1Sj8PeU73pi4jS5T8R+bJGm3iVA='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src https: data: blob:; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-KTlnt3PcsUJSCliD4GTMlBgZFYUXmIk7Ml+GlJRoguE=' 'sha256-zM/erp0NHb3fiKhi1Sj8PeU73pi4jS5T8R+bJGm3iVA='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src https: data: blob:; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests"><script>/* ─────────────────────────────────────────────
+   표기 변경 · 마가렛트 제작
+   · 도감 코드가 화면에 그리는 "꾸삐바보 마가렛트" 표기를 "마가렛트 제작"으로 바꿈
+   · 도감 본 코드는 손대지 않고, 화면에 글자가 나타날 때만 바꿈
+   ───────────────────────────────────────────── */
+(function(){
+  var OLD = "꾸삐바보 마가렛트";
+  function swap(t){
+    return t.replace(/만든이\s*:?\s*꾸삐바보 마가렛트/g, "마가렛트 제작")
+            .replace(/(©\s*(?:\d{4}\s*)?)꾸삐바보 마가렛트/g, "$1마가렛트")
+            .replace(/제작\s*:?\s*꾸삐바보 마가렛트/g, "마가렛트 제작")
+            .replace(/꾸삐바보 마가렛트/g, "마가렛트 제작");
+  }
+  function fixNode(n){
+    if (n.nodeType === 3){
+      if (n.nodeValue.indexOf(OLD) >= 0) n.nodeValue = swap(n.nodeValue);
+      return;
+    }
+    if (n.nodeType !== 1 || n.tagName === "SCRIPT" || n.tagName === "STYLE") return;
+    if (n.title && n.title.indexOf(OLD) >= 0) n.title = swap(n.title);
+    var w = document.createTreeWalker(n, 4), t;
+    while ((t = w.nextNode())){
+      var p = t.parentNode;
+      if (p && (p.tagName === "SCRIPT" || p.tagName === "STYLE")) continue;
+      if (t.nodeValue.indexOf(OLD) >= 0) t.nodeValue = swap(t.nodeValue);
+    }
+  }
+  /* 개발자 콘솔에 찍히는 서명도 같은 표기로 */
+  ["log", "info", "warn"].forEach(function(k){
+    var f = console[k];
+    if (typeof f !== "function") return;
+    console[k] = function(){
+      var a = Array.prototype.slice.call(arguments);
+      for (var i = 0; i < a.length; i++) if (typeof a[i] === "string" && a[i].indexOf(OLD) >= 0) a[i] = swap(a[i]);
+      return f.apply(console, a);
+    };
+  });
+  if (document.title.indexOf(OLD) >= 0) document.title = swap(document.title);
+  if (window.MutationObserver){
+    new MutationObserver(function(list){
+      for (var i = 0; i < list.length; i++){
+        var m = list[i];
+        if (m.type === "characterData") fixNode(m.target);
+        else for (var j = 0; j < m.addedNodes.length; j++) fixNode(m.addedNodes[j]);
+      }
+    }).observe(document, { childList: true, subtree: true, characterData: true });
+  }
+  function all(){ if (document.body) fixNode(document.body); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", all); else all();
+})();
+</script>
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>레고 우주인 미니피규어 도감</title>
