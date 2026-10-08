@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src https://img.bricklink.com https://images.brickset.com data: blob:; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; script-src 'sha256-6qi7tmakCQNiJlr4JXN1U9zx3kbl1rNf14YhmtDmhJw=' 'sha256-MwUV24ypumqyQ6kZ960WTvL2GKfqkt5lIoaR3lMmfag='; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'"><style data-vc2>#visits:not([data-vc2]){display:none!important}</style><script>/* ─────────────────────────────────────────────────────────────
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src https://img.bricklink.com https://images.brickset.com data: blob:; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; script-src 'sha256-kDmPhw86FymiXJdRwMAnS17zqXZwIz26pqXnoSp85+g=' 'sha256-MwUV24ypumqyQ6kZ960WTvL2GKfqkt5lIoaR3lMmfag='; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'"><style data-vc2>#visits:not([data-vc2]){display:none!important}</style><script>/* ─────────────────────────────────────────────────────────────
    방문자 카운터 (섞는 방식)  ·  마가렛트 제작
    · 오늘 방문자 : 같은 기기는 하루 1번만 (한국 시간 자정 기준, 날짜별 키)
    · 누적 조회   : 페이지에 들어올 때마다 1씩 (새로고침 포함)
@@ -12,7 +12,7 @@
    이 파일을 고친 뒤 apply_counter.py 로 각 도감에 다시 넣으세요.
    ───────────────────────────────────────────────────────────── */
 (function(){
-  var C = {"total": "lego-minifig1.github.io/njfig-ninjago", "dayPrefix": "lego-minifig1.github.io/njfig-ninjago-", "box": "#visits", "html": "<span class=\"v\" data-p=\"t\"><small>오늘 방문자</small><b data-v data-u=\"명\"></b></span><span class=\"v\" data-p=\"a\"><small>누적 조회</small><b data-v data-u=\"회\"></b></span>", "mode": "page"};   // {total: 누적 키, dayPrefix: 오늘 키 앞부분, box: 옛 표시 자리, html: 새 표시 모양, mode}
+  var C = {"total": "lego-minifig1-ninjago-total", "dayPrefix": "lego-minifig1-ninjago-d", "box": "#visits", "html": "<span class=\"v\" data-p=\"t\"><small>오늘 방문자</small><b data-v data-u=\"명\"></b></span><span class=\"v\" data-p=\"a\"><small>누적 조회</small><b data-v data-u=\"회\"></b></span>", "mode": "page"};   // {total: 누적 키, dayPrefix: 오늘 키 앞부분, box: 옛 표시 자리, html: 새 표시 모양, mode}
   var API = "https://countapi.mileshilliard.com/api/v1/";
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (!nativeFetch) return;
@@ -24,7 +24,7 @@
   window.fetch = function(u, o){
     try{
       var s = typeof u === "string" ? u : (u && u.url) || "";
-      var m = s.match(/countapi\.mileshilliard\.com\/api\/v1\/(?:hit|get)\/([^?#]+)/);
+      var m = s.match(/countapi\.mileshilliard\.com\/api\/v1\/(?:hit|get)\/([^\/?#]+)/);
       if (m && isOurKey(decodeURIComponent(m[1])) && !(o && o.__vc2))
         return Promise.resolve(new Response('{"value":0}', { status: 200, headers: { "Content-Type": "application/json" } }));
     }catch(e){}
@@ -41,7 +41,7 @@
   function once(action, key){
     var ac = typeof AbortController === "function" ? new AbortController() : null;
     var t = setTimeout(function(){ if (ac) ac.abort(); }, 8000);
-    return nativeFetch(API + action + "/" + key.split("/").map(encodeURIComponent).join("/"), { cache: "no-store", signal: ac ? ac.signal : undefined, __vc2: 1 })
+    return nativeFetch(API + action + "/" + encodeURIComponent(key), { cache: "no-store", signal: ac ? ac.signal : undefined, __vc2: 1 })
       .then(function(r){ if (!r.ok) throw new Error("http " + r.status); return r.json(); })
       .then(function(j){ if (typeof j.value !== "number") throw new Error("bad"); return j.value; })
       .finally(function(){ clearTimeout(t); });
