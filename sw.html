@@ -1,20 +1,10 @@
-<!DOCTYPE html><!-- 마가렛트 20261006 · +5E6iO9J19KkD2Ft -->
-<html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-eF+apFMSD3qMp+vPDKlOsHLV+ihhcbjVWoa6ChIpc7M=' 'sha256-j7q9CNGFNpLDl4ktmdv7XeCadQfOGDO553diKgh5Gkc='; style-src 'unsafe-inline'; font-src https://cdn.jsdelivr.net; img-src https://cdn.rebrickable.com https://img.bricklink.com https://www.brickeconomy.com data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'"><style data-vc2>#visits:not([data-vc2]){display:none!important}</style><script>/* ─────────────────────────────────────────────────────────────
-   방문자 카운터 (섞는 방식)  ·  마가렛트 제작
-   · 오늘 방문자 : 같은 기기는 하루 1번만 (한국 시간 자정 기준, 날짜별 키)
-   · 누적 조회   : 페이지에 들어올 때마다 1씩 (새로고침 포함)
-   · 서비스      : countapi.mileshilliard.com  (키 이름은 예전 그대로)
-   · 둘은 따로 기록 → 한쪽이 실패하면 다음 접속 때 그쪽만 다시 셈
-   · 응답 8초 대기, 실패하면 1번 재시도, 그래도 실패하면 그 칸만 숨김
-   이 파일을 고친 뒤 apply_counter.py 로 각 도감에 다시 넣으세요.
-   ───────────────────────────────────────────────────────────── */
-(function(){
-  var C = {"total": "starwars-minifig-dogam-kr", "dayPrefix": "starwars-minifig-dogam-kr-", "box": "#visits", "html": "<span data-p=\"t\">오늘 방문자 <b data-v></b>명</span><span data-p=\"s\">·</span><span data-p=\"a\">누적 조회 <b data-v></b>회</span>", "mode": "page"};   // {total: 누적 키, dayPrefix: 오늘 키 앞부분, box: 옛 표시 자리, html: 새 표시 모양, mode}
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-3ulfNfdnbtzE0U4MudbKeZv0iyFBVG45zsTnZSqE60E=' 'sha256-j7q9CNGFNpLDl4ktmdv7XeCadQfOGDO553diKgh5Gkc='; style-src 'unsafe-inline'; font-src https://cdn.jsdelivr.net; img-src https://cdn.rebrickable.com https://img.bricklink.com https://www.brickeconomy.com data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'"><style data-vc2>#visits:not([data-vc2]){display:none!important}</style><script>(function(){
+  var C = {"total": "starwars-minifig-dogam-kr", "dayPrefix": "starwars-minifig-dogam-kr-", "box": "#visits", "html": "<span data-p=\"t\">오늘 방문자 <b data-v></b>명</span><span data-p=\"s\">·</span><span data-p=\"a\">누적 조회 <b data-v></b>회</span>", "mode": "page"};   
   var API = "https://countapi.mileshilliard.com/api/v1/";
   var nativeFetch = window.fetch && window.fetch.bind(window);
   if (!nativeFetch) return;
 
-  /* 도감에 원래 들어 있던 옛 카운터가 같은 키를 또 세지 않도록 가로챔 (네트워크 안 씀) */
   function isOurKey(k){
     return k === C.total || (k.indexOf(C.dayPrefix) === 0 && /^\d{8}$/.test(k.slice(C.dayPrefix.length)));
   }
@@ -34,7 +24,6 @@
     set: function(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
   };
 
-  /* 한 번 요청: 8초 넘으면 실패 */
   function once(action, key){
     var ac = typeof AbortController === "function" ? new AbortController() : null;
     var t = setTimeout(function(){ if (ac) ac.abort(); }, 8000);
@@ -43,16 +32,15 @@
       .then(function(j){ if (typeof j.value !== "number") throw new Error("bad"); return j.value; })
       .finally(function(){ clearTimeout(t); });
   }
-  /* 실패하면 1번 재시도 */
+   
   function ask(action, key){ return once(action, key).catch(function(){ return once(action, key); }); }
 
-  /* 오늘 방문자: 오늘 날짜 키를 이 기기에서 아직 못 셌으면 hit, 이미 셌으면 get */
   function countToday(){
     var key = C.dayPrefix + kstDay(), flag = "vc2:day:" + key;
     if (ls.get(flag)) return ask("get", key);
     return ask("hit", key).then(function(v){ ls.set(flag, "1"); return v; });
   }
-  /* 누적 조회: 매번 hit. 지난번에 실패해서 못 센 만큼(최대 3번)도 이어서 채움 */
+   
   function countTotal(){
     var pk = "vc2:pend:" + C.total, pend = Math.min(3, parseInt(ls.get(pk) || "0", 10) || 0);
     return ask("hit", C.total).then(function(v){
@@ -66,7 +54,6 @@
 
   function fmt(n){ return Number(n).toLocaleString("ko-KR"); }
 
-  /* 보조 잠금: 개발자 도구·소스 보기·저장 단축키를 모든 도감에서 똑같이 막음 */
   document.addEventListener("keydown", function(e){
     var k = (e.key || "").toLowerCase(), c = e.ctrlKey || e.metaKey;
     if (k === "f12" || e.keyCode === 123 ||
@@ -76,7 +63,6 @@
     }
   }, true);
 
-  /* 저장한 파일로 열었을 때 나오는 안내문: 주소에 빠진 "/lego-minifig/" 를 채워 넣음 */
   if (location.protocol === "file:" && window.MutationObserver){
     var fixAddr = function(){
       var w = document.createTreeWalker(document.documentElement, 4), n;
@@ -90,16 +76,14 @@
     setTimeout(function(){ fixAddr(); mo.disconnect(); }, 5000);
   }
 
-  /* 다른 사이트 안에 끼워진 상태(iframe)면 세지도, 보여주지도 않음 */
   var framed = true;
   try { framed = window.top !== window.self; } catch (e) {}
 
   function start(){
     if (framed) return;
-    if (!/^https?:$/.test(location.protocol) || location.hostname !== "lego-minifig1.github.io") return;   // 공식 주소에서만 셈
+    if (!/^https?:$/.test(location.protocol) || location.hostname !== "lego-minifig1.github.io") return;   
     var today = countToday(), total = countTotal();
 
-    /* 도감: 옛 표시는 숨기고, 같은 자리·같은 모양으로 새 문구를 넣음 */
     var old = document.querySelector(C.box);
     var el = document.createElement(old ? old.tagName : "p");
     if (old && old.className) el.className = old.className;
