@@ -2,7 +2,127 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xl/LStL4gyP87uwV31yGuc4jf+5+VQ+AtjNeTMCGIuY=' 'sha256-GO3LmvMiurBEQ2AasI/Ct5bJcP1SJ32R6LLctyPB6Cw='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src data: blob: https://img.bricklink.com https://images.brickset.com; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-EWbw/ZCxMFGpjHcZ+WtORHGxWUFbZRDPhVd7BebIoc0=' 'sha256-xl/LStL4gyP87uwV31yGuc4jf+5+VQ+AtjNeTMCGIuY=' 'sha256-GO3LmvMiurBEQ2AasI/Ct5bJcP1SJ32R6LLctyPB6Cw='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src data: blob: https://img.bricklink.com https://images.brickset.com; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'"><style data-vc2>.con-foot .cnt:not([data-vc2]){display:none!important}</style><script>(function(){
+  var C = {"total": "lego-minifig1-jurassic-total", "dayPrefix": "lego-minifig1-jurassic-d", "box": ".con-foot .cnt", "html": "<span data-p=\"t\">오늘 방문자 <b data-v></b>명</span><span data-p=\"a\">누적 조회 <b data-v></b>회</span>", "mode": "page"};   
+  var API = "https://countapi.mileshilliard.com/api/v1/";
+  var nativeFetch = window.fetch && window.fetch.bind(window);
+  if (!nativeFetch) return;
+
+  function isOurKey(k){
+    return k === C.total || (k.indexOf(C.dayPrefix) === 0 && /^\d{8}$/.test(k.slice(C.dayPrefix.length)));
+  }
+  window.fetch = function(u, o){
+    try{
+      var s = typeof u === "string" ? u : (u && u.url) || "";
+      var m = s.match(/countapi\.mileshilliard\.com\/api\/v1\/(?:hit|get)\/([^\/?#]+)/);
+      if (m && isOurKey(decodeURIComponent(m[1])) && !(o && o.__vc2))
+        return Promise.resolve(new Response('{"value":0}', { status: 200, headers: { "Content-Type": "application/json" } }));
+    }catch(e){}
+    return arguments.length > 1 ? nativeFetch(u, o) : nativeFetch(u);
+  };
+
+  function kstDay(){ return new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10).replace(/-/g, ""); }
+  var ls = {
+    get: function(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+    set: function(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+  };
+
+  function once(action, key){
+    var ac = typeof AbortController === "function" ? new AbortController() : null;
+    var t = setTimeout(function(){ if (ac) ac.abort(); }, 8000);
+    return nativeFetch(API + action + "/" + encodeURIComponent(key), { cache: "no-store", signal: ac ? ac.signal : undefined, __vc2: 1 })
+      .then(function(r){ if (!r.ok) throw new Error("http " + r.status); return r.json(); })
+      .then(function(j){ if (typeof j.value !== "number") throw new Error("bad"); return j.value; })
+      .finally(function(){ clearTimeout(t); });
+  }
+   
+  function ask(action, key){ return once(action, key).catch(function(){ return once(action, key); }); }
+
+  function countToday(){
+    var key = C.dayPrefix + kstDay(), flag = "vc2:day:" + key;
+    if (ls.get(flag)) return ask("get", key);
+    return ask("hit", key).then(function(v){ ls.set(flag, "1"); return v; });
+  }
+   
+  function countTotal(){
+    var pk = "vc2:pend:" + C.total, pend = Math.min(3, parseInt(ls.get(pk) || "0", 10) || 0);
+    return ask("hit", C.total).then(function(v){
+      var p = Promise.resolve(v);
+      for (var i = 0; i < pend; i++) p = p.then(function(last){
+        return once("hit", C.total).then(function(nv){ pend--; return nv; }, function(){ return last; });
+      });
+      return p.then(function(last){ ls.set(pk, String(Math.max(0, pend))); return last; });
+    }, function(e){ ls.set(pk, String(Math.min(3, pend + 1))); throw e; });
+  }
+
+  function fmt(n){ return Number(n).toLocaleString("ko-KR"); }
+
+  document.addEventListener("keydown", function(e){
+    var k = (e.key || "").toLowerCase(), c = e.ctrlKey || e.metaKey;
+    if (k === "f12" || e.keyCode === 123 ||
+        (c && (e.shiftKey || e.altKey) && (k === "i" || k === "j" || k === "c" || k === "k")) ||
+        (c && !e.shiftKey && !e.altKey && (k === "u" || k === "s" || k === "p"))){
+      e.preventDefault(); e.stopPropagation(); return false;
+    }
+  }, true);
+
+  if (location.protocol === "file:" && window.MutationObserver){
+    var fixAddr = function(){
+      var w = document.createTreeWalker(document.documentElement, 4), n;
+      while ((n = w.nextNode())){
+        var t = n.nodeValue.replace(/lego-minifig1\.github\.io\/(?!lego-minifig\/)([\w-]+\.html)/g, "lego-minifig1.github.io/lego-minifig/$1");
+        if (t !== n.nodeValue) n.nodeValue = t;
+      }
+    };
+    var mo = new MutationObserver(fixAddr);
+    mo.observe(document, { childList: true, subtree: true, characterData: true });
+    setTimeout(function(){ fixAddr(); mo.disconnect(); }, 5000);
+  }
+
+  var framed = true;
+  try { framed = window.top !== window.self; } catch (e) {}
+
+  function start(){
+    if (framed) return;
+    if (!/^https?:$/.test(location.protocol) || location.hostname !== "lego-minifig1.github.io") return;   
+    var today = countToday(), total = countTotal();
+
+    var olds = C.box ? Array.prototype.slice.call(document.querySelectorAll(C.box)) : [];
+    if (!olds.length) olds = [null];
+    var boxes = olds.map(function(old){
+      var el = document.createElement(old ? old.tagName : "p");
+      if (old && old.className) el.className = old.className;
+      el.setAttribute("data-vc2", "");
+      el.setAttribute("aria-live", "polite");
+      el.style.display = "none";
+      el.innerHTML = C.html || '<span data-p="t">오늘 방문자 <b data-v></b>명</span><span data-p="s"> · </span><span data-p="a">누적 조회 <b data-v></b>회</span>';
+      if (old && old.parentNode) old.parentNode.insertBefore(el, old);
+      else { var f = document.querySelector("footer") || document.body; f.appendChild(el); }
+      return { el: el, t: el.querySelector('[data-p="t"]'), a: el.querySelector('[data-p="a"]'), s: el.querySelector('[data-p="s"]') };
+    });
+    function put(k, v){ boxes.forEach(function(x){ var part = x[k]; var b = part.querySelector("[data-v]") || part.querySelector("b"); b.textContent = fmt(v) + (b.getAttribute("data-u") || ""); }); }
+    var ok = { t: null, a: null };
+    function paint(){
+      boxes.forEach(function(x){
+        x.t.style.display = ok.t === false ? "none" : "";
+        x.a.style.display = ok.a === false ? "none" : "";
+        if (x.s) x.s.style.display = ok.t && ok.a ? "" : "none";
+        x.el.style.display = ok.t || ok.a ? "" : "none";
+      });
+    }
+    today.then(function(v){ put("t", v); ok.t = true; paint(); },
+               function(){ ok.t = false; paint(); });
+    total.then(function(v){ put("a", v); ok.a = true; paint(); },
+               function(){ ok.a = false; paint(); });
+  }
+  if (C.mode === "hub"){
+    if (!framed && location.hostname === "lego-minifig1.github.io") window.__vc2 = { today: countToday, total: countTotal };
+    return;
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>레고 쥬라기 미니피규어 도감</title>
@@ -38,7 +158,7 @@
     <div class="con-foot">
       <button class="btn ghost sm" id="themeBtn" aria-label="밝게/어둡게 보기 전환">밝게 보기</button>
       <div class="cnt"><span>오늘 <b id="vToday">-</b></span><span>누적 <b id="vTotal">-</b></span></div>
-      <div class="maker">마가렛트 제작</div>
+      <div class="maker">마가렛트⁠​​‌​‌​​​​‌‌​​​‌‌​​‌​‌​​‌​​‌​​​​​​‌‌​‌‌​​​‌‌​​‌​‌​‌‌​​‌‌‌​‌‌​‌‌‌‌​​‌​‌‌​‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌‌​‌‌‌​​‌‌​‌​​‌​‌‌​​‌‌​​‌‌​‌​​‌​‌‌​​‌‌‌​​‌‌​​​‌​​‌​​​​​​​‌​‌‌‌‌​​‌​​​​​​‌‌​‌​‌​​‌‌‌​‌​‌​‌‌‌​​‌​​‌‌​​​​‌​‌‌‌​​‌‌​‌‌‌​​‌‌​‌‌​‌​​‌​‌‌​​​‌‌​​‌​​​​​​​‌​‌‌‌‌​​‌​​​​​‌‌‌​‌​‌‌‌​‌​​‌‌‌‌​​​‌​​​‌‌‌​‌​‌​‌​‌‌​​​​‌​​​​​​​‌‌‌​‌​‌‌‌​‌​​​​​‌​​‌‌​‌‌‌‌‌​‌‌​‌‌​​​‌​‌​‌​‌‌‌​​​​​‌​​​​​​​‌​‌‌‌‌​​‌​​​​​​​‌‌​​‌​​​‌‌​​​​​​‌‌​​‌​​​‌‌​‌‌​​​‌​‌‌​‌​​‌‌​​​‌​​‌‌​​​​​​‌​‌‌​‌​​‌‌​​​​​​‌‌‌​​​⁠ 제작</div>
     </div>
   </aside>
 
@@ -49,7 +169,7 @@
       <span class="pill" id="asof"></span>
     </div>
 
-    <!-- 01 관제실 -->
+    
     <section class="view on" id="view-home" data-view="home">
       <header class="hero window jp">
         <canvas id="stars" aria-hidden="true"></canvas>
@@ -108,25 +228,25 @@
       </div>
     </section>
 
-    <!-- 02 섬 지도 -->
+    
     <section class="view" id="view-map" data-view="map">
       <div class="vhead"><h2>이슬라 누블라 지도</h2><p>작품 하나가 구역 하나예요. 구역이 클수록 인물이 많아요. 구역을 눌러 그곳 사람들을 확인하세요.</p></div>
       <div class="mapwrap"><div class="galaxy-box"><svg id="galaxy" viewBox="0 0 1000 720" role="img" aria-label="작품별 구역 지도"></svg><div class="era-legend" id="eraLegend"></div><div class="map-chips" id="mapChips"></div></div><aside class="map-panel" id="mapPanel"></aside></div>
     </section>
 
-    <!-- 03 연대기 -->
+    
     <section class="view" id="view-timeline" data-view="timeline">
       <div class="vhead"><h2>출시 연대기</h2><p>2015년부터 해마다 어떤 인물이 나왔는지 한눈에 보는 기록이에요. 옆으로 넘기거나 연도 막대를 움직여 보세요.</p></div>
       <div class="tl-ctrl"><span class="en">YEAR</span><input type="range" id="tlRange" min="0" max="10" value="0" aria-label="연도 이동"><b id="tlYear">2015</b></div>
       <div class="tl" id="tl"></div>
     </section>
 
-    <!-- 04 공룡 사육장 -->
+    
     <section class="view" id="view-dino" data-view="dino">
       <section class="benny" id="dinoPanel" aria-label="공룡 사육장"></section>
     </section>
 
-    <!-- 05 레인저 레이더 -->
+    
     <section class="view" id="view-radar" data-view="radar">
       <div class="bar" id="bar">
         <div class="bar-in">
@@ -161,7 +281,7 @@
       <section class="groups" id="groups" aria-live="polite"></section>
     </section>
 
-    <!-- 06 내 탐사대 -->
+    
     <section class="view" id="view-crew" data-view="crew">
       <section class="mine" id="mine">
         <svg class="ring" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--line)" stroke-width="3"/><circle id="ringArc" cx="18" cy="18" r="15.5" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 100" transform="rotate(-90 18 18)" pathLength="100"/><text id="ringTxt" x="18" y="21" text-anchor="middle" font-size="9" fill="var(--ink)"></text></svg>
@@ -177,7 +297,7 @@
       <div id="crewBody"></div>
     </section>
 
-    <!-- 07 구매 가이드 -->
+    
     <section class="view" id="view-shop" data-view="shop">
       <div class="vhead"><h2>구매 가이드 · 중복 없는 인물</h2><p>한 세트에만 들어 있는 <b>세트 전용 인물</b>과, 들어 있는 인물이 전부 전용이라 <b>사도 겹치는 피규어가 없는 세트</b>를 따로 모았어요. 이미 가진 피규어와 겹치지 않게 사고 싶을 때 참고하세요.</p></div>
       <div class="shop-stats" id="shopStats"></div>
@@ -185,7 +305,7 @@
       <div id="shopBody"></div>
     </section>
 
-    <!-- 08 작전실 -->
+    
     <section class="view" id="view-ops" data-view="ops">
       <section class="appx" id="appx">
         <div class="vhead"><h2>작전실</h2><p>비싼 순위, 단골 인물, 추천 코스, 통계, 옷차림 변천을 둘러보는 곳이에요.</p></div>
