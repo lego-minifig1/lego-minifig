@@ -1,0 +1,50 @@
+name: Update dates
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["updates.json"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-dates
+  cancel-in-progress: true
+
+jobs:
+  dates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Make updates.json
+        run: |
+          python3 - <<'PY'
+          import glob, json, subprocess, datetime
+          def last(*path):
+              t = subprocess.run(["git", "log", "-1", "--format=%at", "--", *path],
+                                 capture_output=True, text=True).stdout.strip()
+              return int(t) if t else 0
+          iso = lambda t: datetime.datetime.fromtimestamp(t, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+          files = {f: last(f) for f in sorted(glob.glob("*.html"))}
+          files["minifig.html"] = max(files.get("minifig.html", 0), last("minifig-data.json"))
+          files["sw.html"] = max(files.get("sw.html", 0), last("sw-parts.json"))
+          site = last(".", ":!updates.json", ":!.github")
+          json.dump({"site": iso(site), "files": {k: iso(v) for k, v in files.items() if v}}, open("updates.json", "w"))
+          PY
+      - name: Save and redeploy
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git add updates.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "lego-minifig1"
+          git config user.email "kys72005907@gmail.com"
+          git commit -m "Update files"
+          git push
+          curl -s -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages/builds" > /dev/null || true
