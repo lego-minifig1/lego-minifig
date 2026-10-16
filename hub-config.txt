@@ -5,10 +5,10 @@
 # ─────────────────────────────────────────────
 
 # 대문에서 닫아 둘 도감 (쉼표로 구분, 하나도 안 닫으려면 "닫기: 없음")
-#   쓸 수 있는 이름: sw  dc  marvel  minifig  ring  Harry  ninjago  adventure  space  jurassic  castle  oldlego
+#   쓸 수 있는 이름: sw  dc  marvel  minifig  ring  Harry  ninjago  adventure  space  jurassic  castle  oldlego  retired
 #   한글로 써도 돼요: 스타워즈  DC  마블  미니피규어  반지의 제왕  해리포터  닌자고  모험  우주인  쥬라기  캐슬  올드레고
 닫기: 없음
 
 # 상자 왼쪽 위 NEW 띠 (이름=문구, 쉼표로 구분, 하나도 안 달려면 "새로: 없음")
 #   닫힌 도감에는 띠가 보이지 않아요
-새로: dc=새로 열렸어요, minifig=10월 시세 반영, space=새로 열렸어요, jurassic=새로 열렸어요, castle=새로 열렸어요, ninjago=새로 열렸어요, adventure=새로 열렸어요, oldlego=새로 열렸어요
+새로: dc=새로 열렸어요, minifig=10월 시세 반영, space=새로 열렸어요, jurassic=새로 열렸어요, castle=새로 열렸어요, ninjago=새로 열렸어요, adventure=새로 열렸어요, oldlego=새로 열렸어요, retired=마지막 도감
