@@ -26,11 +26,12 @@
   --bgn:rgba(228,233,231,.045); --bgx:rgba(229,103,110,.2);
 }
 *{box-sizing:border-box}
-.bgc{position:fixed;inset:0;z-index:-1;pointer-events:none;user-select:none;-webkit-user-select:none;overflow:hidden;display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));grid-auto-rows:64px;align-items:center;justify-items:center;padding:8px 10px;font-family:"Gowun Batang",serif;font-size:18px;letter-spacing:.05em;color:var(--bgn);font-variant-numeric:tabular-nums;transform:rotate(-4deg) scale(1.12)}
+.bgc{position:fixed;inset:0;z-index:-1;pointer-events:none;user-select:none;-webkit-user-select:none;overflow:hidden;contain:strict}
+.bgi{position:absolute;inset:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));grid-auto-rows:64px;align-items:center;justify-items:center;padding:8px 10px;font-family:"Gowun Batang",serif;font-size:18px;letter-spacing:.05em;color:var(--bgn);font-variant-numeric:tabular-nums}
 .hero>div:first-child{position:relative}
-.hero>div:first-child:before{content:"";position:absolute;inset:-30px -60px;z-index:-1;background:radial-gradient(closest-side,var(--paper) 62%,transparent);pointer-events:none}
+.hero>div:first-child:before{content:"";position:absolute;inset:-24px -16px;z-index:-1;background:radial-gradient(closest-side,var(--paper) 62%,transparent);pointer-events:none}
 .bgc s{text-decoration-line:line-through;text-decoration-color:var(--bgx);text-decoration-thickness:2px}
-@media(max-width:720px){.bgc{grid-template-columns:repeat(auto-fill,minmax(84px,1fr));grid-auto-rows:54px;font-size:15px}}
+@media(max-width:720px){.bgi{grid-template-columns:repeat(auto-fill,minmax(84px,1fr));grid-auto-rows:54px;font-size:15px}}
 @media print{.bgc{display:none}}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:170px}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:Pretendard,"Noto Sans KR",sans-serif;font-size:16px;line-height:1.65;font-weight:400}
@@ -217,7 +218,7 @@ footer{padding:44px 0 56px;text-align:center}
 </style>
 </head>
 <body>
-<div class="bgc" id="bgc" aria-hidden="true"></div>
+<div class="bgc" aria-hidden="true"><div class="bgi" id="bgc"></div></div>
 <div class="wrap">
   <div class="tools"><button class="tbtn" id="themeBtn" type="button">어둡게 보기</button></div>
   <header class="hero">
