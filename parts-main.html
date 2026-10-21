@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-97T9OWZBRHuE40RNpbO7872jFqwZO9KJBM5/vnmHObE='; style-src 'unsafe-inline'; img-src https://img.bricklink.com https://lego-minifig1.github.io data:; font-src https://cdn.jsdelivr.net; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>재미로 보는 레고 부품 도감</title>
+<meta name="description" content="레고 동물 1,282개와 무기·소품·얼굴 표정까지, 서랍을 열듯 하나씩 꺼내 보는 부품 도감.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="재미로 보는 레고 부품 도감">
+<meta property="og:description" content="레고 동물 1,282개와 무기·소품·얼굴 표정까지, 서랍을 열듯 하나씩 꺼내 보는 부품 도감.">
+<meta property="og:image" content="https://lego-minifig1.github.io/lego-minifig/parts-og.jpg">
+<meta property="og:url" content="https://lego-minifig1.github.io/lego-minifig/parts-main.html">
+<meta name="theme-color" content="#fff2cf">
+<style>
+@font-face{font-family:'Cafe24Ssurround';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'memomentKkukKkuk';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2508-2@1.0/memomentKkukKkuk.woff2') format('woff2');font-display:swap}
+
+:root{
+  --sky:#fff2cf; --sky2:#ffe7a8;
+  --plate:#5aa957; --plate-dk:#43893f; --stud:#6cbd68;
+  --ink:#2a2a33; --sub:#6b6656;
+  --red:#e4483a; --navy:#2c3646; --paper:#fffdf6;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:'Pretendard',system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+a{color:inherit}
+
+/* ── 첫 화면 ── */
+.hero{position:relative;min-height:min(100svh,860px);display:flex;flex-direction:column;
+  background:radial-gradient(120% 70% at 50% 0%, #fffaf0 0%, var(--sky) 55%, var(--sky2) 100%)}
+.sun{position:absolute;right:max(16px,7vw);top:56px;width:clamp(90px,14vw,170px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #ffe38a, #ffc94a);box-shadow:0 0 0 14px rgba(255,214,102,.25),0 0 0 32px rgba(255,214,102,.12)}
+.top{position:relative;z-index:2;max-width:1120px;width:100%;margin:0 auto;padding:clamp(28px,6vw,72px) 20px 0}
+.kicker{font-family:'memomentKkukKkuk',cursive;font-size:clamp(20px,2.6vw,26px);color:var(--red);margin:0 0 6px;transform:rotate(-2deg);display:inline-block}
+h1{font-family:'Cafe24Ssurround',sans-serif;font-weight:400;margin:0;font-size:clamp(40px,8.4vw,92px);line-height:1.08;letter-spacing:-.01em;color:var(--ink)}
+h1 .line2{display:block;color:var(--navy)}
+.lead{margin:18px 0 0;max-width:30em;font-size:clamp(16px,1.9vw,19px);color:var(--sub)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-family:'Cafe24Ssurround',sans-serif;font-size:19px;
+  padding:14px 26px 13px;border-radius:14px;background:var(--red);color:#fff;
+  box-shadow:0 5px 0 #a92c22, 0 10px 18px rgba(169,44,34,.25);transition:transform .12s, box-shadow .12s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 #a92c22, 0 14px 22px rgba(169,44,34,.28)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #a92c22}
+.btn .stud{width:14px;height:14px;border-radius:50%;background:#ff7a6c;box-shadow:inset 0 -2px 0 rgba(0,0,0,.18)}
+.count{font-size:15px;color:var(--sub)}
+.count b{color:var(--ink);font-size:17px}
+
+/* 동물 행진: 초록 판 위에 선 동물들 */
+.stage{position:relative;margin-top:auto;padding-top:24px}
+.parade{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 12px;display:flex;justify-content:center;align-items:flex-end;gap:clamp(2px,1.2vw,18px)}
+.ani{position:relative;flex:0 1 auto;border:0;background:none;padding:0;cursor:pointer;transform-origin:50% 100%;
+  animation:hopin .7s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--i) * .09s + .25s)}
+.ani img{display:block;height:var(--h);width:auto;max-width:none;mix-blend-mode:multiply;pointer-events:none;user-select:none}
+.ani:focus-visible{outline:3px dashed var(--navy);outline-offset:6px;border-radius:10px}
+.ani.in{animation:none}
+.ani.in.hop{animation:hop .55s cubic-bezier(.3,1.5,.5,1)}
+.say{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%) scale(.6);opacity:0;white-space:nowrap;
+  background:var(--paper);border:2px solid var(--ink);border-radius:12px;padding:5px 11px;font-size:14px;font-weight:700;
+  transition:opacity .18s, transform .18s;pointer-events:none;z-index:5}
+.say::after{content:"";position:absolute;left:50%;top:100%;margin-left:-6px;border:6px solid transparent;border-top-color:var(--ink)}
+.ani.talk .say{opacity:1;transform:translateX(-50%) scale(1)}
+.plate{position:relative;height:clamp(54px,8vw,84px);margin-top:-10px;background:
+  radial-gradient(circle at 50% 42%, var(--stud) 0 31%, rgba(0,0,0,.12) 32% 38%, transparent 39%) 0 0/clamp(22px,2.6vw,30px) clamp(22px,2.6vw,30px),
+  linear-gradient(var(--plate),var(--plate));
+  border-top:6px solid #7cc878;box-shadow:inset 0 -14px 0 var(--plate-dk)}
+@keyframes hopin{0%{opacity:0;transform:translateY(-120px) scaleY(1.1)}60%{opacity:1;transform:translateY(0) scaleY(.88)}80%{transform:translateY(-6px) scaleY(1.03)}100%{transform:none}}
+@keyframes hop{0%{transform:none}30%{transform:translateY(-34px) rotate(-4deg)}55%{transform:translateY(0) scaleY(.9)}75%{transform:translateY(-6px)}100%{transform:none}}
+
+/* ── 서랍 네 칸 ── */
+.drawers{background:var(--navy);color:#f3f1ea;padding:clamp(44px,7vw,80px) 20px}
+.wrap{max-width:1120px;margin:0 auto}
+.drawers h2{font-family:'Cafe24Ssurround',sans-serif;font-weight:400;font-size:clamp(26px,4vw,38px);margin:0 0 6px}
+.drawers .note{margin:0 0 26px;color:#b9c0cc}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.box{display:block;text-decoration:none;background:#f3f4f2;color:var(--ink);border-radius:16px;padding:14px 14px 16px;
+  box-shadow:0 6px 0 #c9cdc6, 0 14px 24px rgba(0,0,0,.25);transition:transform .15s, box-shadow .15s}
+.box:hover{transform:translateY(-4px);box-shadow:0 10px 0 #c9cdc6, 0 20px 28px rgba(0,0,0,.28)}
+.box .pic{height:150px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.box .pic img{max-height:120px;max-width:84%;mix-blend-mode:multiply}
+.box .pull{display:block;width:46px;height:9px;margin:-4px auto 12px;border-radius:0 0 8px 8px;background:#b5bbb3}
+.box h3{margin:0;font-family:'Cafe24Ssurround',sans-serif;font-weight:400;font-size:22px}
+.box p{margin:2px 0 0;color:#666;font-size:14.5px}
+.box .num{font-weight:700;color:var(--red)}
+
+/* ── 오늘의 동물 ── */
+.today{padding:clamp(44px,7vw,80px) 20px;background:var(--paper)}
+.card{display:grid;grid-template-columns:minmax(180px,300px) 1fr;gap:clamp(18px,4vw,48px);align-items:center;max-width:860px;margin:0 auto}
+.card .ph{background:var(--sky);border-radius:50%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 -12px 0 rgba(0,0,0,.05)}
+.card .ph img{max-width:72%;max-height:72%;mix-blend-mode:multiply}
+.card .hand{font-family:'memomentKkukKkuk',cursive;font-size:24px;color:var(--red);margin:0}
+.card h2{font-family:'Cafe24Ssurround',sans-serif;font-weight:400;font-size:clamp(28px,4.4vw,42px);margin:2px 0 8px;line-height:1.2}
+.card p{margin:0;color:var(--sub);font-size:16.5px}
+.again{margin-top:16px;font:inherit;font-weight:700;font-size:15px;border:2px solid var(--ink);background:none;border-radius:999px;padding:8px 18px;cursor:pointer}
+.again:hover{background:var(--ink);color:var(--paper)}
+
+footer{background:var(--sky2);text-align:center;padding:26px 16px 30px;font-size:14px;color:var(--sub)}
+footer a{font-weight:700;text-decoration:none;border-bottom:2px solid var(--red)}
+
+@media (max-width:860px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .ani.wide{display:none}
+}
+@media (max-width:520px){
+  .sun{top:20px;right:14px}
+  .parade{gap:0}
+  .ani img{height:calc(var(--h) * .62)}
+  .ani.mid{display:none}
+  .box .pic{height:118px}
+  .box .pic img{max-height:92px}
+  .card{grid-template-columns:1fr;text-align:center}
+  .card .ph{width:min(240px,70vw);margin:0 auto}
+}
+@media (prefers-reduced-motion:reduce){
+  .ani,.ani.in.hop{animation:none}
+  .btn,.box{transition:none}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="sun" aria-hidden="true"></div>
+  <div class="top">
+    <p class="kicker">서랍 속 작은 친구들</p>
+    <h1>재미로 보는<span class="line2">레고 부품 도감</span></h1>
+    <p class="lead">고양이, 펭귄, 다람쥐부터 칼과 카메라, 웃는 얼굴까지. 레고 상자 구석에 굴러다니던 작은 부품들을 서랍 하나에 모아 두었어요.</p>
+    <div class="cta">
+      <a class="btn" href="parts.html"><span class="stud" aria-hidden="true"></span>도감 열기</a>
+      <span class="count">지금 서랍에 <b>6,320</b>개</span>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="parade" id="parade">
+      <button class="ani wide" style="--i:0;--h:120px" data-n="부엉이"><span class="say">부엉이</span><img src="https://img.bricklink.com/ItemImage/PN/55/67632pb02.png" alt="날개를 편 부엉이"></button>
+      <button class="ani" style="--i:1;--h:150px" data-n="고양이"><span class="say">고양이</span><img src="https://img.bricklink.com/ItemImage/PN/110/13786pb06.png" alt="주황 고양이"></button>
+      <button class="ani mid" style="--i:2;--h:150px" data-n="토끼"><span class="say">토끼</span><img src="https://img.bricklink.com/ItemImage/PN/2/66965pb01.png" alt="서 있는 토끼"></button>
+      <button class="ani" style="--i:3;--h:132px" data-n="펭귄"><span class="say">펭귄</span><img src="https://img.bricklink.com/ItemImage/PN/11/26076pb01.png" alt="펭귄"></button>
+      <button class="ani" style="--i:4;--h:150px" data-n="다람쥐"><span class="say">다람쥐</span><img src="https://img.bricklink.com/ItemImage/PN/68/80679pb01.png" alt="다람쥐"></button>
+      <button class="ani mid" style="--i:5;--h:112px" data-n="돼지"><span class="say">돼지</span><img src="https://img.bricklink.com/ItemImage/PN/28/87621pb03.png" alt="점박이 돼지"></button>
+      <button class="ani wide" style="--i:6;--h:140px" data-n="아기 토끼"><span class="say">아기 토끼</span><img src="https://img.bricklink.com/ItemImage/PN/86/34050pb02.png" alt="앉아 있는 회색 토끼"></button>
+    </div>
+    <div class="plate" aria-hidden="true"></div>
+  </div>
+</header>
+
+<section class="drawers">
+  <div class="wrap">
+    <h2>서랍은 네 칸이에요</h2>
+    <p class="note">어느 칸을 열어도 처음 나온 해, 들어 있던 세트, 요즘 거래가까지 같이 볼 수 있어요.</p>
+    <div class="grid">
+      <a class="box" href="parts.html"><span class="pull"></span><div class="pic"><img src="https://img.bricklink.com/ItemImage/PN/110/13786pb06.png" alt=""></div><h3>동물</h3><p><span class="num">1,282</span>개 · 땅, 하늘, 물, 공룡</p></a>
+      <a class="box" href="parts.html"><span class="pull"></span><div class="pic"><img src="https://img.bricklink.com/ItemImage/PN/17/7268pb01.png" alt=""></div><h3>무기</h3><p><span class="num">317</span>개 · 칼, 도끼, 창</p></a>
+      <a class="box" href="parts.html"><span class="pull"></span><div class="pic"><img src="https://img.bricklink.com/ItemImage/PN/11/30089b.png" alt=""></div><h3>소품</h3><p><span class="num">337</span>개 · 카메라부터 트로피까지</p></a>
+      <a class="box" href="parts.html"><span class="pull"></span><div class="pic"><img src="https://img.bricklink.com/ItemImage/PN/241/3626pb4185.png" alt=""></div><h3>얼굴 표정</h3><p><span class="num">4,384</span>개 · 웃고 찡그리고 놀라고</p></a>
+    </div>
+  </div>
+</section>
+
+<section class="today">
+  <div class="card">
+    <div class="ph"><img id="tImg" src="https://img.bricklink.com/ItemImage/PN/11/26076pb01.png" alt=""></div>
+    <div>
+      <p class="hand">오늘의 동물</p>
+      <h2 id="tName">펭귄</h2>
+      <p id="tText">2016년에 처음 나온 펭귄이에요. 주황 부리에 배가 하얘서 겨울 세트마다 얼굴을 비춰요.</p>
+      <button class="again" id="again" type="button">다른 친구 보기</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>마가렛트 제작 · <a href="parts.html">부품 도감 바로 가기</a></p>
+</footer>
+
+<script>
+(function(){
+  if (window.top !== window.self){ document.body.innerHTML = ""; return; }
+  var IMG = "https://img.bricklink.com/ItemImage/PN/";
+  var FRIENDS = [
+    ["펭귄", "11/26076pb01", "2016년에 처음 나온 펭귄이에요. 주황 부리에 배가 하얘서 겨울 세트마다 얼굴을 비춰요."],
+    ["주황 고양이", "110/13786pb06", "파란 목걸이를 한 고양이예요. 꼬리를 바짝 세우고 서 있어서 어느 집에 둬도 주인공이 돼요."],
+    ["다람쥐", "68/80679pb01", "도토리 하나 들 법한 작은 손에 갈색 코. 2022년부터 숲 세트에 자주 보여요."],
+    ["부엉이", "55/67632pb02", "날개를 활짝 편 부엉이예요. 주황 부리와 동그란 눈 덕분에 나무 위에 올려 두면 딱이에요."],
+    ["점박이 돼지", "28/87621pb03", "갈색 점이 콕콕 박힌 돼지예요. 농장 세트에서 진흙 웅덩이 옆을 지켜요."],
+    ["토끼", "2/66965pb01", "두 발로 서서 하얀 배를 내민 토끼예요. 귀가 길어서 키가 꽤 커요."],
+    ["아기 토끼", "86/34050pb02", "청록색 눈으로 올려다보는 앉은 토끼예요. 손바닥에 쏙 들어가는 크기예요."],
+    ["검은 고양이", "11/11602pb07", "흰 얼굴에 장난스럽게 웃는 앉은 고양이예요. 표정이 얄미워서 더 귀여워요."]
+  ];
+  var tImg = document.getElementById("tImg"), tName = document.getElementById("tName"), tText = document.getElementById("tText");
+  var last = -1;
+  function pick(){
+    var k; do { k = Math.floor(Math.random() * FRIENDS.length); } while (k === last && FRIENDS.length > 1);
+    last = k; var f = FRIENDS[k];
+    tImg.src = IMG + f[1] + ".png"; tImg.alt = f[0]; tName.textContent = f[0]; tText.textContent = f[2];
+  }
+  pick();
+  document.getElementById("again").addEventListener("click", pick);
+
+  var timer = null;
+  document.getElementById("parade").addEventListener("click", function(e){
+    var a = e.target.closest(".ani"); if (!a) return;
+    document.querySelectorAll(".ani.talk").forEach(function(x){ if (x !== a) x.classList.remove("talk"); });
+    a.classList.add("in"); a.classList.remove("hop"); void a.offsetWidth; a.classList.add("hop", "talk");
+    clearTimeout(timer); timer = setTimeout(function(){ a.classList.remove("talk"); }, 1800);
+  });
+  document.querySelectorAll(".ani").forEach(function(a){
+    a.addEventListener("animationend", function(){ a.classList.add("in"); a.classList.remove("hop"); });
+  });
+  document.addEventListener("contextmenu", function(e){ if (e.target.tagName === "IMG") e.preventDefault(); });
+})();
+</script>
+</body>
+</html>
