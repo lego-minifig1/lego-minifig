@@ -31,11 +31,11 @@ body{margin:0;background:var(--sky);color:var(--ink);font-family:'Pretendard',sy
 a{color:inherit}
 
 /* ── 첫 화면 ── */
-.hero{position:relative;min-height:min(100svh,860px);display:flex;flex-direction:column;
+.hero{position:relative;min-height:min(100svh,820px);display:flex;flex-direction:column;
   background:radial-gradient(120% 70% at 50% 0%, #fffaf0 0%, var(--sky) 55%, var(--sky2) 100%)}
 .sun{position:absolute;right:max(16px,7vw);top:56px;width:clamp(90px,14vw,170px);aspect-ratio:1;border-radius:50%;
   background:radial-gradient(circle at 35% 35%, #ffe38a, #ffc94a);box-shadow:0 0 0 14px rgba(255,214,102,.25),0 0 0 32px rgba(255,214,102,.12)}
-.top{position:relative;z-index:2;max-width:1120px;width:100%;margin:0 auto;padding:clamp(28px,6vw,72px) 20px 0}
+.top{position:relative;max-width:1120px;width:100%;margin:0 auto;padding:clamp(28px,6vw,72px) 20px 0}
 .kicker{font-family:'memomentKkukKkuk',cursive;font-size:clamp(20px,2.6vw,26px);color:var(--red);margin:0 0 6px;transform:rotate(-2deg);display:inline-block}
 h1{font-family:'Cafe24Ssurround',sans-serif;font-weight:400;margin:0;font-size:clamp(40px,8.4vw,92px);line-height:1.08;letter-spacing:-.01em;color:var(--ink)}
 h1 .line2{display:block;color:var(--navy)}
@@ -52,10 +52,10 @@ h1 .line2{display:block;color:var(--navy)}
 
 /* 동물 행진: 초록 판 위에 선 동물들 */
 .stage{position:relative;margin-top:auto;padding-top:24px}
-.parade{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 12px;display:flex;justify-content:center;align-items:flex-end;gap:clamp(2px,1.2vw,18px)}
-.ani{position:relative;flex:0 1 auto;border:0;background:none;padding:0;cursor:pointer;transform-origin:50% 100%;
+.parade{position:relative;max-width:1180px;margin:0 auto;padding:0 12px;display:flex;justify-content:center;align-items:flex-end;gap:clamp(2px,1.2vw,18px)}
+.ani{position:relative;mix-blend-mode:multiply;flex:0 1 auto;border:0;background:none;padding:0;cursor:pointer;transform-origin:50% 100%;
   animation:hopin .7s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--i) * .09s + .25s)}
-.ani img{display:block;height:var(--h);width:auto;max-width:none;mix-blend-mode:multiply;pointer-events:none;user-select:none}
+.ani img{display:block;height:calc(var(--h) * var(--k,1.3));width:auto;max-width:none;pointer-events:none;user-select:none}
 .ani:focus-visible{outline:3px dashed var(--navy);outline-offset:6px;border-radius:10px}
 .ani.in{animation:none}
 .ani.in.hop{animation:hop .55s cubic-bezier(.3,1.5,.5,1)}
@@ -103,13 +103,14 @@ footer{background:var(--sky2);text-align:center;padding:26px 16px 30px;font-size
 footer a{font-weight:700;text-decoration:none;border-bottom:2px solid var(--red)}
 
 @media (max-width:860px){
+  .ani img{--k:1}
   .grid{grid-template-columns:repeat(2,1fr)}
   .ani.wide{display:none}
 }
 @media (max-width:520px){
   .sun{top:20px;right:14px}
   .parade{gap:0}
-  .ani img{height:calc(var(--h) * .62)}
+  .ani img{--k:.62}
   .ani.mid{display:none}
   .box .pic{height:118px}
   .box .pic img{max-height:92px}
