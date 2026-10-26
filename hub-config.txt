@@ -5,13 +5,13 @@
 # ─────────────────────────────────────────────
 
 # 대문에서 닫아 둘 도감 (쉼표로 구분, 하나도 안 닫으려면 "닫기: 없음")
-#   쓸 수 있는 이름: sw  dc  marvel  minifig  ring  Harry  ninjago  adventure  space  jurassic  castle  oldlego  retired  brickheadz  parts  toon  original
-#   한글로 써도 돼요: 스타워즈  DC  마블  미니피규어  반지의 제왕  해리포터  닌자고  모험  우주인  쥬라기  캐슬  올드레고  (브릭헤즈는 brickheadz, 부품 도감은 parts, 만화·게임 도감은 toon, 오리지널 도감은 original 로 써 주세요)
+#   쓸 수 있는 이름: sw  dc  marvel  minifig  ring  Harry  ninjago  adventure  space  jurassic  castle  oldlego  retired  brickheadz  parts  toon  original  museum
+#   한글로 써도 돼요: 스타워즈  DC  마블  미니피규어  반지의 제왕  해리포터  닌자고  모험  우주인  쥬라기  캐슬  올드레고  (브릭헤즈는 brickheadz, 부품 도감은 parts, 만화·게임 도감은 toon, 오리지널 도감은 original, 레고 박물관은 museum 으로 써 주세요)
 닫기: 없음
 
 # 상자 왼쪽 위 NEW 띠 (이름=문구, 쉼표로 구분, 하나도 안 달려면 "새로: 없음")
 #   닫힌 도감에는 띠가 보이지 않아요
-새로: 없음
+새로: museum=새로 열렸어요
 
 # 맨 위 알림 (두 줄로 나누려면 | 를 넣으세요, 알림을 내리려면 "공지: 없음")
 공지: 레고 미니피규어 도감 모음은 2026년 11월에 운영을 마칩니다. | 그동안 찾아 주셔서 감사합니다.
