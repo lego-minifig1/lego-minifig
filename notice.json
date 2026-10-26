@@ -1,14 +1,66 @@
 {
   "items": [
-    { "date": "2026-10-26", "book": "스타워즈", "url": "sw.html" },
-    { "date": "2026-10-24", "book": "캐슬", "url": "castle.html" },
-    { "date": "2026-10-23", "book": "마블", "url": "marvel.html" },
-    { "date": "2026-10-23", "book": "DC", "url": "dc.html" },
-    { "date": "2026-10-23", "book": "만화·게임", "url": "toon.html" },
-    { "date": "2026-10-18", "book": "브릭헤즈", "url": "brickheadz.html" },
-    { "date": "2026-10-16", "book": "반지의 제왕", "url": "ring.html" },
-    { "date": "2026-10-16", "book": "모험", "url": "adventure.html" },
-    { "date": "2026-10-16", "book": "단종", "url": "retired.html" },
-    { "date": "2026-10-13", "book": "올드레고", "url": "oldlego.html" }
+    {
+      "date": "2026-10-26",
+      "book": "스타워즈",
+      "url": "sw.html"
+    },
+    {
+      "date": "2026-10-26",
+      "text": "레고 박물관 도감 오픈"
+    },
+    {
+      "date": "2026-10-26",
+      "text": "DC 배트맨·투페이스 버전 정리"
+    },
+    {
+      "date": "2026-10-26",
+      "text": "후기 게시판 새 단장"
+    },
+    {
+      "date": "2026-10-24",
+      "book": "캐슬",
+      "url": "castle.html"
+    },
+    {
+      "date": "2026-10-23",
+      "book": "마블",
+      "url": "marvel.html"
+    },
+    {
+      "date": "2026-10-23",
+      "book": "DC",
+      "url": "dc.html"
+    },
+    {
+      "date": "2026-10-23",
+      "book": "만화·게임",
+      "url": "toon.html"
+    },
+    {
+      "date": "2026-10-18",
+      "book": "브릭헤즈",
+      "url": "brickheadz.html"
+    },
+    {
+      "date": "2026-10-16",
+      "book": "반지의 제왕",
+      "url": "ring.html"
+    },
+    {
+      "date": "2026-10-16",
+      "book": "모험",
+      "url": "adventure.html"
+    },
+    {
+      "date": "2026-10-16",
+      "book": "단종",
+      "url": "retired.html"
+    },
+    {
+      "date": "2026-10-13",
+      "book": "올드레고",
+      "url": "oldlego.html"
+    }
   ]
 }
