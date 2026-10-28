@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Oe/mjCxwv5r3UeJ/xkfB7Oj4L5a02W4bE77idASLSV0=' 'sha256-woHs4e3zp0mr9XA//M0qZXJdUMjxHmfgxT/P37RKf4M='; style-src 'unsafe-inline'; img-src https://img.bricklink.com https://storage.googleapis.com data: blob:; font-src https://cdn.jsdelivr.net; connect-src https://countapi.mileshilliard.com https://api.brickognize.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CrDsIpveYhDkHqj9VZ9ubyrF+6IjdMYYnNciD7kH5Qs=' 'sha256-woHs4e3zp0mr9XA//M0qZXJdUMjxHmfgxT/P37RKf4M='; style-src 'unsafe-inline'; img-src https://img.bricklink.com https://storage.googleapis.com data: blob:; font-src https://cdn.jsdelivr.net; connect-src https://countapi.mileshilliard.com https://api.brickognize.com; base-uri 'none'; form-action 'none'">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>재미로 보는 레고 부품 도감</title>
@@ -467,11 +467,15 @@ html,body{max-width:100%;overflow-x:hidden}
     for (var i = 0; i < all.length; i++){ var c = getComputedStyle(all[i]); if (c.display !== "none" && c.visibility !== "hidden" && all[i].getClientRects().length) return all[i]; }
     return null;
   }
+  /* 코드가 들어 있는 속성을 가진 요소만 브라우저가 바로 골라 줌 (화면 전체를 훑지 않음) */
+  var LOW = "translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')";
   function find(code, root, sel){
-    if (!code) return null;
-    var list = (root || document.body).querySelectorAll(CFG.cand && !root ? CFG.cand : "*");
-    for (var i = 0; i < list.length; i++){
-      var e = list[i];
+    if (!code || /['"\\]/.test(code)) return null;
+    var snap;
+    try { snap = document.evaluate(".//*[@*[contains(" + LOW + ", '" + code + "')]]", root || document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null); } catch(_){ return null; }
+    for (var i = 0; i < snap.snapshotLength; i++){
+      var e = snap.snapshotItem(i);
+      if (!root && CFG.cand && !e.matches(CFG.cand)) continue;
       if (!root && e.closest("dialog,[role=dialog],input,textarea,select,option,summary")) continue;
       if (CFG.skip && e.closest(CFG.skip)) continue;
       if (hasCode(e, code)){ var s = sel || CFG.card; if (!s) return e; var c = e.closest(s) || e.querySelector(s); if (c) return c; }
@@ -508,8 +512,12 @@ html,body{max-width:100%;overflow-x:hidden}
     ["input", "keyup"].forEach(function(ev){ inp.dispatchEvent(new Event(ev, { bubbles: true })); });
     return true;
   }
-  async function look(code, ms){
-    for (var t = 0; t < ms; t += 250){ var e = find(code); if (e && press(e)) return true; await wait(250); }
+  async function look(code, ms, again){
+    for (var t = 0; t < ms; t += 300){
+      var e = find(code); if (e && press(e)) return true;
+      if (again && t && t % 1200 === 0) again();   /* 도감이 늦게 준비돼 검색창이 비워졌을 때 다시 넣음 */
+      await wait(300);
+    }
     return false;
   }
   async function viaSet(){
@@ -536,14 +544,14 @@ html,body{max-width:100%;overflow-x:hidden}
   async function run(){
     await wait(500);
     var T = P.get("t"); if (T && CFG.tabs){ var tb = [].slice.call(document.querySelectorAll(CFG.tabs)).filter(function(b){ return b.getAttribute("data-t") === T; })[0]; if (tb){ hit(tb); await wait(300); } }
-    if (await look(lc, 1200)){ clean(); return; }
+    if (await look(lc, 900)){ clean(); return; }
     if (await viaSet()){ clean(); return; }
-    if (lc && type(Q) && await look(lc, 2000)){ clean(); return; }
+    if (lc && type(Q) && await look(lc, 4800, function(){ var i = CFG.input && document.querySelector(CFG.input); if (i && i.value !== Q) type(Q); })){ clean(); return; }
     if (CFG.tabs && lc){
       var tabs = document.querySelectorAll(CFG.tabs);
-      for (var i = 0; i < tabs.length; i++){ var tb = document.querySelectorAll(CFG.tabs)[i]; if (!tb) break; hit(tb); await wait(300); type(Q); if (await look(lc, 1000)){ clean(); return; } }
+      for (var i = 0; i < tabs.length; i++){ var tb = document.querySelectorAll(CFG.tabs)[i]; if (!tb) break; hit(tb); await wait(300); type(Q); if (await look(lc, 1500)){ clean(); return; } }
     }
-    if (P.get("k") !== "s" && base && type(base) && await look(lc, 1800)){ clean(); return; }
+    if (P.get("k") !== "s" && base && type(base) && await look(lc, 2500)){ clean(); return; }
     type(P.get("k") === "s" ? (Q || base) : (base || Q)); clean();
   }
   if (document.readyState === "complete") run(); else addEventListener("load", run);

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-+98oA8qDPKBKgGX5h7VSO3U6HdkJ6QIKnoTpaerbgjg=' 'sha256-3ulfNfdnbtzE0U4MudbKeZv0iyFBVG45zsTnZSqE60E=' 'sha256-DnBG04FiAxrnWAVbj9I9qtVR4h2TQKfWn6XMO4zhggI=' 'sha256-cHN+caNtBL8/h8eo8tDYSPQzv1WY9ccKwNnpRpAQq1o='; style-src 'unsafe-inline'; font-src https://cdn.jsdelivr.net; img-src https://cdn.rebrickable.com https://img.bricklink.com https://www.brickeconomy.com data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'"><style data-vc2>#visits:not([data-vc2]){display:none!important}</style><script>(function(){
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-fOggz6z7SdQdSo1oUXYz5e3zORL8BUS3Idgh8TsADpA=' 'sha256-3ulfNfdnbtzE0U4MudbKeZv0iyFBVG45zsTnZSqE60E=' 'sha256-DnBG04FiAxrnWAVbj9I9qtVR4h2TQKfWn6XMO4zhggI=' 'sha256-cHN+caNtBL8/h8eo8tDYSPQzv1WY9ccKwNnpRpAQq1o='; style-src 'unsafe-inline'; font-src https://cdn.jsdelivr.net; img-src https://cdn.rebrickable.com https://img.bricklink.com https://www.brickeconomy.com data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'"><style data-vc2>#visits:not([data-vc2]){display:none!important}</style><script>(function(){
   var C = {"total": "starwars-minifig-dogam-kr", "dayPrefix": "starwars-minifig-dogam-kr-", "box": "#visits", "html": "<span data-p=\"t\">오늘 방문자 <b data-v></b>명</span><span data-p=\"s\">·</span><span data-p=\"a\">누적 조회 <b data-v></b>회</span>", "mode": "page"};   
   var API = "https://countapi.mileshilliard.com/api/v1/";
   var nativeFetch = window.fetch && window.fetch.bind(window);
@@ -133,11 +133,15 @@
     for (var i = 0; i < all.length; i++){ var c = getComputedStyle(all[i]); if (c.display !== "none" && c.visibility !== "hidden" && all[i].getClientRects().length) return all[i]; }
     return null;
   }
+  /* 코드가 들어 있는 속성을 가진 요소만 브라우저가 바로 골라 줌 (화면 전체를 훑지 않음) */
+  var LOW = "translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')";
   function find(code, root, sel){
-    if (!code) return null;
-    var list = (root || document.body).querySelectorAll(CFG.cand && !root ? CFG.cand : "*");
-    for (var i = 0; i < list.length; i++){
-      var e = list[i];
+    if (!code || /['"\\]/.test(code)) return null;
+    var snap;
+    try { snap = document.evaluate(".//*[@*[contains(" + LOW + ", '" + code + "')]]", root || document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null); } catch(_){ return null; }
+    for (var i = 0; i < snap.snapshotLength; i++){
+      var e = snap.snapshotItem(i);
+      if (!root && CFG.cand && !e.matches(CFG.cand)) continue;
       if (!root && e.closest("dialog,[role=dialog],input,textarea,select,option,summary")) continue;
       if (CFG.skip && e.closest(CFG.skip)) continue;
       if (hasCode(e, code)){ var s = sel || CFG.card; if (!s) return e; var c = e.closest(s) || e.querySelector(s); if (c) return c; }
@@ -174,8 +178,12 @@
     ["input", "keyup"].forEach(function(ev){ inp.dispatchEvent(new Event(ev, { bubbles: true })); });
     return true;
   }
-  async function look(code, ms){
-    for (var t = 0; t < ms; t += 250){ var e = find(code); if (e && press(e)) return true; await wait(250); }
+  async function look(code, ms, again){
+    for (var t = 0; t < ms; t += 300){
+      var e = find(code); if (e && press(e)) return true;
+      if (again && t && t % 1200 === 0) again();   /* 도감이 늦게 준비돼 검색창이 비워졌을 때 다시 넣음 */
+      await wait(300);
+    }
     return false;
   }
   async function viaSet(){
@@ -202,14 +210,14 @@
   async function run(){
     await wait(500);
     var T = P.get("t"); if (T && CFG.tabs){ var tb = [].slice.call(document.querySelectorAll(CFG.tabs)).filter(function(b){ return b.getAttribute("data-t") === T; })[0]; if (tb){ hit(tb); await wait(300); } }
-    if (await look(lc, 1200)){ clean(); return; }
+    if (await look(lc, 900)){ clean(); return; }
     if (await viaSet()){ clean(); return; }
-    if (lc && type(Q) && await look(lc, 2000)){ clean(); return; }
+    if (lc && type(Q) && await look(lc, 4800, function(){ var i = CFG.input && document.querySelector(CFG.input); if (i && i.value !== Q) type(Q); })){ clean(); return; }
     if (CFG.tabs && lc){
       var tabs = document.querySelectorAll(CFG.tabs);
-      for (var i = 0; i < tabs.length; i++){ var tb = document.querySelectorAll(CFG.tabs)[i]; if (!tb) break; hit(tb); await wait(300); type(Q); if (await look(lc, 1000)){ clean(); return; } }
+      for (var i = 0; i < tabs.length; i++){ var tb = document.querySelectorAll(CFG.tabs)[i]; if (!tb) break; hit(tb); await wait(300); type(Q); if (await look(lc, 1500)){ clean(); return; } }
     }
-    if (P.get("k") !== "s" && base && type(base) && await look(lc, 1800)){ clean(); return; }
+    if (P.get("k") !== "s" && base && type(base) && await look(lc, 2500)){ clean(); return; }
     type(P.get("k") === "s" ? (Q || base) : (base || Q)); clean();
   }
   if (document.readyState === "complete") run(); else addEventListener("load", run);

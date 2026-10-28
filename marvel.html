@@ -3,7 +3,7 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-72Q0fB8qNCwg/vY6ARyCFbb98h+cPx9yJm87/rEnzpg=' 'sha256-aYvOCPXvJvX09+yi5gtXN2KImtq3EV8Q5t6vS3Bw3Vc=' 'sha256-Vnx3u3I2ajvdaudafQ27NSJcbtaEiYiu9Uxz/JV9+hE=' 'sha256-AS5Th2B/ivZsfq00aN0YiQSuGdAoqtO1PqYsL8wV/Hw='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src data: https://img.bricklink.com https://images.brickset.com; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-jGLoBY4d8f0XGLlcgVYkY78nj2QzBs16MQrulvWLljg=' 'sha256-aYvOCPXvJvX09+yi5gtXN2KImtq3EV8Q5t6vS3Bw3Vc=' 'sha256-Vnx3u3I2ajvdaudafQ27NSJcbtaEiYiu9Uxz/JV9+hE=' 'sha256-AS5Th2B/ivZsfq00aN0YiQSuGdAoqtO1PqYsL8wV/Hw='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src data: https://img.bricklink.com https://images.brickset.com; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'">
     <style>html:not(.dx-ok) body{visibility:hidden}</style>
 <style data-vc2>#viewCounter:not([data-vc2]){display:none!important}.look-filter{display:flex;flex-wrap:wrap;align-items:center;gap:8px;width:100%;grid-column:1/-1}.look-filter .lf-label{font-size:13px;font-weight:600;color:var(--sage-dim)}.look-filter select{flex:1 1 150px!important;min-width:0;max-width:260px}@media(max-width:600px){.look-filter .lf-label{width:100%}.look-filter select{max-width:none}}</style>
     <script>(function(){
@@ -614,11 +614,15 @@
     for (var i = 0; i < all.length; i++){ var c = getComputedStyle(all[i]); if (c.display !== "none" && c.visibility !== "hidden" && all[i].getClientRects().length) return all[i]; }
     return null;
   }
+  /* 코드가 들어 있는 속성을 가진 요소만 브라우저가 바로 골라 줌 (화면 전체를 훑지 않음) */
+  var LOW = "translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')";
   function find(code, root, sel){
-    if (!code) return null;
-    var list = (root || document.body).querySelectorAll(CFG.cand && !root ? CFG.cand : "*");
-    for (var i = 0; i < list.length; i++){
-      var e = list[i];
+    if (!code || /['"\\]/.test(code)) return null;
+    var snap;
+    try { snap = document.evaluate(".//*[@*[contains(" + LOW + ", '" + code + "')]]", root || document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null); } catch(_){ return null; }
+    for (var i = 0; i < snap.snapshotLength; i++){
+      var e = snap.snapshotItem(i);
+      if (!root && CFG.cand && !e.matches(CFG.cand)) continue;
       if (!root && e.closest("dialog,[role=dialog],input,textarea,select,option,summary")) continue;
       if (CFG.skip && e.closest(CFG.skip)) continue;
       if (hasCode(e, code)){ var s = sel || CFG.card; if (!s) return e; var c = e.closest(s) || e.querySelector(s); if (c) return c; }
@@ -655,8 +659,12 @@
     ["input", "keyup"].forEach(function(ev){ inp.dispatchEvent(new Event(ev, { bubbles: true })); });
     return true;
   }
-  async function look(code, ms){
-    for (var t = 0; t < ms; t += 250){ var e = find(code); if (e && press(e)) return true; await wait(250); }
+  async function look(code, ms, again){
+    for (var t = 0; t < ms; t += 300){
+      var e = find(code); if (e && press(e)) return true;
+      if (again && t && t % 1200 === 0) again();   /* 도감이 늦게 준비돼 검색창이 비워졌을 때 다시 넣음 */
+      await wait(300);
+    }
     return false;
   }
   async function viaSet(){
@@ -683,14 +691,14 @@
   async function run(){
     await wait(500);
     var T = P.get("t"); if (T && CFG.tabs){ var tb = [].slice.call(document.querySelectorAll(CFG.tabs)).filter(function(b){ return b.getAttribute("data-t") === T; })[0]; if (tb){ hit(tb); await wait(300); } }
-    if (await look(lc, 1200)){ clean(); return; }
+    if (await look(lc, 900)){ clean(); return; }
     if (await viaSet()){ clean(); return; }
-    if (lc && type(Q) && await look(lc, 2000)){ clean(); return; }
+    if (lc && type(Q) && await look(lc, 4800, function(){ var i = CFG.input && document.querySelector(CFG.input); if (i && i.value !== Q) type(Q); })){ clean(); return; }
     if (CFG.tabs && lc){
       var tabs = document.querySelectorAll(CFG.tabs);
-      for (var i = 0; i < tabs.length; i++){ var tb = document.querySelectorAll(CFG.tabs)[i]; if (!tb) break; hit(tb); await wait(300); type(Q); if (await look(lc, 1000)){ clean(); return; } }
+      for (var i = 0; i < tabs.length; i++){ var tb = document.querySelectorAll(CFG.tabs)[i]; if (!tb) break; hit(tb); await wait(300); type(Q); if (await look(lc, 1500)){ clean(); return; } }
     }
-    if (P.get("k") !== "s" && base && type(base) && await look(lc, 1800)){ clean(); return; }
+    if (P.get("k") !== "s" && base && type(base) && await look(lc, 2500)){ clean(); return; }
     type(P.get("k") === "s" ? (Q || base) : (base || Q)); clean();
   }
   if (document.readyState === "complete") run(); else addEventListener("load", run);

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-+98oA8qDPKBKgGX5h7VSO3U6HdkJ6QIKnoTpaerbgjg=' 'sha256-mcvK/7Smp8mDE/NwVww3nYocJZETwFJOuk6rwK2KJgs='; style-src 'unsafe-inline'; img-src https://img.bricklink.com data: blob:; font-src data:; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'"><style>html:not(.ok) body>*:not(#lockmsg){display:none!important}html.ok #lockmsg{display:none!important}#lockmsg{opacity:0;animation:lkin .25s 1.5s forwards}html.lock #lockmsg{animation:none;opacity:1}@keyframes lkin{to{opacity:1}}#lockmsg{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:20px;background:#f3f4f6 radial-gradient(circle,rgba(0,0,0,.05) 0 9px,transparent 9.5px) 0 0/40px 40px;color:#1b1c20;font-family:NSN,'Apple SD Gothic Neo','Malgun Gothic',sans-serif}#lockmsg .lk{max-width:480px;width:100%;text-align:center;background:#fff;border-radius:18px;padding:34px 26px 28px;box-shadow:0 18px 40px -18px rgba(0,0,0,.45);border-top:10px solid #d01012}#lockmsg .br{display:inline-block;width:56px;height:32px;background:#d01012;border-radius:6px;position:relative;margin-bottom:14px}#lockmsg .br:before,#lockmsg .br:after{content:'';position:absolute;top:-9px;width:16px;height:10px;background:#d01012;border-radius:4px 4px 0 0}#lockmsg .br:before{left:9px}#lockmsg .br:after{right:9px}#lockmsg h1{font-family:Tmoney,NSN,sans-serif;font-weight:400;font-size:26px;margin:0 0 12px}#lockmsg p{font-size:15.5px;line-height:1.75;margin:0 0 20px;word-break:keep-all;color:#41444c}#lockmsg p b{display:block;margin:6px 0;font-size:14.5px;word-break:keep-all;overflow-wrap:anywhere;color:#d01012}#lockmsg a{display:inline-block;background:#1b1c20;color:#fff;font-weight:800;text-decoration:none;border-radius:999px;padding:11px 24px;font-size:15px}#lockmsg small{display:block;margin-top:16px;color:#8a8e97;font-size:12.5px}</style>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-fOggz6z7SdQdSo1oUXYz5e3zORL8BUS3Idgh8TsADpA=' 'sha256-mcvK/7Smp8mDE/NwVww3nYocJZETwFJOuk6rwK2KJgs='; style-src 'unsafe-inline'; img-src https://img.bricklink.com data: blob:; font-src data:; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'"><style>html:not(.ok) body>*:not(#lockmsg){display:none!important}html.ok #lockmsg{display:none!important}#lockmsg{opacity:0;animation:lkin .25s 1.5s forwards}html.lock #lockmsg{animation:none;opacity:1}@keyframes lkin{to{opacity:1}}#lockmsg{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:20px;background:#f3f4f6 radial-gradient(circle,rgba(0,0,0,.05) 0 9px,transparent 9.5px) 0 0/40px 40px;color:#1b1c20;font-family:NSN,'Apple SD Gothic Neo','Malgun Gothic',sans-serif}#lockmsg .lk{max-width:480px;width:100%;text-align:center;background:#fff;border-radius:18px;padding:34px 26px 28px;box-shadow:0 18px 40px -18px rgba(0,0,0,.45);border-top:10px solid #d01012}#lockmsg .br{display:inline-block;width:56px;height:32px;background:#d01012;border-radius:6px;position:relative;margin-bottom:14px}#lockmsg .br:before,#lockmsg .br:after{content:'';position:absolute;top:-9px;width:16px;height:10px;background:#d01012;border-radius:4px 4px 0 0}#lockmsg .br:before{left:9px}#lockmsg .br:after{right:9px}#lockmsg h1{font-family:Tmoney,NSN,sans-serif;font-weight:400;font-size:26px;margin:0 0 12px}#lockmsg p{font-size:15.5px;line-height:1.75;margin:0 0 20px;word-break:keep-all;color:#41444c}#lockmsg p b{display:block;margin:6px 0;font-size:14.5px;word-break:keep-all;overflow-wrap:anywhere;color:#d01012}#lockmsg a{display:inline-block;background:#1b1c20;color:#fff;font-weight:800;text-decoration:none;border-radius:999px;padding:11px 24px;font-size:15px}#lockmsg small{display:block;margin-top:16px;color:#8a8e97;font-size:12.5px}</style>
 <title>레고 박물관</title>
 <meta name="description" content="레고 무비, 아이디어스 팬 작품, 시즌 세트, 모듈러 빌딩과 아이콘즈, 프렌즈 미니돌, 1949년부터 이어진 연표, 레고 하우스 한정판까지. 일곱 개 전시관으로 둘러보는 레고 박물관이에요.">
 <meta property="og:type" content="website">
@@ -574,11 +574,15 @@ dialog.sl-l .dl{animation:sll .28s ease}
     for (var i = 0; i < all.length; i++){ var c = getComputedStyle(all[i]); if (c.display !== "none" && c.visibility !== "hidden" && all[i].getClientRects().length) return all[i]; }
     return null;
   }
+  /* 코드가 들어 있는 속성을 가진 요소만 브라우저가 바로 골라 줌 (화면 전체를 훑지 않음) */
+  var LOW = "translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')";
   function find(code, root, sel){
-    if (!code) return null;
-    var list = (root || document.body).querySelectorAll(CFG.cand && !root ? CFG.cand : "*");
-    for (var i = 0; i < list.length; i++){
-      var e = list[i];
+    if (!code || /['"\\]/.test(code)) return null;
+    var snap;
+    try { snap = document.evaluate(".//*[@*[contains(" + LOW + ", '" + code + "')]]", root || document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null); } catch(_){ return null; }
+    for (var i = 0; i < snap.snapshotLength; i++){
+      var e = snap.snapshotItem(i);
+      if (!root && CFG.cand && !e.matches(CFG.cand)) continue;
       if (!root && e.closest("dialog,[role=dialog],input,textarea,select,option,summary")) continue;
       if (CFG.skip && e.closest(CFG.skip)) continue;
       if (hasCode(e, code)){ var s = sel || CFG.card; if (!s) return e; var c = e.closest(s) || e.querySelector(s); if (c) return c; }
@@ -615,8 +619,12 @@ dialog.sl-l .dl{animation:sll .28s ease}
     ["input", "keyup"].forEach(function(ev){ inp.dispatchEvent(new Event(ev, { bubbles: true })); });
     return true;
   }
-  async function look(code, ms){
-    for (var t = 0; t < ms; t += 250){ var e = find(code); if (e && press(e)) return true; await wait(250); }
+  async function look(code, ms, again){
+    for (var t = 0; t < ms; t += 300){
+      var e = find(code); if (e && press(e)) return true;
+      if (again && t && t % 1200 === 0) again();   /* 도감이 늦게 준비돼 검색창이 비워졌을 때 다시 넣음 */
+      await wait(300);
+    }
     return false;
   }
   async function viaSet(){
@@ -643,14 +651,14 @@ dialog.sl-l .dl{animation:sll .28s ease}
   async function run(){
     await wait(500);
     var T = P.get("t"); if (T && CFG.tabs){ var tb = [].slice.call(document.querySelectorAll(CFG.tabs)).filter(function(b){ return b.getAttribute("data-t") === T; })[0]; if (tb){ hit(tb); await wait(300); } }
-    if (await look(lc, 1200)){ clean(); return; }
+    if (await look(lc, 900)){ clean(); return; }
     if (await viaSet()){ clean(); return; }
-    if (lc && type(Q) && await look(lc, 2000)){ clean(); return; }
+    if (lc && type(Q) && await look(lc, 4800, function(){ var i = CFG.input && document.querySelector(CFG.input); if (i && i.value !== Q) type(Q); })){ clean(); return; }
     if (CFG.tabs && lc){
       var tabs = document.querySelectorAll(CFG.tabs);
-      for (var i = 0; i < tabs.length; i++){ var tb = document.querySelectorAll(CFG.tabs)[i]; if (!tb) break; hit(tb); await wait(300); type(Q); if (await look(lc, 1000)){ clean(); return; } }
+      for (var i = 0; i < tabs.length; i++){ var tb = document.querySelectorAll(CFG.tabs)[i]; if (!tb) break; hit(tb); await wait(300); type(Q); if (await look(lc, 1500)){ clean(); return; } }
     }
-    if (P.get("k") !== "s" && base && type(base) && await look(lc, 1800)){ clean(); return; }
+    if (P.get("k") !== "s" && base && type(base) && await look(lc, 2500)){ clean(); return; }
     type(P.get("k") === "s" ? (Q || base) : (base || Q)); clean();
   }
   if (document.readyState === "complete") run(); else addEventListener("load", run);
