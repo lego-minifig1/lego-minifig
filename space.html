@@ -3,7 +3,7 @@
 <head>
 <!-- © 2026 마가렛트. 무단 복제·재배포 금지. LEGO는 LEGO Group의 상표이며 이 도감은 비공식 팬 사이트입니다. -->
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-1axfCk+t0G2wgQI/uBPK4pisifEoACAvkXcMgH6m6I4=' 'sha256-0Z3XIRgI4wa9f0KeiZWlK0G8FMEE/FEbmrh1XbXE33I='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src https: data: blob:; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-2Gmv2kPxWeJfYwE1vwmU81Ko2vVFtDvaA36KyuKuSJE=' 'sha256-1axfCk+t0G2wgQI/uBPK4pisifEoACAvkXcMgH6m6I4=' 'sha256-0Z3XIRgI4wa9f0KeiZWlK0G8FMEE/FEbmrh1XbXE33I='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src https: data: blob:; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; media-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>레고 우주인 미니피규어 도감</title>
@@ -1359,6 +1359,107 @@ function boot(){d.body.appendChild(dl);if(!mount()){var n=0,t=setInterval(functi
 if(d.readyState==="loading")d.addEventListener("DOMContentLoaded",boot);else boot();
 })();
 
+</script>
+<script>/* 대문 통합 검색에서 넘어올 때: 주소 ?q=코드&n=이름&s=세트 → 그 카드의 상세 창을 바로 엶. 못 찾으면 도감 검색창에 이름을 넣어 둠 */
+(function(){
+  var P = new URLSearchParams(location.search), Q = (P.get("q") || "").trim(), N = (P.get("n") || "").trim(),
+      S = (P.get("s") || "").split(",").map(function(x){ return x.trim(); }).filter(Boolean).slice(0, 4);
+  if (!Q && !N) return;
+  var CFG = {"input": "#q", "go": "radar"}, lc = Q.toLowerCase(), base = N.replace(/\s*[(\[].*$/, "");
+  var wait = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+  function clean(){ try { var u = new URL(location.href); ["q", "n", "s", "t", "k"].forEach(function(k){ u.searchParams.delete(k); }); history.replaceState(history.state, "", u.pathname + u.search + u.hash); } catch(e){} }
+  function toks(v){ return String(v).toLowerCase().split(/[^a-z0-9.\-]/).map(function(t){ return t.replace(/\.(png|jpe?g|gif|webp)$/, "").replace(/-1$/, ""); }); }
+  function hasCode(e, code){
+    for (var i = 0; i < e.attributes.length; i++){ var a = e.attributes[i]; if (a.value && a.value.length < 400 && toks(a.value).indexOf(code) >= 0) return true; }
+    return false;
+  }
+  function overlay(){
+    var d = document.querySelector("dialog[open]"); if (d) return d;
+    var all = document.querySelectorAll(".modal.open,.modal.show,.modal-backdrop.open,[role=dialog]:not([hidden])");
+    for (var i = 0; i < all.length; i++){ var c = getComputedStyle(all[i]); if (c.display !== "none" && c.visibility !== "hidden" && all[i].getClientRects().length) return all[i]; }
+    return null;
+  }
+  function find(code, root, sel){
+    if (!code) return null;
+    var list = (root || document.body).querySelectorAll(CFG.cand && !root ? CFG.cand : "*");
+    for (var i = 0; i < list.length; i++){
+      var e = list[i];
+      if (!root && e.closest("dialog,[role=dialog],input,textarea,select,option,summary")) continue;
+      if (CFG.skip && e.closest(CFG.skip)) continue;
+      if (hasCode(e, code)){ var s = sel || CFG.card; if (!s) return e; var c = e.closest(s) || e.querySelector(s); if (c) return c; }
+    }
+    return null;
+  }
+  function hit(el){
+    try {
+      var r = el.getBoundingClientRect(), o = { bubbles: true, cancelable: true, view: window, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 };
+      if (window.PointerEvent){ el.dispatchEvent(new PointerEvent("pointerdown", o)); el.dispatchEvent(new PointerEvent("pointerup", o)); }
+      el.dispatchEvent(new MouseEvent("mousedown", o)); el.dispatchEvent(new MouseEvent("mouseup", o));
+    } catch(_){}
+    el.click();
+  }
+  function reveal(e){ for (var x = e; x; x = x.parentElement) if (x.tagName === "DETAILS" && !x.open) x.open = true; }
+  function press(e){
+    reveal(e);
+    var t = [e]; if (CFG.click){ var c = e.querySelector(CFG.click); if (c) t.unshift(c); }
+    var im = e.querySelector && e.querySelector("img"); if (im) t.push(im);
+    for (var i = 0; i < t.length; i++){ try { t[i].scrollIntoView({ block: "center" }); } catch(_){} hit(t[i]); if (overlay()) return true; }
+    return false;
+  }
+  var went = false;
+  function go(){
+    if (went || !CFG.go) return; went = true;
+    var g = document.querySelector('[data-go="' + CFG.go + '"],[data-view="' + CFG.go + '"],a[href="#' + CFG.go + '"]');
+    if (g) g.click(); else location.hash = CFG.go;
+  }
+  function type(v){
+    go();
+    var inp = CFG.input ? document.querySelector(CFG.input) : null;
+    if (!inp || !v) return false;
+    inp.value = v;
+    ["input", "keyup"].forEach(function(ev){ inp.dispatchEvent(new Event(ev, { bubbles: true })); });
+    return true;
+  }
+  async function look(code, ms){
+    for (var t = 0; t < ms; t += 250){ var e = find(code); if (e && press(e)) return true; await wait(250); }
+    return false;
+  }
+  async function viaSet(){
+    if (!CFG.via || !S.length || !lc) return false;
+    if (CFG.viaGo){ var g = document.querySelector(CFG.viaGo); if (g) g.click(); await wait(300); }
+    for (var i = 0; i < S.length; i++){
+      var s = S[i].toLowerCase().replace(/-1$/, "");
+      type(S[i].replace(/-1$/, "")); await wait(500);
+      var box = null;
+      for (var t = 0; t < 1500 && !box; t += 250){
+        box = [].slice.call(document.querySelectorAll("[" + CFG.via + "]")).filter(function(e){ return e.getAttribute(CFG.via).toLowerCase().replace(/-1$/, "") === s; })[0];
+        if (!box) await wait(250);
+      }
+      if (!box) continue;
+      box.click(); await wait(500);
+      var d = overlay(); if (!d) continue;
+      var f = find(lc, d);
+      if (f){ f.click(); await wait(400); return true; }
+      var x = d.querySelector("[data-close],.close,button[aria-label*='닫기']"); if (x) x.click(); else if (d.close) d.close();
+      await wait(300);
+    }
+    return false;
+  }
+  async function run(){
+    await wait(500);
+    var T = P.get("t"); if (T && CFG.tabs){ var tb = [].slice.call(document.querySelectorAll(CFG.tabs)).filter(function(b){ return b.getAttribute("data-t") === T; })[0]; if (tb){ hit(tb); await wait(300); } }
+    if (await look(lc, 1200)){ clean(); return; }
+    if (await viaSet()){ clean(); return; }
+    if (lc && type(Q) && await look(lc, 2000)){ clean(); return; }
+    if (CFG.tabs && lc){
+      var tabs = document.querySelectorAll(CFG.tabs);
+      for (var i = 0; i < tabs.length; i++){ var tb = document.querySelectorAll(CFG.tabs)[i]; if (!tb) break; hit(tb); await wait(300); type(Q); if (await look(lc, 1000)){ clean(); return; } }
+    }
+    if (P.get("k") !== "s" && base && type(base) && await look(lc, 1800)){ clean(); return; }
+    type(P.get("k") === "s" ? (Q || base) : (base || Q)); clean();
+  }
+  if (document.readyState === "complete") run(); else addEventListener("load", run);
+})();
 </script>
 </body>
 </html>
