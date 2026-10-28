@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-fOggz6z7SdQdSo1oUXYz5e3zORL8BUS3Idgh8TsADpA=' 'sha256-fEcJv/JYhIzXKto/GKgD/LpZ8hOupw0T9P5jRdCxOsA=' 'sha256-IAGNo1mYYglVw4MnuMLL4yhxQp6RcAyqV6ypqy/PtT4=' 'sha256-QMeMr7kldeJbEcxWXcPQEP2FiQQN7feMIgL9hKlGhdI='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://hangeul.pstatic.net https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src https://img.bricklink.com https://images.brickset.com data: blob:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src blob:; manifest-src 'none'; media-src 'none'"><style data-vc2>#views:not([data-vc2]){display:none!important}</style><script>(function(){
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-vOLJRCowTy4CvNbTPAkjJouM8bNZ3t3M9NNvvb7Z8FE=' 'sha256-fEcJv/JYhIzXKto/GKgD/LpZ8hOupw0T9P5jRdCxOsA=' 'sha256-IAGNo1mYYglVw4MnuMLL4yhxQp6RcAyqV6ypqy/PtT4=' 'sha256-QMeMr7kldeJbEcxWXcPQEP2FiQQN7feMIgL9hKlGhdI='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://hangeul.pstatic.net https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src https://img.bricklink.com https://images.brickset.com data: blob:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src blob:; manifest-src 'none'; media-src 'none'"><style data-vc2>#views:not([data-vc2]){display:none!important}</style><script>(function(){
   var C = {"total": "lotr-minifig-sise-pyojang-kr-2026", "dayPrefix": "lotr-minifig-dogam-day-", "box": "#views", "html": "<span data-p=\"t\">오늘 방문자 <b data-v></b>명</span><span data-p=\"s\"> · </span><span data-p=\"a\">누적 조회 <b data-v></b>회</span>", "mode": "page"};   
   var API = "https://countapi.mileshilliard.com/api/v1/";
   var nativeFetch = window.fetch && window.fetch.bind(window);
@@ -588,7 +588,7 @@ if(d.readyState==="loading")d.addEventListener("DOMContentLoaded",boot);else boo
   if (!Q && !N) return;
   var CFG = {"input": "#q"}, lc = Q.toLowerCase(), base = N.replace(/\s*[(\[].*$/, "");
   var wait = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
-  function clean(){ try { var u = new URL(location.href); ["q", "n", "s", "t", "k"].forEach(function(k){ u.searchParams.delete(k); }); history.replaceState(history.state, "", u.pathname + u.search + u.hash); } catch(e){} }
+  function clean(){ hideTip(); try { var u = new URL(location.href); ["q", "n", "s", "t", "k"].forEach(function(k){ u.searchParams.delete(k); }); history.replaceState(history.state, "", u.pathname + u.search + u.hash); } catch(e){} }
   function toks(v){ return String(v).toLowerCase().split(/[^a-z0-9.\-]/).map(function(t){ return t.replace(/\.(png|jpe?g|gif|webp)$/, "").replace(/-1$/, ""); }); }
   function hasCode(e, code){
     for (var i = 0; i < e.attributes.length; i++){ var a = e.attributes[i]; if (a.value && a.value.length < 400 && toks(a.value).indexOf(code) >= 0) return true; }
@@ -674,8 +674,20 @@ if(d.readyState==="loading")d.addEventListener("DOMContentLoaded",boot);else boo
     }
     return false;
   }
+  /* 찾는 동안 위쪽에 작은 안내 (멈춘 게 아니라 여는 중이라는 표시) */
+  var tip = null;
+  function showTip(){
+    try {
+      tip = document.createElement("div"); tip.textContent = "카드 여는 중…"; tip.setAttribute("role", "status");
+      var st = tip.style; st.position = "fixed"; st.left = "50%"; st.top = "14px"; st.transform = "translateX(-50%)"; st.zIndex = "2147483000";
+      st.padding = "8px 16px"; st.borderRadius = "999px"; st.background = "rgba(20,16,12,.86)"; st.color = "#fff"; st.font = "600 14px/1.2 system-ui,sans-serif";
+      st.boxShadow = "0 6px 18px rgba(0,0,0,.3)"; st.pointerEvents = "none"; st.transition = "opacity .25s";
+      document.body.appendChild(tip);
+    } catch(_){}
+  }
+  function hideTip(){ if (tip){ var t = tip; tip = null; t.style.opacity = "0"; setTimeout(function(){ t.remove(); }, 300); } }
   async function run(){
-    await wait(500);
+    await wait(150);
     var T = P.get("t"); if (T && CFG.tabs){ var tb = [].slice.call(document.querySelectorAll(CFG.tabs)).filter(function(b){ return b.getAttribute("data-t") === T; })[0]; if (tb){ hit(tb); await wait(300); } }
     if (await look(lc, 900)){ clean(); return; }
     if (await viaSet()){ clean(); return; }
@@ -687,7 +699,9 @@ if(d.readyState==="loading")d.addEventListener("DOMContentLoaded",boot);else boo
     if (P.get("k") !== "s" && base && type(base) && await look(lc, 2500)){ clean(); return; }
     type(P.get("k") === "s" ? (Q || base) : (base || Q)); clean();
   }
-  if (document.readyState === "complete") run(); else addEventListener("load", run);
+  /* 사진까지 다 받을 때(load)를 기다리지 않고, 화면 뼈대가 준비되면 바로 시작 */
+  function start(){ showTip(); run(); }
+  if (document.readyState === "loading") addEventListener("DOMContentLoaded", start); else start();
 })();
 </script>
 </body>
