@@ -1,0 +1,59 @@
+name: Make thumbs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  thumbs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make small pictures
+        run: |
+          pip install -q pillow
+          python3 - <<'PY'
+          import os, io, time, urllib.request
+          from PIL import Image
+          os.makedirs("mthumb", exist_ok=True)
+          ok, bad = 0, []
+          for line in open(".github/mthumb-list.txt"):
+              code, *urls = line.split()
+              out = f"mthumb/{code}.webp"
+              if os.path.exists(out):
+                  ok += 1; continue
+              done = False
+              for u in urls:
+                  for tryno in range(3):
+                      try:
+                          req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"})
+                          data = urllib.request.urlopen(req, timeout=30).read()
+                          im = Image.open(io.BytesIO(data)).convert("RGBA")
+                          im.thumbnail((260, 320), Image.LANCZOS)
+                          bg = Image.new("RGBA", im.size, (255, 255, 255, 255))
+                          bg.alpha_composite(im)
+                          bg.convert("RGB").save(out, "WEBP", quality=80, method=6)
+                          done = True; break
+                      except urllib.error.HTTPError as e:
+                          if e.code == 404: break
+                          time.sleep(3)
+                      except Exception:
+                          time.sleep(3)
+                  if done: break
+              if done: ok += 1
+              else: bad.append(code)
+              time.sleep(0.4)
+          print("ok", ok, "bad", len(bad), bad)
+          open("mthumb/_bad.txt", "w").write("\n".join(bad))
+          PY
+          du -sh mthumb
+      - name: Save
+        run: |
+          git config user.name "lego-minifig1"
+          git config user.email "329362638+lego-minifig1@users.noreply.github.com"
+          git pull -q --rebase || true
+          git add mthumb
+          git commit -q -m "Update files" || exit 0
+          git push
