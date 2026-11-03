@@ -21,6 +21,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Attach card opener
+        run: python3 .github/opener/attach.py
       - name: Make updates.json
         run: |
           python3 - <<'PY'
@@ -40,7 +42,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git add updates.json
+          git add updates.json *.html
           if git diff --cached --quiet; then exit 0; fi
           git config user.name "lego-minifig1"
           git config user.email "329362638+lego-minifig1@users.noreply.github.com"
