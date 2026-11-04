@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-o+8gcw1ND8O7OiZoFQk+oxR2z++5sqX/qaYWue3TjhU=' 'sha256-WN5XMIHkLBjQLu5Y+dUvzzCh2YsU4cpqQ4mDqIhBnrM='; style-src 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://cdn.jsdelivr.net; img-src https://img.bricklink.com https://lego-minifig1.github.io data:; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-EFB4NcVGRKVH540K6qLw6/1T7OwWymeHLKpebiR7vOA=' 'sha256-WN5XMIHkLBjQLu5Y+dUvzzCh2YsU4cpqQ4mDqIhBnrM='; style-src 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://cdn.jsdelivr.net; img-src https://img.bricklink.com https://lego-minifig1.github.io data:; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>레고 만화·게임 라이선스 도감</title>
@@ -436,7 +436,7 @@ dialog{overflow:visible}
   var P = new URLSearchParams(location.search), Q = (P.get("q") || "").trim(), N = (P.get("n") || "").trim(),
       S = (P.get("s") || "").split(",").map(function(x){ return x.trim(); }).filter(Boolean).slice(0, 4);
   if (!Q && !N) return;
-  var CFG = {"input": "#q"}, lc = Q.toLowerCase(), base = N.replace(/\s*[(\[].*$/, "");
+  var CFG = {"input": "#q", "setView": "button[data-v=set]", "setCard": true}, lc = Q.toLowerCase(), base = N.replace(/\s*[(\[].*$/, "");
   var wait = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
   function clean(){ hideTip(); try { var u = new URL(location.href); ["q", "n", "s", "t", "k"].forEach(function(k){ u.searchParams.delete(k); }); history.replaceState(history.state, "", u.pathname + u.search + u.hash); } catch(e){} }
   function toks(v){ return String(v).toLowerCase().split(/[^a-z0-9.\-]/).map(function(t){ return t.replace(/\.(png|jpe?g|gif|webp)$/, "").replace(/-1$/, ""); }); }
@@ -559,6 +559,15 @@ dialog{overflow:visible}
   }
   async function run(){
     await wait(150);
+    /* 세트를 찾아온 경우: 세트 보기로 먼저 바꾼 뒤 세트 번호로 찾음 (피규어 카드에 세트 번호가 적혀 있어 엉뚱한 카드가 열리는 것을 막음) */
+    if (P.get("k") === "s" && CFG.setView){
+      var sv = document.querySelector(CFG.setView);
+      if (sv){
+        go(); hit(sv); await wait(400);
+        if (type(Q) && CFG.setCard && await look(lc, 3000)){ clean(); return; }
+        type(Q); hideTip(CFG.setMsg || "세트 결과로 보여 드릴게요"); clean(); return;
+      }
+    }
     var T = P.get("t"); if (T && CFG.tabs){ var tb = [].slice.call(document.querySelectorAll(CFG.tabs)).filter(function(b){ return b.getAttribute("data-t") === T; })[0]; if (tb){ hit(tb); await wait(300); } }
     if (await look(lc, 900)){ clean(); return; }
     if (await viaSet()){ clean(); return; }

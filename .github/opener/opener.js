@@ -126,6 +126,15 @@
   }
   async function run(){
     await wait(150);
+    /* 세트를 찾아온 경우: 세트 보기로 먼저 바꾼 뒤 세트 번호로 찾음 (피규어 카드에 세트 번호가 적혀 있어 엉뚱한 카드가 열리는 것을 막음) */
+    if (P.get("k") === "s" && CFG.setView){
+      var sv = document.querySelector(CFG.setView);
+      if (sv){
+        go(); hit(sv); await wait(400);
+        if (type(Q) && CFG.setCard && await look(lc, 3000)){ clean(); return; }
+        type(Q); hideTip(CFG.setMsg || "세트 결과로 보여 드릴게요"); clean(); return;
+      }
+    }
     var T = P.get("t"); if (T && CFG.tabs){ var tb = [].slice.call(document.querySelectorAll(CFG.tabs)).filter(function(b){ return b.getAttribute("data-t") === T; })[0]; if (tb){ hit(tb); await wait(300); } }
     if (await look(lc, 900)){ clean(); return; }
     if (await viaSet()){ clean(); return; }

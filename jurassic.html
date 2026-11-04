@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-rwCvFCn3Pvy1AiJq+LoUEPahsCnQrd+7oJXBYdwjdHU=' 'sha256-KI75527fwsbOXfXwAsW8VOT8J+sH2lOElHAhw9W/K/E=' 'sha256-IkMstO3MgJtby9ELoJGzwRUGMYg/y7OKHm3XxY7Cj5I=' 'sha256-hP7dKSjucjG5Om5QzFHInYwDGE6tWwHA3xYfwfrXiC8='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src data: blob: https://img.bricklink.com https://images.brickset.com; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'"><style data-vc2>.console .cnt:not([data-vc2]),footer .cnt:not([data-vc2]){display:none!important}</style><script id="vc2">(function(){
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-rwCvFCn3Pvy1AiJq+LoUEPahsCnQrd+7oJXBYdwjdHU=' 'sha256-KI75527fwsbOXfXwAsW8VOT8J+sH2lOElHAhw9W/K/E=' 'sha256-IkMstO3MgJtby9ELoJGzwRUGMYg/y7OKHm3XxY7Cj5I=' 'sha256-prSVtQjsudB4aFzHodwGWyq8yIRULc0FwIPeZdz19SE='; style-src 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src data: blob: https://img.bricklink.com https://images.brickset.com; connect-src https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'"><style data-vc2>.console .cnt:not([data-vc2]),footer .cnt:not([data-vc2]){display:none!important}</style><script id="vc2">(function(){
   var C = {"total": "lego-minifig1-jurassic-total", "dayPrefix": "lego-minifig1-jurassic-d", "box": ".console .cnt, footer .cnt", "html": "<span data-p=\"t\">오늘 방문자 <b data-v></b>명</span><span data-p=\"a\">누적 조회 <b data-v></b>회</span>", "mode": "page"};   
   var API = "https://countapi.mileshilliard.com/api/v1/";
   var nativeFetch = window.fetch && window.fetch.bind(window);
@@ -443,7 +443,7 @@ if(d.readyState==="loading")d.addEventListener("DOMContentLoaded",boot);else boo
   var P = new URLSearchParams(location.search), Q = (P.get("q") || "").trim(), N = (P.get("n") || "").trim(),
       S = (P.get("s") || "").split(",").map(function(x){ return x.trim(); }).filter(Boolean).slice(0, 4);
   if (!Q && !N) return;
-  var CFG = {"input": "#q", "go": "radar"}, lc = Q.toLowerCase(), base = N.replace(/\s*[(\[].*$/, "");
+  var CFG = {"input": "#q", "go": "radar", "setView": "button[data-by=set]", "setMsg": "이 세트에 든 피규어를 보여 드릴게요"}, lc = Q.toLowerCase(), base = N.replace(/\s*[(\[].*$/, "");
   var wait = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
   function clean(){ hideTip(); try { var u = new URL(location.href); ["q", "n", "s", "t", "k"].forEach(function(k){ u.searchParams.delete(k); }); history.replaceState(history.state, "", u.pathname + u.search + u.hash); } catch(e){} }
   function toks(v){ return String(v).toLowerCase().split(/[^a-z0-9.\-]/).map(function(t){ return t.replace(/\.(png|jpe?g|gif|webp)$/, "").replace(/-1$/, ""); }); }
@@ -566,6 +566,15 @@ if(d.readyState==="loading")d.addEventListener("DOMContentLoaded",boot);else boo
   }
   async function run(){
     await wait(150);
+    /* 세트를 찾아온 경우: 세트 보기로 먼저 바꾼 뒤 세트 번호로 찾음 (피규어 카드에 세트 번호가 적혀 있어 엉뚱한 카드가 열리는 것을 막음) */
+    if (P.get("k") === "s" && CFG.setView){
+      var sv = document.querySelector(CFG.setView);
+      if (sv){
+        go(); hit(sv); await wait(400);
+        if (type(Q) && CFG.setCard && await look(lc, 3000)){ clean(); return; }
+        type(Q); hideTip(CFG.setMsg || "세트 결과로 보여 드릴게요"); clean(); return;
+      }
+    }
     var T = P.get("t"); if (T && CFG.tabs){ var tb = [].slice.call(document.querySelectorAll(CFG.tabs)).filter(function(b){ return b.getAttribute("data-t") === T; })[0]; if (tb){ hit(tb); await wait(300); } }
     if (await look(lc, 900)){ clean(); return; }
     if (await viaSet()){ clean(); return; }
