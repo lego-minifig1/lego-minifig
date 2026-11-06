@@ -36,7 +36,7 @@ jobs:
               open('.github/thumbs/_status.txt','w').write('bricklink down %s\n' % time.ctime()); save(); print('bricklink is not serving images - stop'); raise SystemExit(0)
           streak = 0; pauses = 0; made = 0; stop = False
           for lst in sorted(glob.glob(".github/thumbs/*.txt")):
-              book = os.path.basename(lst)[:-4]
+              book = os.path.basename(lst)[:-4].split("-", 1)[-1]
               os.makedirs(f"thumb/{book}", exist_ok=True)
               fails = []
               for line in open(lst):
