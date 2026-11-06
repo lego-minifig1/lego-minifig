@@ -17,7 +17,7 @@ jobs:
       - name: Make small pictures
         run: |
           pip install -q pillow
-          python3 - <<'PY'
+          python3 -u - <<'PY'
           import os, io, time, glob, subprocess, urllib.request, urllib.error
           from PIL import Image
           def save():
@@ -25,6 +25,13 @@ jobs:
           def get(u):
               r = urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=30)
               return r.read()
+          import json
+          probe = {}
+          for u in ["https://img.bricklink.com/ItemImage/MN/0/njo001.png", "https://img.bricklink.com/ItemImage/MN/0/col001.png"]:
+              try: probe[u] = get(u)[:4].hex()
+              except urllib.error.HTTPError as e: probe[u] = "HTTP %d" % e.code
+              except Exception as e: probe[u] = repr(e)[:120]
+          os.makedirs(".github/thumbs", exist_ok=True); json.dump(probe, open(".github/thumbs/_probe.json", "w"), indent=1); print(probe); save()
           streak = 0; pauses = 0; made = 0; stop = False
           for lst in sorted(glob.glob(".github/thumbs/*.txt")):
               book = os.path.basename(lst)[:-4]
@@ -47,14 +54,14 @@ jobs:
                   time.sleep(0.35)
                   if ok:
                       streak = 0; made += 1
-                      if made % 400 == 0: save()
+                      if made % 100 == 0: save()
                       continue
                   fails.append(key)
                   streak = streak + 1 if blocked else streak
                   if streak >= 25:
                       save(); pauses += 1
                       if pauses > 4: stop = True; break
-                      print("blocked - resting 10 min"); time.sleep(600); streak = 0
+                      open(".github/thumbs/_status.txt","w").write("resting %s\n" % time.ctime()); save(); print("blocked - resting 10 min"); time.sleep(600); streak = 0
               open(f".github/thumbs/{book}.fail", "w").write("\n".join(fails))
               print(book, "fails", len(fails))
               if stop: print("stopped: bricklink keeps blocking"); break
