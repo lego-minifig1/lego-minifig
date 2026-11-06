@@ -32,6 +32,8 @@ jobs:
               except urllib.error.HTTPError as e: probe[u] = "HTTP %d" % e.code
               except Exception as e: probe[u] = repr(e)[:120]
           os.makedirs(".github/thumbs", exist_ok=True); json.dump(probe, open(".github/thumbs/_probe.json", "w"), indent=1); print(probe); save()
+          if all(not v.startswith('89504e47') for v in probe.values()):
+              open('.github/thumbs/_status.txt','w').write('bricklink down %s\n' % time.ctime()); save(); print('bricklink is not serving images - stop'); raise SystemExit(0)
           streak = 0; pauses = 0; made = 0; stop = False
           for lst in sorted(glob.glob(".github/thumbs/*.txt")):
               book = os.path.basename(lst)[:-4]
