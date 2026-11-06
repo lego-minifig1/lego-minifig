@@ -1,0 +1,62 @@
+name: Make thumbs
+on:
+  push:
+    branches: [thumb-work]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: make-thumbs
+  cancel-in-progress: false
+jobs:
+  thumbs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make small pictures
+        run: |
+          pip install -q pillow
+          python3 - <<'PY'
+          import os, io, time, glob, subprocess, urllib.request, urllib.error
+          from PIL import Image
+          def save():
+              subprocess.run("git add thumb .github/thumbs && (git diff --cached --quiet || (git -c user.name=lego-minifig1 -c user.email=329362638+lego-minifig1@users.noreply.github.com commit -q -m 'Update files' && git push -q))", shell=True)
+          def get(u):
+              r = urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=30)
+              return r.read()
+          streak = 0; pauses = 0; made = 0; stop = False
+          for lst in sorted(glob.glob(".github/thumbs/*.txt")):
+              book = os.path.basename(lst)[:-4]
+              os.makedirs(f"thumb/{book}", exist_ok=True)
+              fails = []
+              for line in open(lst):
+                  key, *urls = line.split()
+                  out = f"thumb/{book}/{key}.webp"
+                  if os.path.exists(out): continue
+                  ok = False; blocked = False
+                  for u in urls:
+                      try:
+                          im = Image.open(io.BytesIO(get(u))).convert("RGBA"); im.thumbnail((260, 320), Image.LANCZOS)
+                          bg = Image.new("RGBA", im.size, (255, 255, 255, 255)); bg.alpha_composite(im)
+                          bg.convert("RGB").save(out, "WEBP", quality=80, method=6); ok = True; break
+                      except urllib.error.HTTPError as e:
+                          if e.code in (403, 429, 503): blocked = True
+                      except Exception:
+                          blocked = True
+                  time.sleep(0.35)
+                  if ok:
+                      streak = 0; made += 1
+                      if made % 400 == 0: save()
+                      continue
+                  fails.append(key)
+                  streak = streak + 1 if blocked else streak
+                  if streak >= 25:
+                      save(); pauses += 1
+                      if pauses > 4: stop = True; break
+                      print("blocked - resting 10 min"); time.sleep(600); streak = 0
+              open(f".github/thumbs/{book}.fail", "w").write("\n".join(fails))
+              print(book, "fails", len(fails))
+              if stop: print("stopped: bricklink keeps blocking"); break
+          save()
+          PY
