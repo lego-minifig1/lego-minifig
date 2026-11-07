@@ -21,7 +21,7 @@ jobs:
           import os, io, time, glob, subprocess, urllib.request, urllib.error
           from PIL import Image
           def save():
-              subprocess.run("git add thumb .github/thumbs && (git diff --cached --quiet || (git -c user.name=lego-minifig1 -c user.email=329362638+lego-minifig1@users.noreply.github.com commit -q -m 'Update files' && git push -q))", shell=True)
+              subprocess.run(("git add thumb .github/thumbs" if os.path.isdir("thumb") and os.listdir("thumb") else "git add .github/thumbs") + " && (git diff --cached --quiet || (git -c user.name=lego-minifig1 -c user.email=329362638+lego-minifig1@users.noreply.github.com commit -q -m 'Update files' && git push -q))", shell=True)
           def get(u):
               r = urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=30)
               return r.read()
