@@ -35,7 +35,7 @@ jobs:
           if all(not v.startswith('89504e47') for v in probe.values()):
               open('.github/thumbs/_status.txt','w').write('bricklink down %s\n' % time.ctime()); save(); print('bricklink is not serving images - stop'); raise SystemExit(0)
           SIZE = {"architecture": (640, 640)}
-          streak = 0; pauses = 0; made = 0; stop = False
+          streak = 0; pauses = 0; made = 0; stop = False; T0 = time.time()
           for lst in sorted(glob.glob(".github/thumbs/*.txt")):
               book = os.path.basename(lst)[:-4].split("-", 1)[-1]
               os.makedirs(f"thumb/{book}", exist_ok=True)
@@ -44,6 +44,8 @@ jobs:
                   key, *urls = line.split()
                   out = f"thumb/{book}/{key}.webp"
                   if os.path.exists(out): continue
+                  if time.time() - T0 > 310 * 60:
+                      stop = True; open('.github/thumbs/_status.txt','w').write('time limit - push again to continue %s\n' % time.ctime()); break
                   ok = False; blocked = False
                   for u in urls:
                       try:
