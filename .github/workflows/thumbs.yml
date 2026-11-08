@@ -34,7 +34,7 @@ jobs:
           os.makedirs(".github/thumbs", exist_ok=True); json.dump(probe, open(".github/thumbs/_probe.json", "w"), indent=1); print(probe); save()
           if all(not v.startswith('89504e47') for v in probe.values()):
               open('.github/thumbs/_status.txt','w').write('bricklink down %s\n' % time.ctime()); save(); print('bricklink is not serving images - stop'); raise SystemExit(0)
-          SIZE = {"architecture": (640, 640)}
+          SIZE = {"architecture": (800, 800)}
           streak = 0; pauses = 0; made = 0; stop = False; T0 = time.time()
           for lst in sorted(glob.glob(".github/thumbs/*.txt")):
               book = os.path.basename(lst)[:-4].split("-", 1)[-1]
@@ -49,9 +49,9 @@ jobs:
                   ok = False; blocked = False
                   for u in urls:
                       try:
-                          im = Image.open(io.BytesIO(get(u))).convert("RGBA"); im.thumbnail(SIZE.get(book, (260, 320)), Image.LANCZOS)
+                          im = Image.open(io.BytesIO(get(u))).convert("RGBA"); im.thumbnail(SIZE.get(book, (600, 600)), Image.LANCZOS)
                           bg = Image.new("RGBA", im.size, (255, 255, 255, 255)); bg.alpha_composite(im)
-                          bg.convert("RGB").save(out, "WEBP", quality=80, method=6); ok = True; break
+                          bg.convert("RGB").save(out, "WEBP", quality=90, method=6); ok = True; break
                       except urllib.error.HTTPError as e:
                           if e.code in (403, 429, 503): blocked = True
                       except Exception:
