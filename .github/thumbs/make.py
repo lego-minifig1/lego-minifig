@@ -8,7 +8,7 @@ T0 = time.time()
 
 def save():
     add = "git add thumb .github/thumbs" if os.path.isdir("thumb") and os.listdir("thumb") else "git add .github/thumbs"
-    subprocess.run(add + " && (git diff --cached --quiet || (git -c user.name=lego-minifig1 -c user.email=329362638+lego-minifig1@users.noreply.github.com commit -q -m 'Update files' && git pull -q --rebase && git push -q))", shell=True)
+    subprocess.run(add + " && (git diff --cached --quiet || (git -c user.name=lego-minifig1 -c user.email=329362638+lego-minifig1@users.noreply.github.com commit -q -m 'Update files' && (git pull -q --rebase origin thumb-work || true) && git push -q origin HEAD:thumb-work))", shell=True)
 
 
 def host(u):
