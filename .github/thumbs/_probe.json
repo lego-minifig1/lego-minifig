@@ -2,6 +2,5 @@
  "img.bricklink.com": "not image: 3c21444f43545950452068746d6c3e0d0a3c68746d6c206c616e673d22656e223e0d0a3c68656164",
  "www.brickeconomy.com": "ok",
  "cdn.rebrickable.com": "ok",
- "images.brickset.com": "ok",
- "": "ValueError(\"unknown url type: 'Fri'\")"
+ "images.brickset.com": "ok"
 }
