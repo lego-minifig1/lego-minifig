@@ -14,61 +14,7 @@ jobs:
     timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
-      - name: Make small pictures
+      - name: Make pictures
         run: |
           pip install -q pillow
-          python3 -u - <<'PY'
-          import os, io, time, glob, subprocess, urllib.request, urllib.error
-          from PIL import Image
-          def save():
-              subprocess.run(("git add thumb .github/thumbs" if os.path.isdir("thumb") and os.listdir("thumb") else "git add .github/thumbs") + " && (git diff --cached --quiet || (git -c user.name=lego-minifig1 -c user.email=329362638+lego-minifig1@users.noreply.github.com commit -q -m 'Update files' && git push -q))", shell=True)
-          def get(u):
-              r = urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=30)
-              return r.read()
-          import json
-          probe = {}
-          for u in ["https://img.bricklink.com/ItemImage/MN/0/njo001.png", "https://img.bricklink.com/ItemImage/MN/0/col001.png"]:
-              try: probe[u] = get(u)[:4].hex()
-              except urllib.error.HTTPError as e: probe[u] = "HTTP %d" % e.code
-              except Exception as e: probe[u] = repr(e)[:120]
-          os.makedirs(".github/thumbs", exist_ok=True); json.dump(probe, open(".github/thumbs/_probe.json", "w"), indent=1); print(probe); save()
-          if all(not v.startswith('89504e47') for v in probe.values()):
-              open('.github/thumbs/_status.txt','w').write('bricklink down %s\n' % time.ctime()); save(); print('bricklink is not serving images - stop'); raise SystemExit(0)
-          SIZE = {"architecture": (800, 800)}
-          streak = 0; pauses = 0; made = 0; stop = False; T0 = time.time()
-          for lst in sorted(glob.glob(".github/thumbs/*.txt")):
-              book = os.path.basename(lst)[:-4].split("-", 1)[-1]
-              os.makedirs(f"thumb/{book}", exist_ok=True)
-              fails = []
-              for line in open(lst):
-                  key, *urls = line.split()
-                  out = f"thumb/{book}/{key}.webp"
-                  if os.path.exists(out): continue
-                  if time.time() - T0 > 310 * 60:
-                      stop = True; open('.github/thumbs/_status.txt','w').write('time limit - push again to continue %s\n' % time.ctime()); break
-                  ok = False; blocked = False
-                  for u in urls:
-                      try:
-                          im = Image.open(io.BytesIO(get(u))).convert("RGBA"); im.thumbnail(SIZE.get(book, (600, 600)), Image.LANCZOS)
-                          bg = Image.new("RGBA", im.size, (255, 255, 255, 255)); bg.alpha_composite(im)
-                          bg.convert("RGB").save(out, "WEBP", quality=90, method=6); ok = True; break
-                      except urllib.error.HTTPError as e:
-                          if e.code in (403, 429, 503): blocked = True
-                      except Exception:
-                          blocked = True
-                  time.sleep(0.35)
-                  if ok:
-                      streak = 0; made += 1
-                      if made % 100 == 0: save()
-                      continue
-                  fails.append(key)
-                  streak = streak + 1 if blocked else streak
-                  if streak >= 25:
-                      save(); pauses += 1
-                      if pauses > 4: stop = True; break
-                      open(".github/thumbs/_status.txt","w").write("resting %s\n" % time.ctime()); save(); print("blocked - resting 10 min"); time.sleep(600); streak = 0
-              open(f".github/thumbs/{book}.fail", "w").write("\n".join(fails))
-              print(book, "fails", len(fails))
-              if stop: print("stopped: bricklink keeps blocking"); break
-          save()
-          PY
+          python3 -u .github/thumbs/make.py
