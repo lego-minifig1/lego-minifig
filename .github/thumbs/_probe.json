@@ -1,4 +1,7 @@
 {
- "https://img.bricklink.com/ItemImage/MN/0/njo001.png": "3c21444f",
- "https://img.bricklink.com/ItemImage/MN/0/col001.png": "3c21444f"
+ "img.bricklink.com": "not image: 3c21444f43545950452068746d6c3e0d0a3c68746d6c206c616e673d22656e223e0d0a3c68656164",
+ "www.brickeconomy.com": "ok",
+ "cdn.rebrickable.com": "ok",
+ "images.brickset.com": "ok",
+ "": "ValueError(\"unknown url type: 'Fri'\")"
 }
