@@ -25,7 +25,7 @@ def is_image(b):
     return b[:4] == b"\x89PNG" or b[:3] == b"\xff\xd8\xff" or b[:4] == b"GIF8" or (b[:4] == b"RIFF" and b[8:12] == b"WEBP")
 
 
-lists = sorted(glob.glob(".github/thumbs/*.txt"))
+lists = sorted(glob.glob(".github/thumbs/[0-9]*.txt"))
 # 사이트별 상태: 각 목록의 첫 주소로 시험
 down = {}
 status = {}
