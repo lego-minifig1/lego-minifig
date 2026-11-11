@@ -1,8 +1,8 @@
 import os, io, re, time, glob, json, subprocess, urllib.request, urllib.error
 from PIL import Image
 
-SIZE = {"architecture": (800, 800)}
-DEFAULT = (600, 600)
+SIZE = {}
+DEFAULT = (1200, 1200)
 T0 = time.time()
 
 
