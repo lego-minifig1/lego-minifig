@@ -17,4 +17,4 @@ jobs:
       - name: Make pictures
         run: |
           pip install -q pillow
-          python3 -u .github/thumbs/make.py
+          python3 -u .github/thumbs/$(cat .github/thumbs/_mode 2>/dev/null || echo make).py
