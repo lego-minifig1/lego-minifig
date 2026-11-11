@@ -75,6 +75,7 @@ for book in ORDER:
         time.sleep(1.0)
         if ok:
             arch.add(key)
+            if made % 20 == 0: print(book, made, "elapsed", int(time.time()-T0), flush=True)
             made += 1
             if made % 100 == 0:
                 open(af, "w").write("\n".join(sorted(arch)))
