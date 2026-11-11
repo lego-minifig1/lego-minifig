@@ -64,18 +64,20 @@ for book in ORDER:
                 ok = True
                 break
             except urllib.error.HTTPError as e:
+                print(book, key, "HTTP", e.code, int(time.time()-T0), flush=True)
                 if e.code == 429 or e.code >= 500:
                     rest429 += 1
-                    time.sleep(30 * (attempt + 1))
+                    time.sleep(20 * (attempt + 1))
                     continue
                 break
-            except Exception:
+            except Exception as e:
+                print(book, key, "ERR", repr(e)[:80], int(time.time()-T0), flush=True)
                 time.sleep(5)
                 continue
-        time.sleep(1.0)
+        time.sleep(4.0)
         if ok:
             arch.add(key)
-            if made % 20 == 0: print(book, made, "elapsed", int(time.time()-T0), flush=True)
+            if made % 10 == 0: print(book, made, "elapsed", int(time.time()-T0), flush=True)
             made += 1
             if made % 100 == 0:
                 open(af, "w").write("\n".join(sorted(arch)))
