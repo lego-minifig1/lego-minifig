@@ -81,7 +81,7 @@ if bl_down:
                     im.thumbnail((640, 640), Image.LANCZOS)  # 브릭링크 세트 사진 크기(대부분 640px)에 맞춤
                     bg = Image.new("RGBA", im.size, (255, 255, 255, 255))
                     bg.alpha_composite(im)
-                    bg.convert("RGB").save(out, "WEBP", quality=90, method=6)
+                    bg.convert("RGB").save(out, "WEBP", quality=85, method=6)
                     done[key] = u
                     ok = True
                     break
