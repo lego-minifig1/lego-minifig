@@ -78,7 +78,7 @@ if bl_down:
                     if not is_image(b):
                         continue
                     im = Image.open(io.BytesIO(b)).convert("RGBA")
-                    im.thumbnail((1200, 1200), Image.LANCZOS)
+                    im.thumbnail((640, 640), Image.LANCZOS)  # 브릭링크 세트 사진 크기(대부분 640px)에 맞춤
                     bg = Image.new("RGBA", im.size, (255, 255, 255, 255))
                     bg.alpha_composite(im)
                     bg.convert("RGB").save(out, "WEBP", quality=90, method=6)
