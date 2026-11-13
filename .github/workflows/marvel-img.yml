@@ -1,0 +1,19 @@
+name: Marvel pictures
+on:
+  push:
+    branches: [marvel-img]
+permissions:
+  contents: write
+concurrency:
+  group: marvel-img
+  cancel-in-progress: false
+jobs:
+  pics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get pictures
+        run: |
+          pip install -q pillow
+          python3 -u .github/mimg/run.py
