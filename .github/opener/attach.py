@@ -52,3 +52,21 @@ for book in BACK_BOOKS:
     done.append(f)
 print("뒤로 가기 붙임:", ", ".join(done) if done else "없음")
 
+# 브라우저 탭 아이콘: 도감 파일에 아이콘 줄이 없으면 넣음
+ICON = '<link rel="icon" href="favicon.png" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png">'
+done = []
+import glob
+for f in sorted(glob.glob("*.html")):
+    if f == "404.html":
+        continue
+    html = open(f, encoding="utf-8").read()
+    if 'rel="icon"' in html:
+        continue
+    i = html.find("<head>")
+    if i < 0 or i > 2000:
+        print("건너뜀(모양이 다름):", f)
+        continue
+    html = html[:i + 6] + ICON + html[i + 6:]
+    open(f, "w", encoding="utf-8").write(html)
+    done.append(f)
+print("탭 아이콘 넣음:", ", ".join(done) if done else "없음")
