@@ -26,3 +26,29 @@ for book, cfg in CFG.items():
     open(f, "w", encoding="utf-8").write(html)
     done.append(f)
 print("바로 열기 붙임:", ", ".join(done) if done else "없음")
+
+# 휴대폰 뒤로 가기를 누르면 도감에서 나가지 않고 상세 창만 닫히게 하는 작은 스크립트.
+# 아래 도감은 도감 쪽에 그 처리가 없어서, 올릴 때마다 빠져 있으면 다시 붙임.
+BACK = open(os.path.join(HERE, "back.js"), encoding="utf-8").read()
+BACK_BOOKS = ["Harry", "dc", "jurassic", "ninjago", "adventure", "oldlego", "brickheadz", "toon", "pirates", "city"]
+BACK_MARK = "dlgBack"
+done = []
+for book in BACK_BOOKS:
+    f = book + ".html"
+    if not os.path.isfile(f):
+        continue
+    html = open(f, encoding="utf-8").read()
+    if BACK_MARK in html:
+        continue
+    h = "'sha256-" + base64.b64encode(hashlib.sha256(BACK.encode("utf-8")).digest()).decode() + "'"
+    m = re.search(r'(<meta http-equiv="Content-Security-Policy" content="[^"]*?script-src )', html)
+    if not m or "</body>" not in html:
+        print("건너뜀(모양이 다름):", f)
+        continue
+    html = html[:m.end()] + h + " " + html[m.end():]
+    i = html.rindex("</body>")
+    html = html[:i] + "<script>" + BACK + "</script>\n" + html[i:]
+    open(f, "w", encoding="utf-8").write(html)
+    done.append(f)
+print("뒤로 가기 붙임:", ", ".join(done) if done else "없음")
+
