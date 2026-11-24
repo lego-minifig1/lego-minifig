@@ -12,10 +12,27 @@ for book, cfg in CFG.items():
     if not os.path.isfile(f):
         continue
     html = open(f, encoding="utf-8").read()
-    if MARK in html:
-        continue
     js = OP.replace("window.__OPEN_CFG || {}", json.dumps(cfg, ensure_ascii=False))
     h = "'sha256-" + base64.b64encode(hashlib.sha256(js.encode("utf-8")).digest()).decode() + "'"
+    if MARK in html:
+        # 이미 붙어 있으면: 예전 판이면 새 판으로 바꿔 끼움(보안 설정의 해시도 같이 바꿈)
+        mm = re.search(r'<script(?: id="hsaddon")?>(?=/\* 대문 통합 검색에서 넘어올 때)', html)
+        if not mm:
+            continue
+        s = mm.end()
+        e = html.index("</script>", s)
+        old = html[s:e]
+        if old == js:
+            continue
+        oh = "'sha256-" + base64.b64encode(hashlib.sha256(old.encode("utf-8")).digest()).decode() + "'"
+        if oh not in html:
+            print("건너뜀(예전 해시를 못 찾음):", f)
+            continue
+        html = html[:s] + js + html[e:]
+        html = html.replace(oh, h, 1)
+        open(f, "w", encoding="utf-8").write(html)
+        done.append(f + "(새 판)")
+        continue
     m = re.search(r'(<meta http-equiv="Content-Security-Policy" content="[^"]*?script-src )', html)
     if not m or "</body>" not in html:
         print("건너뜀(모양이 다름):", f)
