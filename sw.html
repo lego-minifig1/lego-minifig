@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ko"><head><link rel="icon" href="favicon.png" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-QW5nZZpT+JDay3jGdl3EyEUSaDjp03OWdCk8/9zplI4=' 'sha256-REdS3TpevM1YafhaFtk1gKUYQzNP7pgIhylqR4OtA3s=' 'sha256-o+8gcw1ND8O7OiZoFQk+oxR2z++5sqX/qaYWue3TjhU=' 'sha256-3ulfNfdnbtzE0U4MudbKeZv0iyFBVG45zsTnZSqE60E=' 'sha256-DnBG04FiAxrnWAVbj9I9qtVR4h2TQKfWn6XMO4zhggI=' 'sha256-L06DkszLUMcTEXysXnXDmzoKaZ2MrYp1XwN3LqhNHEU='; style-src 'unsafe-inline'; font-src https://cdn.jsdelivr.net; img-src 'self' https://lego-minifig1.github.io https://cdn.rebrickable.com https://img.bricklink.com https://www.brickeconomy.com data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'"><style data-vc2>#visits:not([data-vc2]){display:none!important}</style><script>(function(){
+<!DOCTYPE html><html lang="ko"><head><link rel="icon" href="favicon.png" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-QW5nZZpT+JDay3jGdl3EyEUSaDjp03OWdCk8/9zplI4=' 'sha256-REdS3TpevM1YafhaFtk1gKUYQzNP7pgIhylqR4OtA3s=' 'sha256-593mBevw3TzPyF+Ejeq2cJ3+uBkaX3l44LUWdtsfyqA=' 'sha256-3ulfNfdnbtzE0U4MudbKeZv0iyFBVG45zsTnZSqE60E=' 'sha256-DnBG04FiAxrnWAVbj9I9qtVR4h2TQKfWn6XMO4zhggI=' 'sha256-L06DkszLUMcTEXysXnXDmzoKaZ2MrYp1XwN3LqhNHEU='; style-src 'unsafe-inline'; font-src https://cdn.jsdelivr.net; img-src 'self' https://lego-minifig1.github.io https://cdn.rebrickable.com https://img.bricklink.com https://www.brickeconomy.com data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'"><style data-vc2>#visits:not([data-vc2]){display:none!important}</style><script>(function(){
   var C = {"total": "starwars-minifig-dogam-kr", "dayPrefix": "starwars-minifig-dogam-kr-", "box": "#visits", "html": "<span data-p=\"t\">오늘 방문자 <b data-v></b>명</span><span data-p=\"s\">·</span><span data-p=\"a\">누적 조회 <b data-v></b>회</span>", "mode": "page"};   
   var API = "https://countapi.mileshilliard.com/api/v1/";
   var nativeFetch = window.fetch && window.fetch.bind(window);
@@ -136,10 +136,10 @@
   var P = new URLSearchParams(location.search), Q = (P.get("q") || "").trim(), N = (P.get("n") || "").trim(),
       S = (P.get("s") || "").split(",").map(function(x){ return x.trim(); }).filter(Boolean).slice(0, 4);
   if (!Q && !N) return;
-  var CFG = {"input": "#q"}, lc = Q.toLowerCase(), base = N.replace(/\s*[(\[].*$/, "");
+  var CFG = {"input": "#q", "noSet": true, "setMsg": "이 세트에 든 피규어를 보여 드릴게요"}, lc = Q.toLowerCase(), base = N.replace(/\s*[(\[].*$/, "");
   var wait = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
   function clean(){ hideTip(); try { var u = new URL(location.href); ["q", "n", "s", "t", "k"].forEach(function(k){ u.searchParams.delete(k); }); history.replaceState(history.state, "", u.pathname + u.search + u.hash); } catch(e){} }
-  function toks(v){ return String(v).toLowerCase().split(/[^a-z0-9.\-]/).map(function(t){ return t.replace(/\.(png|jpe?g|gif|webp)$/, "").replace(/-1$/, ""); }); }
+  function toks(v){ return String(v).toLowerCase().split(/[^a-z0-9.\-]/).map(function(t){ return t.replace(/\.(png|jpe?g|gif|webp)$/, "").replace(/-1$/, "").replace(/^bl-/, ""); }); }
   function hasCode(e, code){
     for (var i = 0; i < e.attributes.length; i++){ var a = e.attributes[i]; if (a.value && a.value.length < 400 && toks(a.value).indexOf(code) >= 0) return true; }
     return false;
@@ -152,6 +152,8 @@
   }
   /* 코드가 들어 있는 속성을 가진 요소만 브라우저가 바로 골라 줌 (화면 전체를 훑지 않음) */
   var LOW = "translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')";
+  var tried = typeof WeakMap === "function" ? new WeakMap() : null;
+  function used(e){ return tried && (tried.get(e) || 0) >= 2; }
   function find(code, root, sel){
     if (!code || /['"\\]/.test(code)) return null;
     var snap;
@@ -161,6 +163,7 @@
       if (!root && CFG.cand && !e.matches(CFG.cand)) continue;
       if (!root && e.closest("dialog,[role=dialog],input,textarea,select,option,summary")) continue;
       if (CFG.skip && e.closest(CFG.skip)) continue;
+      if (!root && used(e)) continue;
       if (hasCode(e, code)){ var s = sel || CFG.card; if (!s) return e; var c = e.closest(s) || e.querySelector(s); if (c) return c; }
     }
     return null;
@@ -175,6 +178,7 @@
   }
   function reveal(e){ for (var x = e; x; x = x.parentElement) if (x.tagName === "DETAILS" && !x.open) x.open = true; }
   function press(e){
+    if (tried) tried.set(e, (tried.get(e) || 0) + 1);
     reveal(e);
     var t = [e]; if (CFG.click){ var c = e.querySelector(CFG.click); if (c) t.unshift(c); }
     var im = e.querySelector && e.querySelector("img"); if (im) t.push(im);
@@ -187,6 +191,8 @@
     var g = document.querySelector('[data-go="' + CFG.go + '"],[data-view="' + CFG.go + '"],a[href="#' + CFG.go + '"]');
     if (g) g.click(); else location.hash = CFG.go;
   }
+  /* 검색 결과로 넘길 때 검색창이 화면 위쪽에 오게 내려 줌 (결과가 아래에 있어 안 보이는 일 방지) */
+  function toInput(){ var i = (CFG.results && document.querySelector(CFG.results)) || (CFG.input && document.querySelector(CFG.input)); if (i){ try { var y = i.getBoundingClientRect().top + scrollY - 90; if (Math.abs(y - scrollY) > 40) scrollTo(0, Math.max(0, y)); } catch(_){} } }
   function type(v){
     go();
     var inp = CFG.input ? document.querySelector(CFG.input) : null;
@@ -259,16 +265,38 @@
   }
   async function run(){
     await wait(150);
+    /* 세트를 찾아온 경우: 세트 보기로 먼저 바꾼 뒤 세트 번호로 찾음 (피규어 카드에 세트 번호가 적혀 있어 엉뚱한 카드가 열리는 것을 막음) */
+    if (P.get("k") === "s" && CFG.setView){
+      var sv = document.querySelector(CFG.setView);
+      if (sv){
+        go(); hit(sv); await wait(400);
+        if (type(Q) && CFG.setCard && await look(lc, 3000)){ clean(); return; }
+        type(Q); toInput(); hideTip(CFG.setMsg || "세트 결과로 보여 드릴게요"); clean(); return;
+      }
+    }
+    if (P.get("k") === "s" && CFG.noSet){ type(Q); toInput(); hideTip(CFG.setMsg || "이 세트에 든 피규어를 보여 드릴게요"); clean(); return; }
     var T = P.get("t"); if (T && CFG.tabs){ var tb = [].slice.call(document.querySelectorAll(CFG.tabs)).filter(function(b){ return b.getAttribute("data-t") === T; })[0]; if (tb){ hit(tb); await wait(300); } }
     if (await look(lc, 900)){ clean(); return; }
     if (await viaSet()){ clean(); return; }
-    if (lc && type(Q) && await look(lc, 4800, function(){ var i = CFG.input && document.querySelector(CFG.input); if (i && i.value !== Q) type(Q); })){ clean(); return; }
+    if (lc && type(Q) && await look(lc, P.get("k") === "s" ? 2000 : (CFG.wait || 4800), function(){ var i = CFG.input && document.querySelector(CFG.input); if (i && i.value !== Q) type(Q); })){ clean(); return; }
+    /* 분류를 골라야만 보이는 카드(마블의 스파이디·잡지 부록 등): 분류를 하나씩 바꿔 가며 찾음 */
+    if (CFG.cats && lc){
+      var cs = document.querySelector(CFG.cats.sel);
+      if (cs){
+        var first = cs.value;
+        for (var ci = 0; ci < CFG.cats.vals.length; ci++){
+          cs.value = CFG.cats.vals[ci]; cs.dispatchEvent(new Event("change", { bubbles: true })); await wait(150);
+          type(Q); if (await look(lc, 700)){ clean(); return; }
+        }
+        cs.value = first; cs.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    }
     if (CFG.tabs && lc){
       var tabs = document.querySelectorAll(CFG.tabs);
       for (var i = 0; i < tabs.length; i++){ var tb = document.querySelectorAll(CFG.tabs)[i]; if (!tb) break; hit(tb); await wait(300); type(Q); if (await look(lc, 1500)){ clean(); return; } }
     }
     if (P.get("k") !== "s" && base && type(base) && await look(lc, 2500)){ clean(); return; }
-    type(P.get("k") === "s" ? (Q || base) : (base || Q)); hideTip("검색 결과로 보여 드릴게요"); clean();
+    type(P.get("k") === "s" ? (Q || base) : (base || Q)); toInput(); hideTip("검색 결과로 보여 드릴게요"); clean();
   }
   /* 사진까지 다 받을 때(load)를 기다리지 않고, 화면 뼈대가 준비되면 바로 시작 */
   function start(){ showTip(); run(); }
