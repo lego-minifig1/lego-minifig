@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="ko">
-<head>
+<head><link rel="icon" href="favicon.png" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-GXWL/Sj++oFhqM91Y8jJooQLzLp//SxCZQOhh1TiKWA=' 'sha256-YNNgJGFidqrALQ6aNY6cbaPCuTKcnnBIOKY4oCJ1IwI=' 'sha256-zLAPB+EostaHszla2s12gnlUQ0oz1/f/+h/HZaTxWq0='; style-src 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://cdn.jsdelivr.net; img-src 'self' https://img.bricklink.com https://lego-minifig1.github.io data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-kJEShASKNawC89eyT+cYLc5UGwDgfjFz/KieXYBhRuc=' 'sha256-Vd4zGtff3j5VHz3U4lGQOoTq9/vYrWabjD8k12yUKlE=' 'sha256-GXWL/Sj++oFhqM91Y8jJooQLzLp//SxCZQOhh1TiKWA=' 'sha256-YNNgJGFidqrALQ6aNY6cbaPCuTKcnnBIOKY4oCJ1IwI=' 'sha256-zLAPB+EostaHszla2s12gnlUQ0oz1/f/+h/HZaTxWq0='; style-src 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://cdn.jsdelivr.net; img-src 'self' https://img.bricklink.com https://lego-minifig1.github.io data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>레고 만화·게임 라이선스 도감</title>
@@ -691,5 +691,228 @@ html.tvon-lock{overflow:hidden}
 })();</script><style>
 html.pl-lock .tier,html.pl-lock .legend,html.pl-lock .pl-hide{display:none!important}
 </style>
+<script>/* 대문 통합 검색에서 넘어올 때: 주소 ?q=코드&n=이름&s=세트 → 그 카드의 상세 창을 바로 엶. 못 찾으면 도감 검색창에 이름을 넣어 둠 */
+(function(){
+  var P = new URLSearchParams(location.search), Q = (P.get("q") || "").trim(), N = (P.get("n") || "").trim(),
+      S = (P.get("s") || "").split(",").map(function(x){ return x.trim(); }).filter(Boolean).slice(0, 4);
+  if (!Q && !N) return;
+  var CFG = {"input": "#q", "setView": "button[data-v=set]", "setCard": true}, lc = Q.toLowerCase(), base = N.replace(/\s*[(\[].*$/, "");
+  var wait = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+  function clean(){ hideTip(); try { var u = new URL(location.href); ["q", "n", "s", "t", "k"].forEach(function(k){ u.searchParams.delete(k); }); history.replaceState(history.state, "", u.pathname + u.search + u.hash); } catch(e){} }
+  function toks(v){ return String(v).toLowerCase().split(/[^a-z0-9.\-]/).map(function(t){ return t.replace(/\.(png|jpe?g|gif|webp)$/, "").replace(/-1$/, "").replace(/^bl-/, ""); }); }
+  function hasCode(e, code){
+    for (var i = 0; i < e.attributes.length; i++){ var a = e.attributes[i]; if (a.value && a.value.length < 400 && toks(a.value).indexOf(code) >= 0) return true; }
+    return false;
+  }
+  function overlay(){
+    var d = document.querySelector("dialog[open]"); if (d) return d;
+    var all = document.querySelectorAll(".modal.open,.modal.show,.modal-backdrop.open,[role=dialog]:not([hidden])");
+    for (var i = 0; i < all.length; i++){ var c = getComputedStyle(all[i]); if (c.display !== "none" && c.visibility !== "hidden" && all[i].getClientRects().length) return all[i]; }
+    return null;
+  }
+  /* 코드가 들어 있는 속성을 가진 요소만 브라우저가 바로 골라 줌 (화면 전체를 훑지 않음) */
+  var LOW = "translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')";
+  var tried = typeof WeakMap === "function" ? new WeakMap() : null;
+  function used(e){ return tried && (tried.get(e) || 0) >= 2; }
+  function find(code, root, sel){
+    if (!code || /['"\\]/.test(code)) return null;
+    var snap;
+    try { snap = document.evaluate(".//*[@*[contains(" + LOW + ", '" + code + "')]]", root || document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null); } catch(_){ return null; }
+    for (var i = 0; i < snap.snapshotLength; i++){
+      var e = snap.snapshotItem(i);
+      if (!root && CFG.cand && !e.matches(CFG.cand)) continue;
+      if (!root && e.closest("dialog,[role=dialog],input,textarea,select,option,summary")) continue;
+      if (CFG.skip && e.closest(CFG.skip)) continue;
+      if (!root && used(e)) continue;
+      if (hasCode(e, code)){ var s = sel || CFG.card; if (!s) return e; var c = e.closest(s) || e.querySelector(s); if (c) return c; }
+    }
+    return null;
+  }
+  function hit(el){
+    try {
+      var r = el.getBoundingClientRect(), o = { bubbles: true, cancelable: true, view: window, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 };
+      if (window.PointerEvent){ el.dispatchEvent(new PointerEvent("pointerdown", o)); el.dispatchEvent(new PointerEvent("pointerup", o)); }
+      el.dispatchEvent(new MouseEvent("mousedown", o)); el.dispatchEvent(new MouseEvent("mouseup", o));
+    } catch(_){}
+    el.click();
+  }
+  function reveal(e){ for (var x = e; x; x = x.parentElement) if (x.tagName === "DETAILS" && !x.open) x.open = true; }
+  function press(e){
+    if (tried) tried.set(e, (tried.get(e) || 0) + 1);
+    reveal(e);
+    var t = [e]; if (CFG.click){ var c = e.querySelector(CFG.click); if (c) t.unshift(c); }
+    var im = e.querySelector && e.querySelector("img"); if (im) t.push(im);
+    for (var i = 0; i < t.length; i++){ try { t[i].scrollIntoView({ block: "center" }); } catch(_){} hit(t[i]); if (overlay()) return true; }
+    return false;
+  }
+  var went = false;
+  function go(){
+    if (went || !CFG.go) return; went = true;
+    var g = document.querySelector('[data-go="' + CFG.go + '"],[data-view="' + CFG.go + '"],a[href="#' + CFG.go + '"]');
+    if (g) g.click(); else location.hash = CFG.go;
+  }
+  /* 검색 결과로 넘길 때 검색창이 화면 위쪽에 오게 내려 줌 (결과가 아래에 있어 안 보이는 일 방지) */
+  function toInput(){ var i = (CFG.results && document.querySelector(CFG.results)) || (CFG.input && document.querySelector(CFG.input)); if (i){ try { var y = i.getBoundingClientRect().top + scrollY - 90; if (Math.abs(y - scrollY) > 40) scrollTo(0, Math.max(0, y)); } catch(_){} } }
+  function type(v){
+    go();
+    var inp = CFG.input ? document.querySelector(CFG.input) : null;
+    if (!inp || !v) return false;
+    inp.value = v;
+    ["input", "keyup"].forEach(function(ev){ inp.dispatchEvent(new Event(ev, { bubbles: true })); });
+    return true;
+  }
+  async function look(code, ms, again){
+    for (var t = 0; t < ms; t += 300){
+      var e = find(code); if (e && press(e)) return true;
+      if (again && t && t % 1200 === 0) again();   /* 도감이 늦게 준비돼 검색창이 비워졌을 때 다시 넣음 */
+      await wait(300);
+    }
+    return false;
+  }
+  async function viaSet(){
+    if (!CFG.via || !S.length || !lc) return false;
+    if (CFG.viaGo){ var g = document.querySelector(CFG.viaGo); if (g) g.click(); await wait(300); }
+    for (var i = 0; i < S.length; i++){
+      var s = S[i].toLowerCase().replace(/-1$/, "");
+      type(S[i].replace(/-1$/, "")); await wait(500);
+      var box = null;
+      for (var t = 0; t < 1500 && !box; t += 250){
+        box = [].slice.call(document.querySelectorAll("[" + CFG.via + "]")).filter(function(e){ return e.getAttribute(CFG.via).toLowerCase().replace(/-1$/, "") === s; })[0];
+        if (!box) await wait(250);
+      }
+      if (!box) continue;
+      box.click(); await wait(500);
+      var d = overlay(); if (!d) continue;
+      var f = find(lc, d);
+      if (f){ f.click(); await wait(400); return true; }
+      var x = d.querySelector("[data-close],.close,button[aria-label*='닫기']"); if (x) x.click(); else if (d.close) d.close();
+      await wait(300);
+    }
+    return false;
+  }
+  /* 찾는 동안 화면 가운데 작은 창: 빙글 도는 표시 + "카드 여는 중" + 찾는 이름
+     (도감마다 보안 설정이 달라 style 태그 대신 요소에 직접 꾸밈, 회전은 Web Animations로) */
+  var tip = null, tipMsg = null;
+  function showTip(){
+    try {
+      var box = document.createElement("div"); box.setAttribute("role", "status"); box.setAttribute("aria-live", "polite");
+      var b = box.style; b.position = "fixed"; b.left = "50%"; b.top = "50%"; b.transform = "translate(-50%,-50%)"; b.zIndex = "2147483000";
+      b.width = "min(240px, 76vw)"; b.padding = "22px 20px 18px"; b.borderRadius = "16px"; b.background = "rgba(255,255,255,.97)";
+      b.boxShadow = "0 18px 50px rgba(0,0,0,.4), 0 0 0 1px rgba(0,0,0,.08)"; b.borderTop = "4px solid #c8382e"; b.textAlign = "center"; b.pointerEvents = "none";
+      b.font = "500 14px/1.45 system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif"; b.color = "#2a2118";
+      b.transition = "opacity .25s"; b.opacity = "0";
+      var sp = document.createElement("div"), ss = sp.style;
+      ss.width = "34px"; ss.height = "34px"; ss.margin = "0 auto 12px"; ss.borderRadius = "50%";
+      ss.border = "4px solid #ece4d4"; ss.borderTopColor = "#c8382e"; ss.boxSizing = "border-box";
+      if (sp.animate) sp.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(360deg)" }], { duration: 800, iterations: Infinity });
+      tipMsg = document.createElement("div"); tipMsg.textContent = "카드 여는 중…";
+      tipMsg.style.font = "700 16px/1.3 system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif";
+      box.appendChild(sp); box.appendChild(tipMsg);
+      if (N || Q){
+        var nm = document.createElement("div"), ns = nm.style; nm.textContent = N || Q;
+        ns.marginTop = "6px"; ns.color = "#7a6a58"; ns.fontSize = "13px"; ns.overflow = "hidden"; ns.textOverflow = "ellipsis"; ns.whiteSpace = "nowrap";
+        box.appendChild(nm);
+      }
+      (document.documentElement || document.body).appendChild(box); tip = box;   /* 도감이 준비될 때까지 본문을 가려 두는 경우에도 보이게 */
+      requestAnimationFrame(function(){ box.style.opacity = "1"; });
+    } catch(_){}
+  }
+  function hideTip(msg){
+    if (!tip) return;
+    var t = tip; tip = null;
+    var go = function(){ t.style.opacity = "0"; setTimeout(function(){ t.remove(); }, 300); };
+    if (msg && tipMsg){ tipMsg.textContent = msg; var sp = t.firstChild; if (sp) sp.style.visibility = "hidden"; setTimeout(go, 1400); } else go();
+  }
+  async function run(){
+    await wait(150);
+    /* 세트를 찾아온 경우: 세트 보기로 먼저 바꾼 뒤 세트 번호로 찾음 (피규어 카드에 세트 번호가 적혀 있어 엉뚱한 카드가 열리는 것을 막음) */
+    if (P.get("k") === "s" && CFG.setView){
+      var sv = document.querySelector(CFG.setView);
+      if (sv){
+        go(); hit(sv); await wait(400);
+        if (type(Q) && CFG.setCard && await look(lc, 3000)){ clean(); return; }
+        type(Q); toInput(); hideTip(CFG.setMsg || "세트 결과로 보여 드릴게요"); clean(); return;
+      }
+    }
+    if (P.get("k") === "s" && CFG.noSet){ type(Q); toInput(); hideTip(CFG.setMsg || "이 세트에 든 피규어를 보여 드릴게요"); clean(); return; }
+    var T = P.get("t"); if (T && CFG.tabs){ var tb = [].slice.call(document.querySelectorAll(CFG.tabs)).filter(function(b){ return b.getAttribute("data-t") === T; })[0]; if (tb){ hit(tb); await wait(300); } }
+    if (await look(lc, 900)){ clean(); return; }
+    if (await viaSet()){ clean(); return; }
+    if (lc && type(Q) && await look(lc, P.get("k") === "s" ? 2000 : (CFG.wait || 4800), function(){ var i = CFG.input && document.querySelector(CFG.input); if (i && i.value !== Q) type(Q); })){ clean(); return; }
+    /* 분류를 골라야만 보이는 카드(마블의 스파이디·잡지 부록 등): 분류를 하나씩 바꿔 가며 찾음 */
+    if (CFG.cats && lc){
+      var cs = document.querySelector(CFG.cats.sel);
+      if (cs){
+        var first = cs.value;
+        for (var ci = 0; ci < CFG.cats.vals.length; ci++){
+          cs.value = CFG.cats.vals[ci]; cs.dispatchEvent(new Event("change", { bubbles: true })); await wait(150);
+          type(Q); if (await look(lc, 700)){ clean(); return; }
+        }
+        cs.value = first; cs.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    }
+    if (CFG.tabs && lc){
+      var tabs = document.querySelectorAll(CFG.tabs);
+      for (var i = 0; i < tabs.length; i++){ var tb = document.querySelectorAll(CFG.tabs)[i]; if (!tb) break; hit(tb); await wait(300); type(Q); if (await look(lc, 1500)){ clean(); return; } }
+    }
+    if (P.get("k") !== "s" && base && type(base) && await look(lc, 2500)){ clean(); return; }
+    type(P.get("k") === "s" ? (Q || base) : (base || Q)); toInput(); hideTip("검색 결과로 보여 드릴게요"); clean();
+  }
+  /* 사진까지 다 받을 때(load)를 기다리지 않고, 화면 뼈대가 준비되면 바로 시작 */
+  function start(){ showTip(); run(); }
+  if (document.readyState === "loading") addEventListener("DOMContentLoaded", start); else start();
+})();
+</script>
+<script>/* 휴대폰 뒤로 가기: 상세 창이 열려 있으면 도감에서 나가지 않고 그 창만 닫음 */
+(function(){
+  if (window.__dlgBack) return; window.__dlgBack = 1;
+  var K = "dlgBack", SEL = "dialog[open],#modal.show", depth = 0, skip = 0, keep = null;
+  function opened(){ return [].filter.call(document.querySelectorAll(SEL), function(e){ return e.getClientRects().length; }); }
+  function shut(e){
+    var b = e.querySelector("[data-close],.close,.x,.dclose,.mclose,button[aria-label*='닫기'],button[title*='닫기']");
+    if (!b){ var bs = e.querySelectorAll("button"); for (var i = 0; i < bs.length; i++) if (/^[\s×✕✖xX]+$/.test(bs[i].textContent)){ b = bs[i]; break; } }
+    if (b) b.click();
+    if (e.matches(SEL)){ if (e.close) e.close(); else e.classList.remove("show"); }
+  }
+  function sync(){
+    if (skip) return;
+    var n = opened().length;
+    while (depth < n){
+      var s = {}; s[K] = depth + 1;
+      try { history.pushState(s, "", location.href); } catch(_){ return; }
+      depth++;
+    }
+    if (depth > n){ var d = depth - n; depth = n; skip++; keep = location.href; history.go(-d); }
+  }
+  addEventListener("popstate", function(){
+    if (skip){
+      skip--;
+      if (keep && keep !== location.href){ try { history.replaceState(history.state, "", keep); } catch(_){} }
+      keep = null; setTimeout(sync, 0); return;
+    }
+    if (!depth){
+      /* 앞으로 가기로 빈 기록에 들어온 경우 한 칸 되돌림 */
+      if (history.state && history.state[K] && !opened().length){ skip++; keep = location.href; history.back(); }
+      return;
+    }
+    depth--;
+    var o = opened(); if (o.length > depth) shut(o[o.length - 1]);
+    setTimeout(sync, 0);
+  });
+  var mo = new MutationObserver(sync), seen = null, tries = 0;
+  function watch(){
+    mo.observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ["open"] });
+    var t = setInterval(function(){
+      var m = document.getElementById("modal");
+      if (m && m !== seen){ seen = m; mo.observe(m, { attributes: true, attributeFilter: ["class"] }); sync(); }
+      if (++tries > 60) clearInterval(t);
+    }, 500);
+    /* 창을 연 채 새로 고침했을 때 남은 빈 기록을 치움 */
+    if (history.state && history.state[K]) setTimeout(function(){ if (!opened().length && !depth && history.state && history.state[K]){ skip++; keep = location.href; history.back(); } }, 1500);
+    sync();
+  }
+  if (document.readyState === "loading") addEventListener("DOMContentLoaded", watch); else watch();
+})();
+</script>
 </body>
 </html>
