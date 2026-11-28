@@ -2,7 +2,7 @@
 <html lang="ko">
 <head><link rel="icon" href="favicon.png" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-kJEShASKNawC89eyT+cYLc5UGwDgfjFz/KieXYBhRuc=' 'sha256-Vd4zGtff3j5VHz3U4lGQOoTq9/vYrWabjD8k12yUKlE=' 'sha256-GXWL/Sj++oFhqM91Y8jJooQLzLp//SxCZQOhh1TiKWA=' 'sha256-YNNgJGFidqrALQ6aNY6cbaPCuTKcnnBIOKY4oCJ1IwI=' 'sha256-zLAPB+EostaHszla2s12gnlUQ0oz1/f/+h/HZaTxWq0='; style-src 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://cdn.jsdelivr.net; img-src 'self' https://img.bricklink.com https://lego-minifig1.github.io data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-kJEShASKNawC89eyT+cYLc5UGwDgfjFz/KieXYBhRuc=' 'sha256-Vd4zGtff3j5VHz3U4lGQOoTq9/vYrWabjD8k12yUKlE=' 'sha256-GXWL/Sj++oFhqM91Y8jJooQLzLp//SxCZQOhh1TiKWA=' 'sha256-zRkZ8+tYPG2f/Bmh0vNXCUNVczbebOl+Anrq/z7LpbM=' 'sha256-zLAPB+EostaHszla2s12gnlUQ0oz1/f/+h/HZaTxWq0='; style-src 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://cdn.jsdelivr.net; img-src 'self' https://img.bricklink.com https://lego-minifig1.github.io data:; connect-src 'self' https://countapi.mileshilliard.com; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>레고 만화·게임 라이선스 도감</title>
@@ -646,14 +646,13 @@ html.tvon-lock{overflow:hidden}
     try{var k=await crypto.subtle.importKey("raw",raw,"AES-GCM",false,["decrypt"]);var p=await crypto.subtle.decrypt({name:"AES-GCM",iv:a.slice(4,16)},k,a.slice(16));
       try{var j=await new Response(new Blob([p]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).text();sessionStorage.setItem("plov:"+el.textContent.trim().slice(28,60),j);}catch(e2){}
       return true;}catch(e){return false;}}
-  var css=".pl-key{position:fixed;left:14px;bottom:14px;z-index:2147483000;display:none;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;border:1px solid rgba(0,0,0,.18);background:rgba(255,255,255,.92);color:#2b2a27;font:600 13px/1 Pretendard,system-ui,sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15)}"+
-   "html.pl-lock .pl-key,html.pl-open .pl-key{display:inline-flex}.pl-key svg{width:15px;height:15px}"+
+  var css=".pl-key{display:none!important;vertical-align:middle;margin:0 0 0 6px!important;padding:3px!important;width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;max-width:none!important;border:0!important;border-radius:4px!important;background:none!important;color:inherit!important;opacity:.3!important;cursor:pointer;box-shadow:none!important;line-height:0!important;transform:none!important;pointer-events:auto!important;position:static!important}.pl-key:hover,.pl-key:focus-visible{opacity:.75!important}.pl-key span{display:none}.pl-key.pl-float{position:fixed!important;right:4px;bottom:4px;z-index:2147483000;opacity:.15!important}html.pl-lock .pl-key,html.pl-open .pl-key{display:inline-block!important}html.pl-open .pl-key{opacity:.55!important}.pl-key svg{width:13px!important;height:13px!important;min-width:0!important;display:block!important;margin:0!important}"+
    ".pl-dlg{position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}"+
    "dialog.pl-dlg{width:100vw!important;height:100vh!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;border:0!important;box-sizing:border-box!important;color:inherit}dialog.pl-dlg:not([open]){display:none}dialog.pl-dlg::backdrop{background:transparent}"+
    ".pl-box{background:#fff;color:#222;border-radius:14px;padding:20px 20px 16px;width:min(320px,90vw);font:15px/1.5 Pretendard,system-ui,sans-serif;box-shadow:0 10px 40px rgba(0,0,0,.3)}"+
    ".pl-box h3{margin:0 0 4px!important;font-size:17px!important;color:#222!important}.pl-box p{margin:0 0 12px!important;color:#555!important;font-size:13.5px!important}.pl-box input{width:100%!important;box-sizing:border-box!important;height:40px!important;border:1px solid #bbb!important;border-radius:8px!important;padding:0 10px!important;font-size:16px!important;background:#fff!important;color:#222!important;box-shadow:none!important;outline:none}.pl-box input:focus{border-color:#222!important}"+
    ".pl-box .r{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}.pl-box button{height:36px!important;min-width:64px;padding:0 14px!important;border-radius:8px!important;border:1px solid #bbb!important;background:#fff!important;color:#222!important;font:600 14px Pretendard,system-ui,sans-serif!important;cursor:pointer;box-shadow:none!important;transform:none!important}.pl-box button.go{background:#222!important;color:#fff!important;border-color:#222!important}.pl-box .er{color:#c0392b!important;font-size:13px;min-height:18px;margin-top:6px}"+
-   "@media(max-width:640px){.pl-key{height:36px;width:36px;padding:0;justify-content:center;left:10px;bottom:10px}.pl-key span{display:none}}"+
+   ""+
    "html:not(.pl-lock) .pl-lockbox{display:none!important}.pl-lockbox{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;border:1px dashed currentColor;opacity:.85;font-size:14px;cursor:pointer}";
   var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
   var KEY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M10.85 12.15 19 4"/><path d="m18 5 2 2"/><path d="m15 8 2 2"/></svg>';
@@ -680,10 +679,16 @@ html.tvon-lock{overflow:hidden}
   }
   function relock(){try{sessionStorage.removeItem(SK);sessionStorage.removeItem(HK);for(var i=sessionStorage.length-1;i>=0;i--){var n=sessionStorage.key(i);if(n&&n.indexOf("plov:")===0)sessionStorage.removeItem(n);}}catch(e){}location.reload();}
   window.__plAsk=ask;
+  function place(b){var t=0,mo=null;
+    function find(){var w=document.createTreeWalker(document.body,4,null),n,c=[];while((n=w.nextNode())){var v=n.nodeValue.replace(/^[\s\u200b-\u200d\u2060\ufeff]+/,"");if(v.indexOf("마가렛트")!==0)continue;var p=n.parentElement;if(!p||p.closest(".pl-dlg,script,style,noscript,title,[aria-hidden=true],.pl-key"))continue;c.push(p);}
+      var vis=c.filter(function(p){return p.offsetParent!==null;}),ft=vis.filter(function(p){return p.closest("footer");});return ft.length?ft[ft.length-1]:vis.length?vis[vis.length-1]:c.length?c[c.length-1]:null;}
+    function put(){var p=find();if(!p)return false;var a=p.closest("a,button,label");if(a){if(b.previousSibling!==a)a.parentNode.insertBefore(b,a.nextSibling);}else if(b.parentNode!==p)p.appendChild(b);b.classList.remove("pl-float");return true;}
+    if(put())return;b.classList.add("pl-float");document.body.appendChild(b);
+    mo=new MutationObserver(function(){if(t)return;t=setTimeout(function(){t=0;if(put()&&mo){mo.disconnect();mo=null;}},250);});mo.observe(document.body,{childList:true,subtree:true});setTimeout(function(){if(mo){mo.disconnect();mo=null;}},10000);}
   function mk(){var b=document.createElement("button");b.type="button";b.className="pl-key";
     function paint(){var o=document.documentElement.classList.contains("pl-open");b.innerHTML=KEY+"<span>"+(o?"시세 잠그기":"시세 보기")+"</span>";b.setAttribute("aria-label",o?"시세 잠그기":"시세 보기");b.title=o?"이 탭에서 시세를 다시 잠가요":"관리자 비밀번호로 시세 보기";}
     paint();new MutationObserver(paint).observe(document.documentElement,{attributes:true,attributeFilter:["class"]});
-    b.onclick=function(){document.documentElement.classList.contains("pl-open")?relock():ask();};document.body.appendChild(b);
+    b.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();}document.documentElement.classList.contains("pl-open")?relock():ask();};place(b);
     /* 카드 안 잠금 상자: 카드 쪽 클릭 처리(닫기·넘기기)가 먼저 돌지 않게 가장 먼저(capture) 잡고, 엔터·스페이스로도 열리게 */
     document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest(".pl-lockbox");if(t){e.preventDefault();e.stopPropagation();ask();}},true);
     document.addEventListener("keydown",function(e){var t=e.target.closest&&e.target.closest(".pl-lockbox");if(t&&(e.key==="Enter"||e.key===" ")){e.preventDefault();e.stopPropagation();ask();}},true);}
